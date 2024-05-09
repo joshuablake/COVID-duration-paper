@@ -244,6 +244,7 @@ Therefore, we condition on them implicitly in all probabilities that follow.
 
 The relevant observations for a detected episode $j$ are $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$ where $l_j^{(b)}$ and $r_j^{(b)}$ are the left and right bounds (earliest and latest time) on $b_j$, when the episode began; $l_j^{(e)}$ and $r_j^{(e)}$ are the left and right bounds on $e_j$, when the episode ended; $i_j$ is the individual who had the episode.
 $l_j^{(b)}$ is the day after the last negative test before the episode, $r_j^{(b)}$ is the day of the first positive test, $l_j^{(e)}$ is the day of the last positive test, and $r_j^{(e)}$ is the day before the first negative test after the episode.
+$o_j$ is fully determined by $\sched_{i_j}$, $b_j$, and $e_j$.
 
 In addition, $\nnodet$ undetected episodes occurred; $\nnodet$ is latent.
 If $j$ is undetected, then define $o_j = \emptyset$.
@@ -265,7 +266,7 @@ Then, the probability distribution for $O_j$ is specified by $\vec{p} = [p_1, \d
 Let $n_k$ denote the number of times $\vec{\nu}_k$ is observed; $\nnodet$ denote the latent number of undetected episodes; and $\vec{n} = [n_1, \dots, n_{N_E}, \nnodet]^T$.
 Formally, $n_k = \sum_{j=1}^{\ntot} \indicator(O(j) = \vec{\nu}_k)$ and $\nnodet = \sum_{j=1}^{\ntot} \indicator(O(j) = \emptyset)$.
 Hence, $\ndet = \sum_{k=1}^{N_E} n_k$.
-Assume, for tractability, that the events $O(j) = \vec{\nu}_k$ and $O(j') = \vec{\nu}_{k'}$ are independent for $j \neq j'$ (conditional on $\theta$); this assumption is discussed in \cref{perf-test:sec:discussion}.
+Assume, for tractability, that the events $O(j) = \vec{\nu}_k$ and $O(j') = \vec{\nu}_{k'}$ are independent for $j \neq j'$ (conditional on $\theta$); this assumption is discussed in \cref{sec:discussion}.
 Hence:
 \begin{align}
   \vec{n} \mid \ntot, \vec{\theta} &\dist \MN(\ntot, \vec{p})
@@ -366,6 +367,7 @@ Assume that each infection episode occurs independently and with equal probabili
 
 If $i(j) = i_k$ then the event $O(j) = \vec{\nu}_k$ occurs if and only if the episode starts in the interval $[l^{(b)}_k, r^{(b)}_k]$ and ends in the interval $[l^{(e)}_k, r^{(e)}_k]$.
 Omitting the conditioning on $\vec{\theta}$ and $i(j) = i$, this gives:
+\todo[inline]{this derivation might be too verbose for the main text}
 \begin{align}
 p_{ik}
 =& \prob \left( l_k^{(b)} \leq B_{j} \leq r_k^{(b)}, l_k^{(e)} \leq E_{j} \leq r_k^{(e)} \right) \\
