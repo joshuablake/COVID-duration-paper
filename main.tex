@@ -2,7 +2,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{enumerate}
-% \usepackage{natbib}
+\usepackage{natbib}
 \usepackage{url} % not crucial - just used below for the URL 
 
 %\pdfminorversion=4
@@ -96,8 +96,8 @@
 
 
 %% Bibliography
-\usepackage[authordate-trad,backend=biber]{biblatex-chicago}
-\addbibresource{references.bib}
+% \usepackage[authordate-trad,backend=biber]{biblatex-chicago}
+% \addbibresource{references.bib}
 
 % Macros for common abbreviations to get the spacing right
 % See: https://stackoverflow.com/questions/3282319/correct-way-to-define-macros-etc-ie-in-latex
@@ -192,17 +192,17 @@ The \textbf{format requirements from JASA} are at \url{https://www.tandfonline.c
 
 \section{Problem description}
 
-The CIS~\autocite{CIS} was setup in April 2020.
+The CIS~\cite{CIS} was setup in April 2020.
 The dataset is globally unique in providing a representative, longitudinal, and large-scale study across the pandemic.
 % Initially, it was limited to England, but expanded to cover the whole of the UK in September 2020.
-Enrolment was continuous until 31st Jan 2022, with data collected until 13th Mar 2023~\autocite{weiRisk}. 
+Enrolment was continuous until 31st Jan 2022, with data collected until 13th Mar 2023~\cite{weiRisk}. 
 
 The CIS had a household-based design inviting all individuals aged 2 and over from selected households.
 Once invited, an enrolment swab would be taken at the first visit followed by 4 further weekly visits (giving a total of 5 swabs on days 0, 7, 14, 21, 28 relative to enrolment) after which visits were monthly.
 Swabs were tested for the presence of SARS-CoV-2 using RT-PCR.
 In reality, visits were often not on this precise schedule, and occasionally missed.
-A full description of the study can be found in the study protocol~\autocite{cisProtocol}.
-Positive tests are grouped into \emph{infection episodes} which are assumed to originate from the same infection (using the procedure described in \autocite{weiRisk}).
+A full description of the study can be found in the study protocol~\cite{cisProtocol}.
+Positive tests are grouped into \emph{infection episodes} which are assumed to originate from the same infection (using the procedure described in \cite{weiRisk}).
 
 
 \todo[inline]{Include here definitions of the key quantities of interest: the duration of an episode, the beginning and end of an episode, and the survival function.}
@@ -379,7 +379,7 @@ p_{ik}
 \label{perf-test:eq:pia}
 \end{align}
 under the assumption of uniform probability of infection time.
-This is the standard form of the likelihood for doubly interval censored data without truncation~\autocite[e.g.][]{sunEmpirical}.
+This is the standard form of the likelihood for doubly interval censored data without truncation~\cite[e.g.][]{sunEmpirical}.
 
 \subsection{Deriving $1 - p_u$} \label{perf-test:sec:prob-undetected}
 
@@ -593,7 +593,7 @@ The additional uncertainty is because the \cref{E-ATACCC} analysis extrapolates 
 We form the prior for the combination in two steps.
 
 We first approximate the \cref{E-ATACCC} posterior estimate of the hazard as a multivariate normal on the logit scale.
-This can be viewed as an approximation of Markov melding~\autocite{goudieJoining}.
+This can be viewed as an approximation of Markov melding~\cite{goudieJoining}.
 Using a multivariate normal, as opposed to multiple univariate distribution, ensures that the correlation between the hazards is preserved.
 The logit transformation maps from the $[0, 1]$ interval to the full real line.
 To estimate the parameters of the multivariate normal, we use the method of moments.
@@ -610,7 +610,7 @@ The approximation is very good (see \cref{perf-test:fig:approximate-ATACCC-hazar
 \end{figure}
 
 Having approximated the estimate as a multivariate normal, I add additional uncertainty using a discrete Beta process.
-The discrete Beta process prior generalises the form of prior used in \cref{perf-test:sec:independent-priors} by allowing the central estimate of the hazard to vary over time~\autocite{ibrahimBayesian,sunStatisticala}.
+The discrete Beta process prior generalises the form of prior used in \cref{perf-test:sec:independent-priors} by allowing the central estimate of the hazard to vary over time~\cite{ibrahimBayesian,sunStatisticala}.
 It is:
 \begin{align}
   \lambda_t &\sim \text{Beta}(\alpha_t, \beta_t) &t = 1, 2, \dots \\
@@ -661,6 +661,8 @@ where $\expit(x) = 1 / (1 + \exp(-x))$.
 
 We hope you've chosen to use BibTeX!\ If you have, please feel free to use the package natbib with any bibliography style you're comfortable with. The .bst file agsm has been included here for your convenience. 
 
-\printbibliography
 
+\bibliographystyle{agsm}
+
+\bibliography{references}
 \end{document}
