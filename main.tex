@@ -192,18 +192,21 @@ The \textbf{format requirements from JASA} are at \url{https://www.tandfonline.c
 
 \section{Problem description}
 
-The CIS~\cite{CIS} was setup in April 2020.
+The CIS~\citep{CIS} was setup in April 2020.
 The dataset is globally unique in providing a representative, longitudinal, and large-scale study across the pandemic.
 % Initially, it was limited to England, but expanded to cover the whole of the UK in September 2020.
-Enrolment was continuous until 31st Jan 2022, with data collected until 13th Mar 2023~\cite{weiRisk}. 
+Enrolment was continuous until 31st Jan 2022, with data collected until 13th Mar 2023~\citep{weiRisk}. 
 
 The CIS had a household-based design inviting all individuals aged 2 and over from selected households.
 Once invited, an enrolment swab would be taken at the first visit followed by 4 further weekly visits (giving a total of 5 swabs on days 0, 7, 14, 21, 28 relative to enrolment) after which visits were monthly.
 Swabs were tested for the presence of SARS-CoV-2 using RT-PCR.
 In reality, visits were often not on this precise schedule, and occasionally missed.
-A full description of the study can be found in the study protocol~\cite{cisProtocol}.
-Positive tests are grouped into \emph{infection episodes} which are assumed to originate from the same infection (using the procedure described in \cite{weiRisk}).
+A full description of the study can be found in the study protocol~\citep{cisProtocol}.
 
+Positive tests are grouped into \emph{infection episodes} which are assumed to originate from the same infection (using the procedure described in \citep{weiRisk}).
+The crucial features of an infection episode are the start and end times of the infection.
+Ignoring misclassified test results, latent start time of infection episode $j$, $B_j$, can be bounded as between the day after the last negative test, $l_j^{(b)}$, and the day of the first positive test, $r_j^{(b)}$.
+Similarly, the latent end time of infection episode $i$, $E_j$, can be bounded as between the day of the last positive test, $l_j^{(e)}$, and the day before the following negative test, $r_j^{(e)}$.
 
 \todo[inline]{Include here definitions of the key quantities of interest: the duration of an episode, the beginning and end of an episode, and the survival function.}
 
@@ -224,8 +227,6 @@ Therefore, computationally efficient approaches must be taken to this work.
 
 We start by developing a computationally feasible Bayesian statistical model accounting for double interval censoring and undetected episodes, assuming that there are no misclassified test results.
 
-\subsubsection{Data}
-
 We analyse the $\ndet = \numprint{4800}$ episodes with their first positive test between 10 Oct 2020 and 6 Dec 2020 inclusive, with negatives bounding the start and end time of the episode; we refer to these episodes as \emph{detected}; in \cref{perf-test:sec:prob-undetected} we formalise the conditions for an episode to be detected.
 Days in this period are denoted as $t = 1, \dots, T$.
 Only the first positive test in the episode needs to occur in $[1, T]$, the remaining tests can occur outside this period.
@@ -239,12 +240,11 @@ An individual $i$ has a \emph{test schedule} $\sched_i$.
 The test schedule $\sched_i$ is the set of times at which individual $i$ is tested, starting from their last test prior to time 1, if it exists, or their time of enrolment otherwise; note that $\sched_i$ includes any tests that occur after $T$.
 For example, for the individual in \cref{perf-test:fig:double-interval-censor}, $\sched_i = \{ 0, 7, 14, 21, 28, 56 \}$.
 Each individual has exactly one test schedule, but it is possible that $\sched_i = \sched_{i'}$ for $i \neq i'$.
-We assume that the test schedules are uninformative on all quantities of interest because they are part of the study design.
-Therefore, we condition on them implicitly in all probabilities that follow.
+We assume that the test schedules are uninformative on all quantities of interest because they are part of the study design, and all probabilities are implicitly conditioned on them.
 
-The relevant observations for a detected episode $j$ are $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$ where $l_j^{(b)}$ and $r_j^{(b)}$ are the left and right bounds (earliest and latest time) on $b_j$, when the episode began; $l_j^{(e)}$ and $r_j^{(e)}$ are the left and right bounds on $e_j$, when the episode ended; $i_j$ is the individual who had the episode.
-$l_j^{(b)}$ is the day after the last negative test before the episode, $r_j^{(b)}$ is the day of the first positive test, $l_j^{(e)}$ is the day of the last positive test, and $r_j^{(e)}$ is the day before the first negative test after the episode.
-$o_j$ is fully determined by $\sched_{i_j}$, $b_j$, and $e_j$.
+The relevant observations for a detected episode $j$ are $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$ where $i_j$ is the individual episode $j$ occurred in and the other variables are defined as in \cref{sec:problem-description}.
+When assuming all tests are correctly classified, $l_j^{(b)}$ is the day after the last negative test before the episode, $r_j^{(b)}$ is the day of the first positive test, $l_j^{(e)}$ is the day of the last positive test, and $r_j^{(e)}$ is the day before the first negative test after the episode.
+In this case, $o_j$ is fully determined by $\sched_{i_j}$, $b_j$, and $e_j$.
 
 In addition, $\nnodet$ undetected episodes occurred; $\nnodet$ is latent.
 If $j$ is undetected, then define $o_j = \emptyset$.
@@ -266,7 +266,7 @@ Then, the probability distribution for $O_j$ is specified by $\vec{p} = [p_1, \d
 Let $n_k$ denote the number of times $\vec{\nu}_k$ is observed; $\nnodet$ denote the latent number of undetected episodes; and $\vec{n} = [n_1, \dots, n_{N_E}, \nnodet]^T$.
 Formally, $n_k = \sum_{j=1}^{\ntot} \indicator(O_j = \vec{\nu}_k)$ and $\nnodet = \sum_{j=1}^{\ntot} \indicator(O_j = \emptyset)$.
 Hence, $\ndet = \sum_{k=1}^{N_E} n_k$.
-Assume, for tractability, that the events $O_j = \vec{\nu}_k$ and $O(j') = \vec{\nu}_{k'}$ are independent for $j \neq j'$ (conditional on $\theta$); this assumption is discussed in \cref{sec:discussion}.
+Assume, for tractability, that the events $O_j = \vec{\nu}_k$ and $O_{j'} = \vec{\nu}_{k'}$ are independent for $j \neq j'$ (conditional on $\theta$); this assumption is discussed in \cref{sec:discussion}.
 Hence:
 \begin{align}
   \vec{n} \mid \ntot, \vec{\theta} &\dist \MN(\ntot, \vec{p})
@@ -366,7 +366,7 @@ where $p_{ik} = \prob(O_j = \vec{\nu}_k \mid i_j = i_k, \vec{\theta})$.
 Assume that each infection episode occurs independently and with equal probability in any individual, \ie $\prob(i_j = i_k) = 1/\Ncis$ for all $j$ and $k$.
 
 If $i_j = i_k$ then the event $O_j = \vec{\nu}_k$ occurs if and only if the episode starts in the interval $[l^{(b)}_k, r^{(b)}_k]$ and ends in the interval $[l^{(e)}_k, r^{(e)}_k]$.
-Omitting the conditioning on $\vec{\theta}$ and $i_j = i$, this gives:
+Omitting the conditioning on $\vec{\theta}$ and $i_j = i_k$, this gives:
 \todo[inline]{this derivation might be too verbose for the main text}
 \begin{align}
 p_{ik}
@@ -379,7 +379,7 @@ p_{ik}
 \label{perf-test:eq:pia}
 \end{align}
 under the assumption of uniform probability of infection time.
-This is the standard form of the likelihood for doubly interval censored data without truncation~\cite[e.g.][]{sunEmpirical}.
+This is the standard form of the likelihood for doubly interval censored data without truncation~\citep[e.g.][]{sunEmpirical}.
 
 \subsubsection{Deriving $1 - p_u$} \label{perf-test:sec:prob-undetected}
 
@@ -389,9 +389,9 @@ Therefore:
 \begin{align}
   1 - p_u
   &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \emptyset, i_j = i \mid \vec{\theta}) \\
-  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \emptyset \mid i_j = i \mid \vec{\theta}) P(i_j = i \mid \vec{\theta}) \\
-  &= 1 - \frac{1}{\Ncis}\sum_{i=1}^{\Ncis} \prob(O_j = \emptyset \mid i_j = i \mid \vec{\theta}) \\
-  &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \emptyset \mid i_j = i \mid \vec{\theta}))
+  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}) P(i_j = i \mid \vec{\theta}) \\
+  &= 1 - \frac{1}{\Ncis}\sum_{i=1}^{\Ncis} \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}) \\
+  &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}))
   \label{perf-test:eq:pu}
 \end{align}
 assuming $P(i_j = i \mid \vec{\theta}) = 1/\Ncis$ as before.
@@ -458,7 +458,7 @@ We then modify the components of the likelihood in \cref{imperf-test:sec:modifyi
 
 Introducing false negatives means that $O_j$, the observation vector of episode $j$, is now random, even if $B_j$ and $E_j$ are known.
 Therefore, the results between the tests that bound episode $j$'s beginning and end times should now enter into the likelihood.
-For tractability, we include only tests between the negative tests between $l_j^{(b)}-1$ and $r_j^{(e)}$. 
+For tractability, we include only tests between the negative tests at $l_j^{(b)}-1$ and $r_j^{(e)}+1$. 
 
 To formalise this, we define analogous variables to those in \cref{E-perf-test:sec:posterior}.
 To start with, define the relevant testing times for any episode $j$ with $O_j = \vec{\nu}_k$ as $\sched'_k = \{ t \in \sched_{i_k} \ssep r_k^{(b)} \leq t \leq r_k^{(e)} + 1 \}$ and let $m_k$ denote the size of this set.
@@ -492,7 +492,7 @@ Similarly, we define $p_k'$, $p_{ik}'$, $p_u'$, and $p_{iu}'$ to replace $p_k'$,
 We will modify $p_{ik}$ to form $p_{ik}' = \prob(O'(j) = \vec{\nu}'_k \mid i_j = i_k, \vec{\theta})$, taking into account false negatives.
 We consider a mixture of two scenarios, whether the final test in $\sched'_{k}$ is a false negative, with the mixture probability determined by the test sensitivity.
 
-Similar likelihoods have previously appeared in the literature~\cite[e.g.][eq.\ (2)]{piresIntervalMisclassify}.
+Similar likelihoods have previously appeared in the literature~\citep[e.g.][eq.\ (2)]{piresIntervalMisclassify}.
 However, this prior work was for singly interval censored data; incorporating the double interval censored nature of the CIS data involves summing over the possible episode start times.
 
 % We proceed by assuming that we have observed an arbitrary episode:
@@ -638,7 +638,7 @@ The additional uncertainty is because the \cref{E-ATACCC} analysis extrapolates 
 We form the prior for the combination in two steps.
 
 We first approximate the \cref{E-ATACCC} posterior estimate of the hazard as a multivariate normal on the logit scale.
-This can be viewed as an approximation of Markov melding~\cite{goudieJoining}.
+This can be viewed as an approximation of Markov melding~\citep{goudieJoining}.
 Using a multivariate normal, as opposed to multiple univariate distribution, ensures that the correlation between the hazards is preserved.
 The logit transformation maps from the $[0, 1]$ interval to the full real line.
 To estimate the parameters of the multivariate normal, we use the method of moments.
@@ -655,7 +655,7 @@ The approximation is very good (see \cref{perf-test:fig:approximate-ATACCC-hazar
 \end{figure}
 
 Having approximated the estimate as a multivariate normal, we add additional uncertainty using a discrete Beta process.
-The discrete Beta process prior generalises the form of prior used in \cref{perf-test:sec:independent-priors} by allowing the central estimate of the hazard to vary over time~\cite{ibrahimBayesian,sunStatisticala}.
+The discrete Beta process prior generalises the form of prior used in \cref{perf-test:sec:independent-priors} by allowing the central estimate of the hazard to vary over time~\citep{ibrahimBayesian,sunStatisticala}.
 It is:
 \begin{align}
   \lambda_t &\sim \text{Beta}(\alpha_t, \beta_t) &t = 1, 2, \dots \\
