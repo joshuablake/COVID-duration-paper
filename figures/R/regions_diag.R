@@ -42,7 +42,7 @@ plot = ggplot() +
     geom_text(
         data = tbl_labels,
         aes(x, y, label = label),
-        size = 10
+        size = 8
     ) +
     theme_minimal() +
     scale_x_continuous(breaks = all_test_dates, minor_breaks = -100:100, limits = c(-10, 60), expand = c(0, 0)) +
@@ -147,4 +147,4 @@ plot = ggplot() +
         legend.position = "bottom",
         legend.box = "vertical"
     )
-ggsave("figures/output/regions_diag.pdf", width = 19, height = 20, device = cairo_pdf, units = "cm")
+ggsave("figures/output/regions_diag.pdf", width = 19, height = 16, device = cairo_pdf, units = "cm")
