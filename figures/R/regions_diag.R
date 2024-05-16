@@ -30,7 +30,9 @@ tbl_labels = inner_join(
     mutate(
         x = (x1 + x2) / 2,
         y = (y1 + y2) / 2,
+        label = paste0("nu[", label, "]")
     )
+# tbl_labels$label =latex2exp::TeX(paste0("\nu_{", tbl_labels$label, "}"))
 
 shade_alpha = 0.3
 plot = ggplot() +
@@ -42,7 +44,8 @@ plot = ggplot() +
     geom_text(
         data = tbl_labels,
         aes(x, y, label = label),
-        size = 8
+        size = 8,
+        parse = TRUE
     ) +
     theme_minimal() +
     scale_x_continuous(breaks = all_test_dates, minor_breaks = -100:100, limits = c(-10, 60), expand = c(0, 0)) +
