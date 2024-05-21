@@ -173,25 +173,33 @@ FUNCTION {format.names}
   'f :=
   #1 'nameptr :=
   s num.names$ 'numnames :=
+  numnames #4 > 
+    { #4 'numnames := }
+    'skip$
+  if$
   numnames 'namesleft :=
     { namesleft #0 > }
     { s nameptr f format.name$ 't :=
       nameptr #1 >
-	{ namesleft #1 >
-	    { ", " * t * }
-	    { t "others" =
-		{ " et~al." * }
-		{ " \harvardand\ " * t * }
-	      if$
-	    }
-	  if$
-	}
-	't
+    { namesleft #1 >
+        { ", " * t * }
+        { t "others" =
+        { " et~al." * }
+        { " \harvardand\ " * t * }
+          if$
+        }
+      if$
+    }
+    't
       if$
       nameptr #1 + 'nameptr :=
       namesleft #1 - 'namesleft :=
     }
   while$
+  numnames #4 < 
+    'skip$
+    { " et~al." * }
+  if$
 }
 
 FUNCTION {format.authors}
