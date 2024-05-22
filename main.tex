@@ -318,9 +318,11 @@ There are $\ndet = \numprint{4800}$ such episodes.
 
 
 
-\section{Survival analysis framework}
+\section{Inference framework}
 
 We start by developing a computationally feasible Bayesian statistical model accounting for double interval censoring and undetected episodes, assuming that there are no misclassified test results.
+A Bayesian framework provides uncertainty quantification, which is otherwise challenging in this setting~\citep{sunAnalysis,dengNonparametric}.
+Additionally, it allows for the incorporation of prior information which helps overcome the challenges posed by undetected episodes~\citep{caoBias}.
 
 We analyse the $\ndet = \numprint{4800}$ episodes with their first positive test between 10 Oct 2020 and 6 Dec 2020 inclusive, with negatives bounding the start and end time of the episode; we refer to these episodes as \emph{detected}; in \cref{perf-test:sec:prob-undetected} we formalise the conditions for an episode to be detected.
 Days in this period are denoted as $t = 1, \dots, T$.
@@ -865,7 +867,6 @@ The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ gi
     C and F: full survival curves out to day 100.
   }
   \label{imperf-test:fig:cis-sensitivity}
-  \todo[inline]{Optional improvement: Could highlight the "preferred" model which exists in both rows and is the one used subsequently, and/or include ATACCC in the far-right hand column}
 \end{figure}
 
 The the estimates are most sensitive to the choice of $r$, the strength of the prior on $\ntot$.
@@ -883,20 +884,40 @@ Therefore, I use this estimate in the application to the CIS data.
 
 \section{Discussion}
 
-\bigskip
-\begin{center}
-{\large\bf SUPPLEMENTARY MATERIAL}
-\end{center}
+In this chapter, I developed a novel method to incorporate false negatives into the survival analysis of \cref{E-perf-test}.
+I then applied this method to the CIS data, estimating the tail of the duration distribution without the strong model assumptions and extrapolation in \cref{E-ATACCC}.
+The qualitative features of the estimated distribution are robust to the assumed value for $\psens$, and the choice of prior for $\lambda$, although the quantitative details are not.
+The estimates of the tail, the primary purpose of this chapter, are in addition somewhat robust to the choice of prior for $\ntot$.
+However, the rest of the distribution is sensitive to this choice.
 
-\begin{description}
+An informative prior on $\ntot$ is required is for the bulk of the distribution to agree with those in \cref{E-ATACCC} and the wider literature.
+In the simulation study, the uninformative prior on $\ntot$ performed well, even when the test sensitivity was misspecified.
+A possible explanation is that the true changes in the test sensitivity is significantly different to the function in \cref{imperf-test:eq:variable-test-sensitivity}.
+In particular, the test sensitivity for long episodes may become much lower than 50\%.
+This allows many more episodes to be missed than the model assumes, and hence a higher $\ntot$ is required to explain the data.
+Furthermore, it violates assumptions made in \cref{imperf-test:sec:modelling}; this is similar to when the simulating using a too low test sensitivity.
+Violating these assumptions would lead to unpredictable inference results, perhaps those seen here.
 
-\item[Title:] Brief description. (file type)
+Ideally, the test sensitivity would be estimated from the data.
+However, this would require incorporating time-varying test sensitivity into the likelihood.
+If the current model, with a constant $\psens$, is used then the estimate of $\psens$ would be heavily informed be intermittent negatives (the first, constant term in \cref{imperf-test:eq:pia-prime}).
+These negatives will, in general, be further from the end of an episode than a randomly selected test.
+Therefore, considering the viral dynamics from \cref{E-ATACCC}, the viral load will be higher and false negatives rarer.
 
-\item[R-package for  MYNEW routine:] R-package MYNEW containing code to perform the diagnostic methods described in the article. The package also contains all datasets used as examples in the article. (GNU zipped tar file)
+Estimating the test sensitivity excluding intermittent negatives is not possible because \cref{imperf-test:eq:pia-prime-constant,imperf-test:eq:pit-prime} are both monotonically decreasing in $\psens$; therefore, the likelihood always favours $\psens = 0$ (\ie no true positives).
+This aligns with the situation with singly interval censored, untruncated data, when stopping at the first observed time of the terminating event (which may be misclassified) means that the test sensitivity cannot be estimated~\citep[e.g.]{titmanMisclassify}.
 
-\item[HIV data set:] Data set used in the illustration of MYNEW method in Section~ 3.2. (.txt file)
+Estimating a time-varying $\psens$ with $S_\theta$ jointly may cause identifiability issues.
+Previous studies have avoided issues by including external information (such as a prior giving the magnitude) on $\psens$, or test results from later follow-up~\citep[and references therein]{piresIntervalMisclassify}.
+However, these studies use a constant $\psens$.
+Whether these methods are sufficient for the model to be identifiable with a time-varying $\psens$ needs further investigation.
+A simple parametric form of the test sensitivity, such as that proposed by \citet{brownBayesian}, may be sufficient to allow identifiability.
+In any case, the likelihood, especially $p_{iu}'$, would be substantially complicated by such an addition which may greatly increase the computational cost of inference.
 
-\end{description}
+The assumption, made in \cref{E-perf-test}, was that the episode start times are independent.
+However, because infections are the result of a counting process with intensity shared between individuals (see \cref{E-inc-prev:sec:infection-process}), this assumption is violated.
+Prevalence was fairly constant over the period I chose, suggesting the same is true of the incidence.
+Additionally, some simulations exploring the results of changing incidence suggested this would not have a large effect on the results (not shown).
 
 \bibliographystyle{agsm}
 
@@ -974,4 +995,19 @@ p_{ik}
 under the assumption of uniform probability of infection time.
 This is the standard form of the likelihood for doubly interval censored data without truncation~\citep[e.g.][]{sunEmpirical}.
 
+
+\bigskip
+\begin{center}
+{\large\bf SUPPLEMENTARY MATERIAL}
+\end{center}
+
+\begin{description}
+
+\item[Title:] Brief description. (file type)
+
+\item[R-package for  MYNEW routine:] R-package MYNEW containing code to perform the diagnostic methods described in the article. The package also contains all datasets used as examples in the article. (GNU zipped tar file)
+
+\item[HIV data set:] Data set used in the illustration of MYNEW method in Section~ 3.2. (.txt file)
+
+\end{description}
 \end{document}
