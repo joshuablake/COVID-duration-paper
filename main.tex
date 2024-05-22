@@ -188,7 +188,7 @@ The \textbf{format requirements from JASA} are at \url{https://www.tandfonline.c
 \spacingset{1.9} % DON'T change the spacing!
 \section{Introduction} \label{sec:intro}
 
-The duration of RT-PCR positivity is important for calculating incidence using backcalculation\todo{cite backcalc} as well as for designing public heath interventions (\eg isolation periods)\todo{cite public health use - Hellewell?}.
+The duration of RT-PCR positivity is important for calculating incidence using backcalculation as well as for designing public heath interventions (\eg isolation periods).
 The duration of RT-PCR positivity for an infection episode, $j$, is (in discrete time) the number of days during an infection episode a positive RT-PCR test is returned, $d_j$.
 This can be written as a function of the beginning of an infection episode (the first day the individual tests positive), $b_j$, until the end of the infection episode (the last day the individual tests positive), $e_j$, as $d_j = e_j - b_j + 1$.
 It is commonly expressed as a survival function, $S_{\vec{\theta}}(d) = \prob(d_j \geq d \mid \vec{\theta})$, where $\vec{\theta}$ is a vector of parameters determining the value of $S$, and what we aim to infer.
@@ -196,8 +196,8 @@ It is commonly expressed as a survival function, $S_{\vec{\theta}}(d) = \prob(d_
 An initial meta-analysis estimated that individuals test positive for SARS-CoV-2 for a mean of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}; however, most studies included in the meta-analysis involved hospitalised patients or had unclear inclusion criteria, and hence may not be representative of the general population.
 This remains true of later studies~\citep[e.g.][]{ealesCharacterising,hellewellPCRSensitivity}.
 Furthermore, studies tend to have short follow-up and may not provide good estimates of the mean duration of positivity, which is a right-skewed distribution.
-\todo{mention work on ATACCC which we'll use later}
 For backcalculation, the mean is the most important feature~\citep{freemanPrevalence}, but results can be sensitive to the entire distribution.
+\todo[inline]{should duration from ATACCC be mentioned here?}
 
 Here, we investigate whether the Coronavirus Infection Survey (CIS)~\citep{CIS}, a longitudinal study of RT-PCR positivity in the general population, can be used to estimate the duration of positivity.
 This study tested individuals at regular intervals for a long period of time (see \cref{sec:data}).
