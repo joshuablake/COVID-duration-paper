@@ -189,19 +189,19 @@ The \textbf{format requirements from JASA} are at \url{https://www.tandfonline.c
 \section{Introduction} \label{sec:intro}
 
 The duration of RT-PCR positivity is important for calculating incidence using backcalculation\todo{cite backcalc} as well as for designing public heath interventions (\eg isolation periods)\todo{cite public health use - Hellewell?}.
-The duration of RT-PCR positivity for an infection episode, $j$, is (in discrete time) the number of days during an infection episode a positive RT-PCR test is returned, $D_j$.
-This can be written as a function of the beginning of an infection episode (the first day the individual tests positive), $B_j$, until the end of the infection episode (the last day the individual tests positive), $E_j$, as $D_j = E_j - B_j + 1$.
-It is commonly expressed as a survival function, $S_{\vec{\theta}}(d) = \prob(D_j \geq d \mid \vec{\theta})$, where $\vec{\theta}$ is a vector of parameters determining the value of $S$, and what we aim to infer.
+The duration of RT-PCR positivity for an infection episode, $j$, is (in discrete time) the number of days during an infection episode a positive RT-PCR test is returned, $d_j$.
+This can be written as a function of the beginning of an infection episode (the first day the individual tests positive), $b_j$, until the end of the infection episode (the last day the individual tests positive), $e_j$, as $d_j = e_j - b_j + 1$.
+It is commonly expressed as a survival function, $S_{\vec{\theta}}(d) = \prob(d_j \geq d \mid \vec{\theta})$, where $\vec{\theta}$ is a vector of parameters determining the value of $S$, and what we aim to infer.
 
 An initial meta-analysis estimated that individuals test positive for SARS-CoV-2 for a mean of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}; however, most studies included in the meta-analysis involved hospitalised patients or had unclear inclusion criteria, and hence may not be representative of the general population.
-This remains true of later studies~\citep[e.g.]{ealesCharacterising,hellewellPCRSensitivity}.
+This remains true of later studies~\citep[e.g.][]{ealesCharacterising,hellewellPCRSensitivity}.
 Furthermore, studies tend to have short follow-up and may not provide good estimates of the mean duration of positivity, which is a right-skewed distribution.
 \todo{mention work on ATACCC which we'll use later}
 For backcalculation, the mean is the most important feature~\citep{freemanPrevalence}, but results can be sensitive to the entire distribution.
 
 Here, we investigate whether the Coronavirus Infection Survey (CIS)~\citep{CIS}, a longitudinal study of RT-PCR positivity in the general population, can be used to estimate the duration of positivity.
 This study tested individuals at regular intervals for a long period of time (see \cref{sec:data}).
-As the testing schedule was independent of infection status and had indefinite follow-up, the study provides a unique opportunity to provide an unbiased estimate of the full distribution of $D_j$ in the general population.
+As the testing schedule was independent of infection status and had indefinite follow-up, the study provides a unique opportunity to provide an unbiased estimate of the full distribution of $d_j$ in the general population.
 However, the study design uses weekly or monthly testing intervals, a design that poses several statistical challenges.
 
 \begin{figure}
@@ -215,7 +215,8 @@ However, the study design uses weekly or monthly testing intervals, a design tha
 \end{figure}
 
 First, infections can be undetected.
-Monthly testing is longer than many infection episodes; therefore, an infection episode could begin and end between tests (see \cref{fig:challenges}(A)).
+Monthly testing is longer than many infection episodes; therefore, an infection episode could begin and end between tests.
+Specifically, for individuals without a positive test, we do not know if they were infected but undetected, or if they were never infected (compare the two outcomes in \cref{fig:challenges}(A)).
 The situation is subtly different from the standard truncation situation encountered in the literature.
 In the standard situation, nothing is known about the unrecorded intervals.
 But in CIS, individuals in which undetected infections occurred are enrolled in the study.
@@ -230,9 +231,9 @@ We denote the left and right intervals form $b_j$ as $l_j^{(b)}$ and $r_j^{(b)}$
 Hence, $b_j \in [l_j^{(b)}, r_j^{(b)}]$ and $e_j \in [l_j^{(e)}, r_j^{(e)}]$.
 We address this challenge using standard methods for doubly interval censored data.
 
-Third, false negatives are possible.
-The sensitivity of RT-PCR tests is less than 100\%~\todo{cite false negatives}, although the specificity is very high (\ie there are a negligble number of false positives)\todo{cite false positives}.
-In particular, the negative test upper bounding $E_j$ could be a false negative and hence the episode lasts longer than observed.
+Third, test results can be misclassified.
+The sensitivity of RT-PCR tests is less than 100\%~\citep{blakeThesis}, although the specificity is very high (\ie there are a negligble number of false positives)~\citep{cisMethodsONS}.
+In particular, the negative test upper bounding $e_j$ could be a false negative and hence the episode lasts longer than observed.
 Furthermore, this increases the number of episodes undetected.
 We address this challenge by adjusting the likelihood for the sensitivity of the test.
 
@@ -240,12 +241,12 @@ Fourthly, short infection episodes are much more likely to be undetected.
 Therefore, there is a lack of information on what proportion of episodes are short.
 We address this challenge by incorporating information from a previous study as a prior distribution.
 
-Finally, to preserve privacy, the CIS data is held in the Secure Research Service (SRS), a form of Trusted Research Environment.
-The SRS contains limited computational resources\todo{describe SRS computational resources}, meaning that computationally intensive methods are infeasible.
+Finally, to preserve privacy, the CIS data is held in the Secure Research Service (SRS)~\citep{onsSRS}, a form of Trusted Research Environment.
+The SRS contains limited computational resources, meaning that computationally intensive methods are infeasible.
+Specifically, it contains five \numprint[GHz]{2.40} dual-core Intel Xeon E5-4650 processors and \numprint[GB]{164} RAM.
+These computational resources are shared between all users of the CIS SRS project and due consideration must be given to other users.
 
 \subsection{Related work}
-
-\todo[inline]{This section probably needs some cuts, currently taken from my thesis directly}
 
 Many methods exist for doubly interval censored data~\citep{sunStatistical,bogaertsSurvival}, but few consider the additional challenges posed by undetected episodes.
 Theoretical frameworks including this case exist~\citep{turnbullEmpirical,dempsterMaximum} but only the special case where the terminating event is either uncensored or right censored has been applied in practice~\citep[e.g.][]{sunEmpirical,bacchettiNonparametric,shenNonparametric}.
@@ -282,8 +283,8 @@ The dataset is globally unique in providing a representative, longitudinal, and 
 Enrolment was continuous until 31st Jan 2022, with data collected until 13th Mar 2023~\citep{weiRisk}. 
 
 We focus on the period between 10 Oct 2020 and 6 Dec 2020 inclusive, denoted as $1, \dots, T$.
-This period has fairly stable prevalence, as measured by the CIS\todo{cite stable prevalence}, reducing the impact of epidemic phase bias\todo{cite epidemic phase bias}.
-Additionally, it is prior to either vaccination or the emergence of the alpha variant, which likely impact the duration of RT-PCR positivity\todo{cite alpha variant impact}.
+This period has fairly stable prevalence, as measured by the CIS~\citep{onsCISdec2020}.
+Additionally, it is prior to either vaccination or the emergence of the alpha variant, which likely impact the duration of RT-PCR positivity~\citep{hakkiOnset,russellWithinhost}.
 Our analysis considers the cohort of $\Ncis = \numprint{437590}$ individuals with at least one test in the interval $[1, T]$.
 We index these individuals by $i = 1, \dots, \Ncis$.
 
@@ -378,7 +379,7 @@ Then \cref{perf-test:eq:multinomial-ll} simplifies to:
 \end{align}
 
 The relevant information from the CIS data is fully contained in the vector $\na$.
-Therefore, the posterior of interest is (see\todo{ref appendix} for the full derivation):
+Therefore, the posterior of interest is (full derivations of this and subsequent quantities are in \cref{sec:derivations}):
 \begin{align}
 p(\vec{\theta} \mid \na)
 &\propto  p(\vec{\theta}) \left( \prod_{k \in \set{D}} p_k \right) \left( \sum_{\ntot=\ndet}^\infty p(\ntot \mid \vec{\theta}) \frac{\ntot!}{(\ntot - \ndet)!} \pnodet^{\ntot - \ndet} \right).
@@ -386,7 +387,7 @@ p(\vec{\theta} \mid \na)
 \end{align}
 
 For mathematical convenience, we assume the prior $\ntot \dist \NBc(\mu, r)$, and that it is independent of $\vec{\theta}$, the parameters of the survival distribution.
-In this case \cref{perf-test:eq:posterior1} simplifies to (see\todo{cite appropriate appendix}):
+In this case \cref{perf-test:eq:posterior1} simplifies to:
 \begin{align}
 p(\vec{\theta} \mid \na)
 &\propto p(\vec{\theta}) \left( \prod_{i \in \set{D}} p_k \right) (r + \mu (1- \pnodet))^{-(r+\ndet)} \label{perf-test:eq:full-posterior}.
@@ -399,7 +400,7 @@ where $p_{ik} = \prob(O_j = \vec{\nu}_k \mid i_j = i_k, \vec{\theta})$.
 % This is valid as $\prob(O_j = \nu_k \mid i_j \neq i_k) = 0$ due to the condition here being equivalent to equating the two vectors' final elements.
 Assume that each infection episode occurs independently and with equal probability in any individual, \ie $\prob(i_j = i_k) = 1/\Ncis$ for all $j$ and $k$, and $B_j$ takes values with uniform probability from its state space.
 
-Therefore, $p_{ik}$ takes the standard form of the likelihood for doubly interval censored data without truncation (see\todo{ref appendix} for details):
+Therefore, $p_{ik}$ takes the standard form of the likelihood for doubly interval censored data without truncation:
 \begin{align}
 p_{ik}
 \propto& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right).
@@ -411,13 +412,9 @@ The remaining component of \cref{perf-test:eq:full-posterior} required is $1- p_
 \subsection{Deriving $1 - p_u$} \label{sec:prob-undetected}
 
 The final component of \cref{perf-test:eq:full-posterior} required is $1 - p_u$.
-Recall the definition $p_u = \prob(O_j = \emptyset \mid \vec{\theta})$.
-Therefore:
+\Cref{sec:derivations} shows that
 \begin{align}
   1 - p_u
-  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \emptyset, i_j = i \mid \vec{\theta}) \\
-  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}) P(i_j = i \mid \vec{\theta}) \\
-  &= 1 - \frac{1}{\Ncis}\sum_{i=1}^{\Ncis} \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}) \\
   &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}))
   \label{perf-test:eq:pu}
 \end{align}
@@ -542,6 +539,7 @@ It is a false negative if and only if the episode ends at or after the test, \ie
 We proceed by first considering whether this is the case and conditioning on $B_j = b$.
 Then, we combine the cases and remove the conditioning.
 
+\todo[inline]{What, if any, of the rest of this subsection should stay in the main text?}
 First, the case when $E_j \leq r_k^{(e)}$.
 In this case, the test at $r_k^{(e)}+1$ is a true negative and the end of the episode is interval censored as in the previous chapter.
 % In this case, the test at $r_k^{(e)} + 1$ is a true negative, as are all other tests not in $\sched'_{k}$.
@@ -638,8 +636,8 @@ As previously, $1 - p_{iu}'$ is the required quantity.
 \begin{align}
 1 - p_{iu}'
 =& 1 - p_{iu} - \zeta \\
-=& \frac{1}{T} \sum_{b = \min \sched_{i} + 1}^{T_{i_j}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1) \\
-&- (1 - p_\text{sens})\frac{1}{T} \sum_{b=\min(\sched_{i_j}) + 1}^{T_{i_j}} \left( S_{\vec{\theta}}(\tau_{\sched_{i_j}}(b) + 1) - S_{\vec{\theta}}(\tau^2_{\sched_{i_j}}(b) + 1) \right) \\
+% =& \frac{1}{T} \sum_{b = \min \sched_{i} + 1}^{T_{i_j}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1) \\
+% &- (1 - p_\text{sens})\frac{1}{T} \sum_{b=\min(\sched_{i_j}) + 1}^{T_{i_j}} \left( S_{\vec{\theta}}(\tau_{\sched_{i_j}}(b) + 1) - S_{\vec{\theta}}(\tau^2_{\sched_{i_j}}(b) + 1) \right) \\
 =& \frac{1}{T} \sum_{b=\min(\sched_{i_j}) + 1}^{T_{i_j}} \left( p_\text{sens} S_{\vec{\theta}}(\tau_{\sched_{i_j}}(b) + 1) + (1 - p_\text{sens}) S_{\vec{\theta}}(\tau^2_{\sched_{i_j}}(b) + 1)\right).
 \label{imperf-test:eq:pit-prime}
 \end{align}
@@ -720,7 +718,7 @@ We simulate a dataset of detected episodes that has the same characteristics as 
 \begin{enumerate}
     \item Extract the test schedules for each individual who had at least one test during the period of interest.
     \item Draw an episode start time, $b_{j}$ for each individual uniformly at random between 2nd July 2020 (100 days before the period where a detected episode would be included) and 6th December 2020 (the end of this period).
-    \item Draw a duration of episode for their episode, $d_j$, based on a combination of previous estimates (see below). Then calculate the end of their infection episode, $e_{j} = b_{j} + d_i - 1$.
+    \item Draw a duration of episode for their episode, $d_j$, based on a combination of previous estimates (described in \cref{sec:simulation-truth}). Then calculate the end of their infection episode, $e_{j} = b_{j} + d_i - 1$.
     \item Simulate the test results based on the test schedule, $b_{j}$, and $e_{j}$. A test on day $t$ between $b_{j}$ and $e_{j}$ (inclusive) is positive with probability $\psens(t - b_j)$, defined below. All tests outside this interval are negative.
     \item Discard episodes where there are no positive tests (\ie undetected episodes) and then apply the inclusion criteria from \cref{sec:data}.
     \item Of these remaining episodes, sample 4,800 to match the sample size of the true dataset. This is needed because in step 2 the entire cohort was infected, while in the real study only a (unknown) portion is infected.
@@ -808,7 +806,7 @@ Unlike in the simulation studies, an uninformative prior on $\ntot$ led to impla
 The uninformative prior led to high posterior estimates of $\ntot$, and hence an implausibly large number of episodes with durations of less than five days.
 Therefore, we used an informative prior for $\ntot$, $\ntot \sim \NBc(\mu\inform, r\inform)$ from pre-existing estimates of the total number of infections to give $\mu\inform$ and $r\inform$.
 \citet{birrellRTM2} estimated the total number of infections in England over the time period we consider, with posterior mean \numprint{4136368} and standard deviation \numprint{27932}.
-\todo{is there a citation for the latest RTM paper now?}
+\todo{cite latest RTM paper}
 % This model gives a posterior mean of \numprint{4136368} cumulative infections in England in the time period we consider, with a posterior standard deviation of \numprint{27932}~\citePersonalComms{Paul Birrell}.
 Approximating this distribution as a negative binomial and scaling the mean to the size of the CIS cohort gives the prior $\mu\inform = 25132$ and $r\inform = 22047$.
 
@@ -890,7 +888,7 @@ Ideally, the test sensitivity would be estimated from the data.
 However, this would require incorporating time-varying test sensitivity into the likelihood.
 If the current model, with a constant $\psens$, is used then the estimate of $\psens$ would be heavily informed be intermittent negatives (the first, constant term in \cref{imperf-test:eq:pia-prime}).
 These negatives will, in general, be further from the end of an episode than a randomly selected test.
-Therefore, considering the viral dynamics from \cref{E-ATACCC}, the viral load will be higher and false negatives rarer.
+Therefore, the viral load will be higher and false negatives rarer.
 
 Estimating the test sensitivity excluding intermittent negatives is not possible because \cref{imperf-test:eq:pia-prime-constant,imperf-test:eq:pit-prime} are both monotonically decreasing in $\psens$; therefore, the likelihood always favours $\psens = 0$ (\ie no true positives).
 This aligns with the situation with singly interval censored, untruncated data, when stopping at the first observed time of the terminating event (which may be misclassified) means that the test sensitivity cannot be estimated~\citep[e.g.]{titmanMisclassify}.
@@ -920,10 +918,28 @@ These would allow analyses such as those performed in these chapters to be perfo
 \bibliography{references}
 
 
+\bigskip
+\begin{center}
+{\large\bf SUPPLEMENTARY MATERIAL}
+\end{center}
+
+\begin{description}
+
+\item[Title:] Brief description. (file type)
+
+\item[R-package for  MYNEW routine:] R-package MYNEW containing code to perform the diagnostic methods described in the article. The package also contains all datasets used as examples in the article. (GNU zipped tar file)
+
+\item[HIV data set:] Data set used in the illustration of MYNEW method in Section~ 3.2. (.txt file)
+
+\end{description}
+
 \appendix
 
-\section{Derivations}
+\section{Derivations of quantities in \cref{sec:inference}} \label{sec:derivations}
 
+\subsection{Expressions in \cref{sec:inference}}
+
+First, the derivation of $p(\vec{\theta} \mid \na)$:
 \begin{align}
 p(\vec{\theta} \mid \na)
 &\propto p(\vec{\theta}) p(\na \mid \vec{\theta}) \\
@@ -933,14 +949,10 @@ p(\vec{\theta} \mid \na)
 &= p(\vec{\theta}) \left( \prod_{k \in \set{D}} p_k \right) \left( \sum_{\ntot=\ndet}^\infty p(\ntot \mid \vec{\theta}) \frac{\ntot!}{(\ntot - \ndet)!} \pnodet^{\ntot - \ndet} \right).
 \intertext{For convenience, define the summation term as:}
 \eta &= 
-\sum_{\ntot=\ndet}^\infty p(\ntot \mid \vec{\theta}) \frac{\ntot!}{(\ntot - \ndet)!} \pnodet^{\ntot - \ndet}.
+\sum_{\ntot=\ndet}^\infty p(\ntot \mid \vec{\theta}) \frac{\ntot!}{(\ntot - \ndet)!} \pnodet^{\ntot - \ndet}. \label{perf-test:eq:eta}
 \end{align}
 
-\subsection{Expression for $\eta$}
-
-
-We derive an analytical solution to $\eta$ (defined in \cref{perf-test:eq:eta}).
-We assume the prior $\ntot \dist \NBc(\mu, r)$, and that it is independent of $\vec{\theta}$, the parameters of the survival distribution.
+Next, we derive an analytical solution to $\eta$ (defined in \cref{perf-test:eq:eta}) assuming the prior $\ntot \dist \NBc(\mu, r)$, and that it is independent of $\vec{\theta}$, the parameters of the survival distribution.
 Therefore, $p(\ntot \mid \vec{\theta}) = p(\ntot)$.
 This assumption makes $\eta$ analytically tractable, allowing computationally feasible inference.
 
@@ -966,14 +978,8 @@ Hence:
 &\propto(r + \mu (1- \pnodet))^{-(r+\ndet)}.
 \end{align}
 
-Substituting this into \cref{perf-test:eq:posterior1} gives:
-\begin{align}
-p(\vec{\theta} \mid \na)
-&\propto p(\vec{\theta}) \left( \prod_{i \in \set{D}} p_k \right) (r + \mu (1- \pnodet))^{-(r+\ndet)}.
-\end{align}
+\subsection{Expressions in \cref{sec:prob-undetected}}
 
-
-Omitting the conditioning
 If $i_j = i_k$ then the event $O_j = \vec{\nu}_k$ occurs if and only if the episode starts in the interval $[l^{(b)}_k, r^{(b)}_k]$ and ends in the interval $[l^{(e)}_k, r^{(e)}_k]$.
  on $\vec{\theta}$ and $i_j = i_k$, this gives:
 \begin{align}
@@ -989,19 +995,39 @@ p_{ik}
 under the assumption of uniform probability of infection time.
 This is the standard form of the likelihood for doubly interval censored data without truncation~\citep[e.g.][]{sunEmpirical}.
 
+\subsection{Expression for $p_{u}$}
 
-\bigskip
-\begin{center}
-{\large\bf SUPPLEMENTARY MATERIAL}
-\end{center}
+\begin{align}
+  1 - p_u
+  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \emptyset, i_j = i \mid \vec{\theta}) \\
+  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}) P(i_j = i \mid \vec{\theta}) \\
+  &= 1 - \frac{1}{\Ncis}\sum_{i=1}^{\Ncis} \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}) \\
+  &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}))
+\end{align}
 
-\begin{description}
+\section{Distribution of duration used in simulation} \label{sec:simulation-truth}
 
-\item[Title:] Brief description. (file type)
+The simulation requires a distribution of the duration of detectability.
+We modify the ATACCC-based duration estimate from \citet[chapter 4]{blakeThesis} with an inflated tail to be consistent with the CIS.
+The tail inflation uses a simple survival analysis and the CIS data.
 
-\item[R-package for  MYNEW routine:] R-package MYNEW containing code to perform the diagnostic methods described in the article. The package also contains all datasets used as examples in the article. (GNU zipped tar file)
+This analysis assumes the initiating event is known, and equal to the episode’s detection time, $j_j^{(b)}$.
+It assumes the final event is interval censored between the time of the final positive test and the subsequent negative test, or right censored if a negative test has not yet been observed.
+A flexible, spline-based form is used for the baseline survival function~\citep{roystonSTPM,roystonFlexible} with covariates introduced via proportional odds.
+By not accounting for either the undetected infections or the interval censoring of the initiating event, this analysis has competing biases which makes them hard to interpret~\citep{cisMethodsONS}.
 
-\item[HIV data set:] Data set used in the illustration of MYNEW method in Section~ 3.2. (.txt file)
+To form the duration distribution used in the simulation, we combine the two estimates.
+The pdf over the first 30 days is proportional to the ATACCC estimate, with the rest proportional to this CIS-based estimate.
+Denote by $f_A(t)$ the ATACCC-based distribution function and $f_C(t)$ that from the CIS-based estimates just derived.
+Then define:
+$$
+f_S'(t) = \begin{cases}
+	f_A(t) &t \leq 30 \\
+	f_C(t) &t > 30
+\end{cases}
+$$
+Then the distribution used in the simulation is the normalised version of this: $f_S(t) = f'_S(t)/\sum_i f_S'(i)$.
+% These curves and the combined curve are compared in \cref{perf-test:fig:duration-dist}.
+Episode $j$'s duration of detectability is then a draw from this distribution.
 
-\end{description}
 \end{document}
