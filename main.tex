@@ -264,7 +264,7 @@ Therefore, for the average detected episode, $p(\text{episode $j$ detected} \mid
 Doubly interval censored and truncated data are common when assessing the survival time of bird and insect nests~\citep{heiseyABCs}.
 \citet{heiseyModelling}, building on long-standing methodology~\citep{dempsterMaximum,turnbullEmpirical}, develops a likelihood-based inference framework, allowing for arbitrary truncation patterns and double interval censoring.
 They apply it to a situation where the visit times (possible detection times) are common to all the individuals, simplifying the likelihood.
-I adapt this framework for CIS, when each individual has their own visit schedule (see \cref{perf-test:sec:model}).
+We adapt this framework for CIS, when each individual has their own visit schedule (see \cref{perf-test:sec:model}).
 
 The inclusion of false negatives into survival analysis is an area of much interest, especially in the application of tests for HIV in infants~\citep[e.g.][]{brownBayesian,balasubramanianEstimation};
 \citet{piresIntervalMisclassify} provide a comprehensive review of approaches.
@@ -299,11 +299,12 @@ A full description of the study can be found in the study protocol~\citep{cisPro
 We denote by $\sched_i$ the set of times individual $i$ is tested at, starting from their last test prior to time 1, if it exists, or their first test following enrolment in the study otherwise; note that $\sched_i$ includes any tests that occur after $T$.
 Each individual has exactly one test schedule, but it is possible that $\sched_i = \sched_{i'}$ for $i \neq i'$.
 We assume that the test schedules are uninformative on all quantities of interest because they are part of the study design.
-Therefore, I condition on them implicitly in all probabilities that follow.
+Therefore, we condition on them implicitly in all probabilities that follow.
 
 
 \todo[inline]{Perhaps the following paragraph is too repetitive: the notation is already defined, although it is important to relate it to the observations}
 Positive tests are grouped into infection episodes~\citep{weiRisk}.
+In addition, an infection episode can contain \emph{intermittent negatives}, which are false negative tests occurring between positive tests for the same infection episode.
 The crucial features of an infection episode are the start and end times of the infection.
 Ignoring misclassified test results, latent start time of infection episode $j$, $B_j$, can be bounded as between the day after the last negative test, $l_j^{(b)}$, and the day of the first positive test, $r_j^{(b)}$.
 Similarly, the latent end time of infection episode $i$, $E_j$, can be bounded as between the day of the last positive test, $l_j^{(e)}$, and the day before the following negative test, $r_j^{(e)}$.
@@ -324,33 +325,14 @@ We start by developing a computationally feasible Bayesian statistical model acc
 A Bayesian framework provides uncertainty quantification, which is otherwise challenging in this setting~\citep{sunAnalysis,dengNonparametric}.
 Additionally, it allows for the incorporation of prior information which helps overcome the challenges posed by undetected episodes~\citep{caoBias}.
 
-We analyse the $\ndet = \numprint{4800}$ episodes with their first positive test between 10 Oct 2020 and 6 Dec 2020 inclusive, with negatives bounding the start and end time of the episode; we refer to these episodes as \emph{detected}; in \cref{perf-test:sec:prob-undetected} we formalise the conditions for an episode to be detected.
-Days in this period are denoted as $t = 1, \dots, T$.
-Only the first positive test in the episode needs to occur in $[1, T]$, the remaining tests can occur outside this period.
-We use these episodes because a negative test before the start of the episode provides a lower bound on the episode's start time; otherwise, there is little information on its length.
-For a small number\todo{how many?} of episodes, the individual is lost to follow-up before they test negative; these episodes are excluded from the analysis.
-
-These episodes occur within the cohort of $\Ncis = \numprint{437590}$ individuals who could have had a detected episode.
-This is all individuals enrolled in CIS with at least one test in the interval $[1, T]$.
-
-An individual $i$ has a \emph{test schedule} $\sched_i$.
-The test schedule $\sched_i$ is the set of times at which individual $i$ is tested, starting from their last test prior to time 1, if it exists, or their time of enrolment otherwise; note that $\sched_i$ includes any tests that occur after $T$.
-For example, for the individual in \cref{perf-test:fig:double-interval-censor}, $\sched_i = \{ 0, 7, 14, 21, 28, 56 \}$.
-Each individual has exactly one test schedule, but it is possible that $\sched_i = \sched_{i'}$ for $i \neq i'$.
-We assume that the test schedules are uninformative on all quantities of interest because they are part of the study design, and all probabilities are implicitly conditioned on them.
-
-The relevant observations for a detected episode $j$ are $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$ where $i_j$ is the individual episode $j$ occurred in and the other variables are defined as in \cref{sec:problem-description}.
-When assuming all tests are correctly classified, $l_j^{(b)}$ is the day after the last negative test before the episode, $r_j^{(b)}$ is the day of the first positive test, $l_j^{(e)}$ is the day of the last positive test, and $r_j^{(e)}$ is the day before the first negative test after the episode.
-In this case, $o_j$ is fully determined by $\sched_{i_j}$, $b_j$, and $e_j$.
-
-In addition, $\nnodet$ undetected episodes occurred; $\nnodet$ is latent.
-If $j$ is undetected, then define $o_j = \emptyset$.
-
-The total number of infection episodes in the cohort is $\ntot = \ndet + \nnodet$ and we index them with $j = 1, \dots, \ntot$.
-
-\subsection{Posterior density}
+\todo[inline]{Perhaps there should be a sentence or two here about the structure of the section}
 
 The target of inference is $\vec{\theta}$, the parameters of the survival function $S_{\vec{\theta}}(t) = \prob(D_j \geq t \mid \vec\theta)$; its composition is discussed in \cref{sec:parameters-priors}.
+
+We augment the posterior distribution with the total number of infection episodes, $\ntot = \ndet + \nnodet$, where $\nnodet$ is the number of undetected infection episodes that occurred in one of the $\Ncis$ individuals; $\nnodet$ is latent.
+Infection episodes are indexed by $j = 1, \dots, \ntot$.
+If $j$ is a detected episode, then $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$, as before.
+If $j$ is undetected, then define $o_j = \emptyset$.
 
 The observation $o_j$ is a realisation of the discrete random variable $O_j$.
 Define $O_j$'s state space as $\set{E}' = \{ \emptyset \} \cup \set{E}$ where $\set{E} = \{ \vec{\nu}_1, \dots, \vec{\nu}_{N_E} \}$ is the set of all $N_E$ (a priori) possible unique observations of detected episodes.
@@ -558,7 +540,7 @@ This includes all $t \in \sched'_k$ except $t = r_k^{(e)}+1$.
 Therefore, the test results $\vec{y}_k$, except the test at $r_k^{(e)}+1$, are either true positives or false negatives.
 This gives $t_+ = \sum_{l=1}^{m_k-1} y_{k,l}(t)$ true positives and $f_- = \sum_{l=1}^{m_k-1} (1 - y_{k,l}(t))$ false negatives.
 
-Consider the negative test at $r_k^{(e)}+1$, the first negative after the start of the episode which may be a false negative.
+Consider the negative test at $r_k^{(e)}+1$, the first negative after the start of the episode which may be either a true or false negative.
 It is a false negative if and only if the episode ends at or after the test, \ie $E_j > r_k^{(e)}$.
 We proceed by first considering whether this is the case and conditioning on $B_j = b$.
 Then, we combine the cases and remove the conditioning.
@@ -667,7 +649,7 @@ As in \cref{E-perf-test:sec:prob-undetected}, $1 - p_{iu}'$ is the required quan
 \end{align}
 
 
-\section{Parameterising the survival function}
+\section{The survival function} \label{sec:parameters-priors}
 
 Next we specify the form and priors for $S_{\vec{\theta}}(t)$.
 We parameterize $S$ in terms of the hazard $S_{\vec{\theta}}(t) = \prod_{i=1}^{t-1} (1 - \lambda_{i})$; the lack of monotonicity or sum constraint on the hazard makes it an attractive parameterization for inference~\citep{heBayesian}.
@@ -687,7 +669,7 @@ Even though these priors are uninformative on the hazard, they become highly inf
 Specifically, they tend to favour shorter survival times because priors of this form have an expected value of 0.5.
 The expected survival time, $\E \left( \prod_{i=1}^{t-1} (1-\lambda_t) \right)$, is therefore equal to $0.5^{t-1}$, a quantity that declines rapidly.
 
-Instead, we propose a weakly informative (or vague) prior Beta(0.1, 1.9), which has mean 0.05 and minimal information.
+Instead, we propose the weakly informative (or vague) prior Beta(0.1, 1.9), which has mean 0.05 and minimal information.
 The amount of information in a Beta distribution is related to the sum of its parameters.
 Here, the sum equals 2, the same as the flat prior case.
 The central 95\% probability mass of Beta(0.1, 1.9) is 0.00--0.47.
@@ -748,7 +730,7 @@ We use a simulation study to evaluate the performance of the method and the impa
 
 \subsection{Setup}
 
-I simulate a dataset of detected episodes that has the same characteristics as that in the CIS by the following procedure.
+We simulate a dataset of detected episodes that has the same characteristics as that in the CIS by the following procedure.
 \begin{enumerate}
     \item Extract the test schedules for each individual who had at least one test during the period of interest.
     \item Draw an episode start time, $b_{j(i)}$ for each individual uniformly at random between 2nd July 2020 (100 days before the period where a detected episode would be included) and 6th December 2020 (the end of this period).
@@ -759,18 +741,18 @@ I simulate a dataset of detected episodes that has the same characteristics as t
     \item For this final set of episodes, calculate $(l_j^{(b)}, r_j^{b}, l_j^{(e)}, r_j^{(e)})$ by taking the day after the last negative prior to any positives, the first positive, the last positive, and the day before the negative following the last positive respectively.
 \end{enumerate}
 
-I simulate data under this model by, for each test in a detectable individual, calculating $\psens(t-b)$, where $t$ is the day of the test and $b$ is the day the episode began.
+We simulate data under this model by, for each test in a detectable individual, calculating $\psens(t-b)$, where $t$ is the day of the test and $b$ is the day the episode began.
 The result of the test is then a Bernoulli random variable, independent of all other considerations.
 Adapting the simulation study to incorporate this test sensitivity is much more similar to the data (see purple histogram in \cref{imperf-test:fig:sim-single-pos}).
 This model does not require low test sensitivities early in the infection, maintaining compatibility with the results in \cref{E-ATACCC}.
 
-I simulate datasets under four conditions: a constant $\psens$ of 0.6, 0.8, or 1.0, or the varying test sensitivity model proposed at the end of \cref{imperf-test:sec:simulate}.
+We simulate datasets under four conditions: a constant $\psens$ of 0.6, 0.8, or 1.0, or the varying test sensitivity model proposed at the end of \cref{imperf-test:sec:simulate}.
 \todo{Decide where to introduce a varying test sensitivity model}
 The simulation is otherwise unchanged from that in \cref{E-perf-test:sec:simulation-study}.
 The number of single positive episodes in each of these conditions, compared to the number observed in the CIS data, is shown in \cref{imperf-test:fig:sim-single-pos}.
 
-For each simulated dataset, I estimate the survival function using the likelihood proposed in \cref{imperf-test:sec:modelling} and assuming $\psens$ equals 0.6, 0.8, or 1.0.
-If the dataset was simulated using a constant $\psens$, and that value of $\psens$ matches the value assumed during inference, I refer to $\psens$ as being correctly specified; otherwise I refer to it as misspecified.
+For each simulated dataset, we estimate the survival function using the likelihood proposed in \cref{imperf-test:sec:modelling} and assuming $\psens$ equals 0.6, 0.8, or 1.0.
+If the dataset was simulated using a constant $\psens$, and that value of $\psens$ matches the value assumed during inference, we refer to $\psens$ as being correctly specified; otherwise we refer to it as misspecified.
 However, there is still some misspecification of the model to false negatives owing to the simplifying assumptions made.
 The amount that the simplifying assumptions are violated increases as $\psens$ decreases.
 
@@ -796,7 +778,7 @@ This is likely caused by too large a violation of the simplifying assumptions ma
   \label{imperf-test:fig:constant-test-sensitivity}
 \end{figure}
 
-Next, I considered the consequence of $\psens$ being misspecified, using the model combination prior; the better performing prior in the correctly specified case.
+Next, we considered the consequence of $\psens$ being misspecified, using the model combination prior; the better performing prior in the correctly specified case.
 If the test sensitivity is misspecified, that is the assumed value for $p_\text{sens}$ in \cref{imperf-test:eq:pit-prime,imperf-test:eq:pit-prime} is different to the value used in the simulation, then the survival time will be biased (see \cref{imperf-test:fig:misspecified-test-sensitivity}).
 If $\psens$ is misspecified and too low (see \cref{imperf-test:fig:misspecified-test-sensitivity}(A)), then the posterior estimate initially follows the true value but then separates.
 The number of episodes inferred to have truly ended by the first negative is too high, and hence the survival time is overestimated.
@@ -818,7 +800,7 @@ The opposite occurs if the test sensitivity is assumed to be too high, although 
 The results when a varying test sensitivity (\cref{imperf-test:eq:variable-test-sensitivity}) is used for the simulation are similar to a constant 0.8 test sensitivity (see \cref{imperf-test:fig:variable-test-sensitivity}).
 This suggests that the simplified model, with constant test sensitivity, is sufficient for recovering the true survival time.
 Estimating the test sensitivity is not possible without a more complex model, as discussed in \cref{imperf-test:sec:discussion}.
-Therefore, I will apply this model to the real CIS data in the next section.
+Therefore, we will apply this model to the real CIS data in the next section.
 \begin{figure}
   % \makebox[\textwidth][c]{
     % \includegraphics[width=\textwidth]{cis-imperfect-testing/sim-variable-sensitivity}
@@ -832,14 +814,14 @@ Therefore, I will apply this model to the real CIS data in the next section.
 \end{figure}
 
 \section{Application to the CIS data}
-In this section I apply the approach described in this chapter to the CIS episodes dataset I described in \cref{E-perf-test:sec:approach}.
+In this section we apply the approach described in this chapter to the CIS episodes dataset we described in \cref{E-perf-test:sec:approach}.
 This is the 4,800 CIS infection episodes first detected between 10th Oct 2020 and 6th Dec 2020 inclusive and have negatives bounding the start and end time of the episode.
 
 Unlike in the simulation studies, an uninformative prior on $\ntot$ led to implausible estimates of the duration distribution.
 The uninformative prior led to high posterior estimates of $\ntot$, and hence an implausibly large number of episodes with durations of less than five days.
-Therefore, I based an informative prior for $\ntot$, $\ntot \sim \NBc(\mu, r)$ (as in \cref{E-perf-test:sec:model}, see \cref{E-distributions} for definition), using pre-existing estimates of the total number of infections to give $\mu\inform$ and $r\inform$.
-\citet{birrellRTM2} estimated the total number of infections in England over the time period I consider, with posterior mean \numprint{4136368} and standard deviation \numprint{27932}.
-% This model gives a posterior mean of \numprint{4136368} cumulative infections in England in the time period I consider, with a posterior standard deviation of \numprint{27932}~\citePersonalComms{Paul Birrell}.
+Therefore, we based an informative prior for $\ntot$, $\ntot \sim \NBc(\mu, r)$ (as in \cref{E-perf-test:sec:model}, see \cref{E-distributions} for definition), using pre-existing estimates of the total number of infections to give $\mu\inform$ and $r\inform$.
+\citet{birrellRTM2} estimated the total number of infections in England over the time period we consider, with posterior mean \numprint{4136368} and standard deviation \numprint{27932}.
+% This model gives a posterior mean of \numprint{4136368} cumulative infections in England in the time period we consider, with a posterior standard deviation of \numprint{27932}~\citePersonalComms{Paul Birrell}.
 \todo{Insert correct citation for RTM paper 2 once available}
 Approximating this distribution as a negative binomial and scaling the mean to the size of the CIS cohort gives the prior $\mu\inform = 25132$ and $r\inform = 22047)$.
 
@@ -874,7 +856,7 @@ A very weak, almost uninformative, prior on this quantity causes the posterior e
 When increasing the prior's strength, the posterior estimate moves towards the prior smoothly, as expected (see \cref{imperf-test:fig:ntot}).
 As discussed previously, the \cref{E-ATACCC} estimates are reliable for the first 2--3 weeks, notably including the median time.
 The median using $r\inform$ matched \cref{E-ATACCC}'s median estimate and is a principled choice because it is based directly on the prior work \citet{birrellRTM2}.
-Therefore, I use this estimate in the application to the CIS data.
+Therefore, we use this estimate in the application to the CIS data.
 \begin{figure}
   % \centering \includegraphics{cis-imperfect-testing/CIS_ntot}
   \todo[inline]{Add real data figures}
@@ -884,8 +866,8 @@ Therefore, I use this estimate in the application to the CIS data.
 
 \section{Discussion}
 
-In this chapter, I developed a novel method to incorporate false negatives into the survival analysis of \cref{E-perf-test}.
-I then applied this method to the CIS data, estimating the tail of the duration distribution without the strong model assumptions and extrapolation in \cref{E-ATACCC}.
+In this chapter, we developed a novel method to incorporate false negatives into the survival analysis of \cref{E-perf-test}.
+we then applied this method to the CIS data, estimating the tail of the duration distribution without the strong model assumptions and extrapolation in \cref{E-ATACCC}.
 The qualitative features of the estimated distribution are robust to the assumed value for $\psens$, and the choice of prior for $\lambda$, although the quantitative details are not.
 The estimates of the tail, the primary purpose of this chapter, are in addition somewhat robust to the choice of prior for $\ntot$.
 However, the rest of the distribution is sensitive to this choice.
@@ -916,7 +898,7 @@ In any case, the likelihood, especially $p_{iu}'$, would be substantially compli
 
 The assumption, made in \cref{E-perf-test}, was that the episode start times are independent.
 However, because infections are the result of a counting process with intensity shared between individuals (see \cref{E-inc-prev:sec:infection-process}), this assumption is violated.
-Prevalence was fairly constant over the period I chose, suggesting the same is true of the incidence.
+Prevalence was fairly constant over the period we chose, suggesting the same is true of the incidence.
 Additionally, some simulations exploring the results of changing incidence suggested this would not have a large effect on the results (not shown).
 
 \bibliographystyle{agsm}
