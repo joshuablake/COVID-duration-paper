@@ -764,8 +764,7 @@ The informative prior, in comparison to the vague prior, helps to overcome the m
 However, when $\psens = 0.6$, this is no longer the case (see \cref{imperf-test:fig:constant-test-sensitivity}(A)).
 This is likely caused by too large a violation of the simplifying assumptions made in \cref{sec:false-negatives}.
 \begin{figure}
-  % \includegraphics[width=\textwidth]{cis-imperfect-testing/sim-constant-sensitivity}
-  \todo[inline]{Add simulation study figures}
+  \includegraphics[width=\textwidth]{figures/output/sim-constant-sensitivity}
   \caption[Simulation study results with constant test sensitivity]{%
     Posterior (median and 95\% credible interval) of the survival time for the simulation study with a correctly specified test sensitivity.
     True survival time shown in black.
@@ -780,14 +779,11 @@ The number of episodes inferred to have truly ended by the first negative is too
 This effect dominates over the opposing bias of overestimating the number of undetected episodes.
 The opposite occurs if $\psensi > \psenss$, although the posterior moves away from the truth earlier (see \cref{imperf-test:fig:misspecified-test-sensitivity}(C)).
 \begin{figure}
-  % \makebox[\textwidth][c]{
-    % \includegraphics[width=\textwidth]{cis-imperfect-testing/sim-misspecified-sensitivity}
-  \todo[inline]{Add simulation study figures}
+  \includegraphics[width=\textwidth]{figures/output/sim-misspecified-sensitivity}
   \caption[Simulation study results with misspecified test sensitivity]{%
-    Posterior (median and 95\% credible interval) of the survival time for the simulation study with a possibly misspecified test sensitivity.
+    Posterior (median and 95\% CrI) of the survival time.
     The true survival time is shown in black.
     All results use $\psenss = 0.8$, but $\psensi$ varies, as per panel labels.
-    Hence, (B) is correctly specified but (A) and (C) have misspecified $\psens$.
   }
   \label{imperf-test:fig:misspecified-test-sensitivity}
 \end{figure}
@@ -797,13 +793,10 @@ This suggests that the simplified model, with constant test sensitivity, is suff
 % Estimating the test sensitivity is not possible without a more complex model, as discussed in \cref{imperf-test:sec:discussion}.
 Therefore, we conclude that including a varying test sensitivity is not required for adequate inference, and apply it to the real CIS data in the next section.
 \begin{figure}
-  % \makebox[\textwidth][c]{
-    % \includegraphics[width=\textwidth]{cis-imperfect-testing/sim-variable-sensitivity}
-  \todo[inline]{Add simulation study figures}
+  \includegraphics[width=\textwidth]{figures/output/sim-variable-sensitivity}
   \caption[Simulation study results with varying test sensitivity]{%
-    Posterior (median and 95\% credible interval) of the survival time for the simulation study with a variable test sensitivity.
-    Each panel shows the results of performing inference with a different assumed value for the test sensitivity.
-    The posterior estimate using a model with a constant test sensitivity of 0.8 (B) is similar to the true value (black line).
+    Posterior (median and 95\% CrI) of the survival time.
+    $\psensi$ is indicated on the panel label, $\psenss = 0.8$.
   }
   \label{imperf-test:fig:variable-test-sensitivity}
 \end{figure}
@@ -826,15 +819,13 @@ The qualitative increase in long episodes is robust to the choice of prior for $
 However, the survival proportion over the first 4 weeks is sensitive to these choices.
 The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ give a median survival time most similar to the ATACCC-based estimate.
 \begin{figure}
-  \todo[inline]{Add real data figures}
-  % \centering \includegraphics{cis-imperfect-testing/CIS_final}
+  \centering \includegraphics{figures/output/CIS_final}
   \caption{Duration estimates using CIS and ATACCC data}
   \label{imperf-test:fig:cis-estimates}
 \end{figure}
 \begin{figure}
-  \vspace{-2.5cm}
-  \todo[inline]{Add real data figures}
-  % \makebox[\textwidth][c]{\includegraphics{cis-imperfect-testing/CIS_vary}}
+  \vspace{-1.5cm}
+  \makebox[\textwidth][c]{\includegraphics{figures/output/CIS_vary}}
   \caption{%
     (A-C) Sensitivity of CIS estimates to the value of $r$, the dispersion of the prior for $\ntot$ (a larger $r$ means a more informative prior) when $\psens = 0.8$.
     (D-F) Sensitivity of CIS estimates to the value of $\psens$ when $r = r\inform$.
@@ -853,8 +844,7 @@ As discussed previously, the prior information is reliable for the first 2--3 we
 The median using $r\inform$ matched the prior's median estimate and is a principled choice because it is based directly on the prior work \citet{birrellRTM2}.
 Therefore, we recommend this estimate, which has a mean survival time of 21.2 days (95\% CrI: 20.5--21.9).
 \begin{figure}
-  % \centering \includegraphics{cis-imperfect-testing/CIS_ntot}
-  \todo[inline]{Add real data figures}
+  \centering \includegraphics{figures/output/CIS_ntot}
   \caption[Sensitivity of $\ntot$'s posterior to its prior.]{How the posterior estimate of $\ntot$ changes with the value of $r$ in the prior on $\ntot$.}
   \label{imperf-test:fig:ntot}
 \end{figure}
