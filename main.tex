@@ -245,7 +245,7 @@ The SRS contains limited computational resources\todo{describe SRS computational
 
 \todo[inline]{This section probably needs some cuts, currently taken from my thesis directly}
 
-Many methods exist for doubly interval censored data~\citep{sunAnalysis,bogaertsSurvival}, but few consider the additional challenges posed by undetected episodes.
+Many methods exist for doubly interval censored data~\citep{sunStatistical,bogaertsSurvival}, but few consider the additional challenges posed by undetected episodes.
 Theoretical frameworks including this case exist~\citep{turnbullEmpirical,dempsterMaximum} but only the special case where the terminating event is either uncensored or right censored has been applied in practice~\citep[e.g.][]{sunEmpirical,bacchettiNonparametric,shenNonparametric}.
 These studies base their inference on a likelihood contribution for each detected infection episode conditional on $b_j \in [l_j^{(b)}, r_j^{(b)}]$.
 
@@ -317,7 +317,7 @@ There are $\ndet = \numprint{4800}$ such episodes.
 \section{Inference framework} \label{sec:inference}
 
 We start by developing a computationally feasible Bayesian statistical model accounting for double interval censoring and undetected episodes, assuming that there are no misclassified test results.
-A Bayesian framework provides uncertainty quantification, which is otherwise challenging in this setting~\citep{sunAnalysis,dengNonparametric}.
+A Bayesian framework provides uncertainty quantification, which is otherwise challenging in this setting~\citep{sunStatistical,dengNonparametric}.
 Additionally, it allows for the incorporation of prior information which helps overcome the challenges posed by undetected episodes~\citep{caoBias}.
 
 \todo[inline]{Perhaps there should be a sentence or two here about the structure of the section}
@@ -869,7 +869,7 @@ Therefore, we recommend this estimate, which has a mean survival time of 21.2 da
 
 \section{Discussion} \label{sec:discussion}
 
-\todo[inline]{There's a lot of discussion points here, I've just copied these across from my thesis. I think probably too many, especially the focus on limitations; this section is about 3x longer than the standard discussion section in a JASA applications article. I'm not sure which are the interesting ones to keep and which to cut though.}
+\todo[inline]{There's a lot of discussion points here, I've just copied these across from my thesis. I think probably too many, especially the focus on limitations; this section is about twice as long as the standard discussion section in a JASA applications article. I'm not sure which are the interesting ones to keep and which to cut though.}
 
 In this article, we developed a method to analyze doubly censored data with undetected events, when these undetected events occur with an arbitrary pattern in known individuals and the test sensitivity is imperfect.
 We extended a previous survival analysis framework to this setting, incorporating the information on individuals with undetected events and extending the model to account for false negatives.
@@ -890,7 +890,7 @@ For example, following up the first positive test for an infection episode with 
 We assumed a prior of constant incidence and that the time infection episodes begin is independent between individuals.
 Prevalence in the CIS data was approximately constant over the period of interest.
 A sensitivity analysis, where an epidemic in exponential growth or decline was simulated (not shown), showed minimal impact on survival estimates.
-An incorrect assumption of constant incidence can lead to biased estimates~\autocite{degruttolaAnalysis}.
+An incorrect assumption of constant incidence can lead to biased estimates~\citep{degruttolaAnalysis}.
 Therefore, the assumption could be important in other contexts, especially if the incidence is changing rapidly.
 
 
