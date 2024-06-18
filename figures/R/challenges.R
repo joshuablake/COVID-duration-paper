@@ -89,18 +89,22 @@ p_truncation = expand_grid(
   )) %>% 
   plot_testing_schedule() +
   labs(x = "") +
-  theme(legend.position = "none")
+  theme(legend.position = "none") +
+  # no x-axis labels
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank())
 
 final_plot = p_truncation / p_censor +
   plot_annotation(tag_levels = 'A') +
   plot_layout(heights = c(2, 1)) &
-  theme(plot.margin = margin(0))
+  theme(plot.margin = margin(0))#, plot.tag.position = c(0.01, 0.7))
 
 ggsave(
   filename = "figures/output/challenges.pdf",
   plot = final_plot,
   width = 6,
-  height = 3,
+  height = 2.4,
   dpi = 300,
   unit = "in"
 )
