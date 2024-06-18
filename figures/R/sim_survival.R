@@ -46,8 +46,8 @@ tbl_posteriors = readRDS(here::here("data/all_posteriors.rds")) |>
     mutate(
         survival_prior = case_match(
             survival_prior,
-            "ATACCC" ~ "Combination",
-            "vague" ~ "Independent (vague)"
+            "ATACCC" ~ "Strong",
+            "vague" ~ "Weak"
         ),
     )
 truth = readRDS(here::here("data/input_curves.rds")) |>
@@ -66,7 +66,7 @@ ggsave(
 )
 
 p_misspecified_sensitivity = tbl_posteriors |>
-    filter(sensitivity.simulation == 0.8, survival_prior == "Combination") |>
+    filter(sensitivity.simulation == 0.8, survival_prior == "Strong") |>
     base_plot(sensitivity.model, colour_key = expression(p[sens]^`(i)`), facet_suffix = "^{(i)}")
 ggsave(
     filename = here::here("figures/output/sim-misspecified-sensitivity.pdf"),
@@ -78,7 +78,7 @@ ggsave(
 )
 
 p_variable_sensitivity = tbl_posteriors |>
-    filter(is.na(sensitivity.simulation), survival_prior == "Combination") |>
+    filter(is.na(sensitivity.simulation), survival_prior == "Strong") |>
     base_plot(sensitivity.model, colour_key = expression(p[sens]^`(i)`), facet_suffix = "^{(i)}")
 ggsave(
     filename = here::here("figures/output/sim-variable-sensitivity.pdf"),

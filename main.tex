@@ -608,56 +608,33 @@ In \cref{sec:p-iu-dash} we show that this gives:
 Next we specify the form and priors for $S_{\vec{\theta}}(t)$.
 We parameterize $S$ in terms of the discrete-time hazard $S_{\vec{\theta}}(t) = \prod_{i=1}^{t-1} (1 - \lambda_{i})$; the lack of monotonicity or sum constraint on the hazard makes it an attractive parameterization for inference~\citep{heBayesian}.
 Therefore, $\vec{\theta} = [\lambda_1, \dots, \lambda_{\dmax-1}]^T$, where $\dmax$ is the longest possible duration assumed as the maximum possible duration of the observed episodes, \ie $\dmax = \max_{k \in \set{D}} r^{(e)}_k - l^{(b)}_k + 1$.
+We consider two priors (depicted in \cref{fig:priors}), with varying degrees of informativeness regarding $S_{\vec{\theta}(t)}$.
+\begin{figure}
+  \includegraphics{figures/output/prior_predictive_survival}
+  \caption{%
+    Prior predictive values of $S_{\vec{\theta}}$ for the two priors.
+  }
+  \label{fig:priors}
+\end{figure}
 
-We consider two priors.
-The first is vague for $S(t)$ for most values of $t$, although informative on $\lambda_t$.
-The second is informative, incorporating prior information.
-
-
-\subsection{Vague prior} \label{sec:vague-prior}
-
-First, we consider independent priors on each parameter.
-Each hazard, $\lambda_t$, is a (conditional) probability, and hence a Beta distribution is a natural choice.
-
-Uninformative Beta priors, of the form $\lambda_t \dist \BetaDist(\alpha, \alpha)$, on the hazard are problematic in this context.
-Even though these priors are uninformative on the hazard, they become highly informative on the survival. 
-Specifically, the expected survival time is $\E \left( \prod_{i=1}^{t-1} (1-\lambda_t) \right) = 0.5^{t-1}$, a quantity that declines rapidly. Hence shorter survival times are favoured.
-
-Instead, we propose the weakly informative (or vague) prior Beta(0.1, 1.9), which has mean 0.05 and minimal information.
-The amount of information in a Beta distribution is related to the sum of its parameters.
-Here, the sum equals 2, the same as the flat prior case.
+The first prior for $S_{\vec{\theta}}$ is weakly informative, centred on prior estimates.
+Specifically, we assume an independent prior distribution for each $\lambda_t$ of Beta(0.1, 1.9), which has mean 0.05 and little information.
 The central 95\% probability mass of Beta(0.1, 1.9) is 0.00--0.47.
 The central estimate, of 0.05, is in line with previous estimates that the median duration in the range 15--20 days~\citep{cevikShedding}.
-This prior gives a very vague prior predictive distribution on the survival time.
 
-\subsection{Informative priors} \label{sec:informative-prior}
-
-Reliable estimates of $\lambda_t$ for $t$ up to around 20 are available from a prior analysis of data from The Assessment of Transmission and Contagiousness of COVID-19 in Contacts (ATACCC) study~\citep{hakkiOnset}, which tested individuals who had been exposed to infection daily up to a maximum of 20 days.
-The infrequent testing in CIS means that there is a lack of information about short infection episodes, and hence we use these estimates as informative priors.
-
-When constructing the prior, two aspects need consideration.
-Firstly, the model structure from the ATACCC-based analysis leads to its posterior distribution having a positive correlation between $\lambda_t$ and $\lambda_{t'}$, especially for small $|t-t'|$.
-The prior used in this analysis should preserve this correlation.
-Secondly, the uncertainty in the prior estimates for $\lambda_t, t\geq20$ are underestimated because they are based on extrapolation of the ATACCC data using strong model assumptions.
-
-We first approximate the previous posterior estimate of the hazard as $\logit{\vec{h}} \dist \MNorm(\vec{\mu}_A, \matr{\Sigma}_A)$ where $\vec{h}$ is the hazard, and $\vec{\mu}_A$ and $\matr{\Sigma}_A$ are the mean and covariance matrix estimated using samples of $\logit{\vec{h}}$ from the previous study's posterior.
-Using a multivariate normal, as opposed to multiple univariate distribution for each $h_t$, preserves the correlation between the hazards.
-% The logit transformation maps from the $[0, 1]$ interval to the full real line.
-The approximation is very good (not shown).
-
-Having approximated the estimate as a multivariate normal, we add additional uncertainty using a discrete Beta process.
-The discrete Beta process prior~\citep{ibrahimBayesian,sunStatisticala} generalises the form of prior used in \cref{sec:vague-prior} by allowing the central estimate of the hazard to vary over time.
-It is:
+The second is a strongly informative prior; it incorporates prior information from reliable estimates of $\lambda_t$ for $t < 20$.
+We take a previous Bayesian analysis~\citep{blakeThesis} of data from The Assessment of Transmission and Contagiousness of COVID-19 in Contacts (ATACCC) study~\citep{hakkiOnset}, which tested individuals who had been exposed to infection daily up to a maximum of 20 days.
+This ATACCC-based analysis produces posterior estimates of $\lambda_t$; however, its leads to a posterior distribution with positive correlation between $\lambda_t$ and $\lambda_{t'}$, especially for small $|t-t'|$.
+Furthermore, the uncertainty in the prior estimates for $\lambda_t$ for $t\geq20$ are underestimated because they are based on extrapolation of the ATACCC data using strong model assumptions.
+The following prior, based on the discrete Beta process prior~\citep{ibrahimBayesian,sunStatisticala}, incorporates both these aspects:
 \begin{align}
   \logit \vec{h} &\dist \MNorm(\vec{\mu}_A, \matr{\Sigma}_A) \\
   \lambda_t &\dist \text{Beta}(\alpha_t, \beta_t) &t = 1, 2, \dots \\
   \alpha_t &= k_t h_t + \alpha_0 \\
   \beta_t &= k_t (1 - h_t) + \beta_0
 \end{align}
-where $k_t$, $\alpha_0$, and $\beta_0$ are hyperparameters.
-An intuition for what this distribution represents derives from a conjugate model for $\lambda_t$ with a beta prior and a binomial likelihood.
-If $\lambda_t$ is given the prior distribution $\text{Beta}(\alpha_0, \beta_0)$, and we then have $k_t$ observations with $k_t h_t$ successes, then the posterior distribution for $\lambda_t$ is $\text{Beta}(\alpha_t, \beta_t)$ (as defined above).
-
+where $k_t$, $\alpha_0$, and $\beta_0$ are hyperparameters; and $\vec{\mu}_A$ and $\matr{\Sigma}_A$ are posterior approximations of the ATACCC-based posterior (see \cref{sec:ataccc-prior} for details).
+We use $\alpha_0 = 0.1$ and $\beta_0 = 1.9$ to match the weakly informative prior.
 $k_t$ reflects the subjective belief that $h_t$ is a good estimate of $\lambda_t$ for small $t$ but increasingly unreliable.
 \begin{align}
 k_t = \begin{cases}
@@ -665,6 +642,7 @@ k_t = \begin{cases}
   0 &t > 39
 \end{cases}.
 \end{align}
+
 
 \section{Simulations} \label{sec:simulation}
 
@@ -715,7 +693,7 @@ We used a vague prior for $\ntot$, with $\mu$ equal to the true value and $r=1$.
 \subsection{Results}
 
 When $\psens = 0.8$ and is correctly specified, the model recovers the true survival time well (see \cref{imperf-test:fig:constant-test-sensitivity}(B)).
-The informative prior, in comparison to the vague prior, helps to overcome the misspecification due to the simplifying assumptions, moving the estimated survival function closer to its true survival time.
+The informative prior for $\vec\theta$, in comparison to the weakly informative prior, helps to overcome the misspecification due to the simplifying assumptions, moving the estimated survival function closer to its true survival time.
 However, when $\psens = 0.6$, this is no longer the case (see \cref{imperf-test:fig:constant-test-sensitivity}(A)).
 This is likely caused by too large a violation of the simplifying assumptions made in \cref{sec:false-negatives}.
 \begin{figure}
@@ -1058,6 +1036,42 @@ As previously, $1 - p_{iu}'$ is the required quantity.
 % =& \frac{1}{T} \sum_{b = \min \sched_{i} + 1}^{T_{i_j}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1) \\
 % &- (1 - p_\text{sens})\frac{1}{T} \sum_{b=\min(\sched_{i_j}) + 1}^{T_{i_j}} \left( S_{\vec{\theta}}(\tau_{\sched_{i_j}}(b) + 1) - S_{\vec{\theta}}(\tau^2_{\sched_{i_j}}(b) + 1) \right) \\
 =& \frac{1}{T} \sum_{b=\min(\sched_{i_j}) + 1}^{T_{i_j}} \left( p_\text{sens} S_{\vec{\theta}}(\tau_{\sched_{i_j}}(b) + 1) + (1 - p_\text{sens}) S_{\vec{\theta}}(\tau^2_{\sched_{i_j}}(b) + 1)\right).
+\end{align}
+
+\section{ATACCC-based prior} \label{sec:ataccc-prior}
+
+Reliable estimates of $\lambda_t$ for $t$ up to around 20 are available from a prior analysis of data from The Assessment of Transmission and Contagiousness of COVID-19 in Contacts (ATACCC) study~\citep{hakkiOnset}, which tested individuals who had been exposed to infection daily up to a maximum of 20 days.
+The infrequent testing in CIS means that there is a lack of information about short infection episodes, and hence we use these estimates as informative priors.
+
+When constructing the prior, two aspects need consideration.
+Firstly, the model structure from the ATACCC-based analysis leads to its posterior distribution having a positive correlation between $\lambda_t$ and $\lambda_{t'}$, especially for small $|t-t'|$.
+The prior used in this analysis should preserve this correlation.
+Secondly, the uncertainty in the prior estimates for $\lambda_t, t\geq20$ are underestimated because they are based on extrapolation of the ATACCC data using strong model assumptions.
+
+We first approximate the previous posterior estimate of the hazard as $\logit{\vec{h}} \dist \MNorm(\vec{\mu}_A, \matr{\Sigma}_A)$ where $\vec{h}$ is the hazard, and $\vec{\mu}_A$ and $\matr{\Sigma}_A$ are the mean and covariance matrix estimated using samples of $\logit{\vec{h}}$ from the previous study's posterior.
+Using a multivariate normal, as opposed to multiple univariate distribution for each $h_t$, preserves the correlation between the hazards.
+% The logit transformation maps from the $[0, 1]$ interval to the full real line.
+The approximation is very good (not shown).
+
+Having approximated the estimate as a multivariate normal, we add additional uncertainty using a discrete Beta process.
+The discrete Beta process prior~\citep{ibrahimBayesian,sunStatisticala} generalises the form of prior used in the weakly informative case by allowing the central estimate of the hazard to vary over time.
+It is:
+\begin{align}
+  \logit \vec{h} &\dist \MNorm(\vec{\mu}_A, \matr{\Sigma}_A) \\
+  \lambda_t &\dist \text{Beta}(\alpha_t, \beta_t) &t = 1, 2, \dots \\
+  \alpha_t &= k_t h_t + \alpha_0 \\
+  \beta_t &= k_t (1 - h_t) + \beta_0
+\end{align}
+where $k_t$, $\alpha_0$, and $\beta_0$ are hyperparameters.
+An intuition for what this distribution represents derives from a conjugate model for $\lambda_t$ with a beta prior and a binomial likelihood.
+If $\lambda_t$ is given the prior distribution $\text{Beta}(\alpha_0, \beta_0)$, and we then have $k_t$ observations with $k_t h_t$ successes, then the posterior distribution for $\lambda_t$ is $\text{Beta}(\alpha_t, \beta_t)$ (as defined above).
+
+$k_t$ reflects the subjective belief that $h_t$ is a good estimate of $\lambda_t$ for small $t$ but increasingly unreliable.
+\begin{align}
+k_t = \begin{cases}
+  \expit(-0.4 * (t - 20)) &\text{for $t \leq 39$} \\
+  0 &t > 39
+\end{cases}.
 \end{align}
 
 \section{Distribution of duration used in simulation} \label{sec:simulation-truth}
