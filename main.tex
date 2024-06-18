@@ -218,7 +218,9 @@ The work of \citet{hakkiOnset} is particularly relevant, as it is based on a rep
 However, the follow-up lasted for a maximum of 20 days, preventing estimation of the upper tail of the duration distribution.
 This issue is exacerbated by the small sample size (\ie $n= 57$ infections).
 
-In this paper, we investigate an alternative source of data for the estimation of the duration of an infection episode, the Coronavirus Infection Survey (CIS)~\citep{CIS}. The CIS is a unique longitudinal study of RT-PCR positivity in the general population, which followed individuals at regular intervals for a long period of time (see \cref{sec:data}).
+In this paper, we investigate an alternative source of data for the estimation of the duration of an infection episode, the Coronavirus Infection Survey (CIS)~\citep{CIS}.
+The CIS is a unique longitudinal study of RT-PCR positivity in the general population, which followed individuals at regular intervals for a long period of time (see \cref{sec:data}).
+The size of the cohort varied, at the period we are concerned with is \numprint{437590}.
 %% We will consider \numprint{4800} infections.
 As the testing schedule was independent of infection status and had indefinite length, the study provides a unique opportunity to provide an unbiased estimate of the distribution of infection episode duration in the general population.
 However, the CIS study design, with weekly and four-weekly testing intervals, and its implementation pose several challenges to the estimation.
@@ -297,8 +299,6 @@ In \cref{sec:false-negatives}, we extend the framework to incorporate false nega
 We test the framework in a simulation study in \cref{sec:simulation}, then apply it to the CIS data in \cref{sec:CIS}.
 We conclude with a discussion in \cref{sec:discussion}.
 
-\todo[inline]{Link to code and packages}
-
 
 \section{Study design and data} \label{sec:data}
 
@@ -310,7 +310,7 @@ We consider only the result of the RT-PCR testing.
 % Initially, it was limited to England, but expanded to cover the whole of the UK in September 2020.
 Enrolment was continuously ongoing until 31st Jan 2022, with data collected until 13th Mar 2023~\citep{weiRisk}. 
 
-We focus on the period between 10 Oct 2020 and 6 Dec 2020 inclusive, denoted as $1, \dots, T$, over which the CIS estimated stable infection prevalence~\citep{onsCISdec2020}.
+We focus on the period between 10 Oct 2020 and 6 Dec 2020 inclusive over which the CIS estimated stable infection prevalence of around 1\%~\citep{onsCISdec2020}.
 Additionally, it is prior to either vaccination or the emergence of the alpha variant, which potentially impacted the duration of infection episodes~\citep{hakkiOnset,russellWithinhost}.
 Our analysis considers a cohort of $\Ncis = \numprint{437590}$ individuals with at least one test in the chosen period.
 
@@ -320,7 +320,9 @@ The gap between visits means that infection episodes can be undetected, in which
 In reality, visits were often not on this precise schedule, and occasionally visits were missed %%  (\eg a test would occur on days 28 and 84 but not 56).
 A full description of the study can be found in the study protocol~\citep{cisProtocol}.
 
-We denote by $\sched_i$ the set of times individual $i = 1, \dots, \Ncis$ is tested, starting from their last test prior to time 1, if it exists, or their first test following enrolment in the study otherwise, and including all subsequent tests even those that occur after day $T$.
+We denote by $\sched_i$ the set of times individual $i = 1, \dots, \Ncis$ is tested.
+Time is defined such that the first day of the period considered, 10 Oct 2020, is day 1 and the final day of the period considered, 6 Dec 2020, is day $T$.
+The smallest element of $\sched_i$ is $i$'s last test prior to time 1, if it exists, or their first test following enrolment in the study otherwise, and including all subsequent tests even those that occur after day $T$.
 Each individual has exactly one test schedule, but it is possible that $\sched_i = \sched_{i'}$ for $i \neq i'$.
 We assume that the test schedules are uninformative on all quantities of interest, in particular the presence or absence of infection, because they are part of the study design.
 Therefore, we condition on them implicitly in all the calculations that follow.
@@ -893,11 +895,13 @@ These would allow analyses such as those performed in these chapters to be perfo
 
 \begin{description}
 
-\item[Title:] Brief description. (file type)
+\item[Simulation package:] R-package to implement simulation studies similar to the one in this article is at \url{https://github.com/joshuablake/cisSimulation}.
 
-\item[R-package for  MYNEW routine:] R-package MYNEW containing code to perform the diagnostic methods described in the article. The package also contains all datasets used as examples in the article. (GNU zipped tar file)
+\item[Analysis package:] R-package to generate Stan code to implement the inference method proposed in this article is at \url{https://github.com/joshuablake/cisDurationModel}.
 
-\item[HIV data set:] Data set used in the illustration of MYNEW method in Section~ 3.2. (.txt file)
+\item[Code:] Scripts to reproduce the analyses in this article are available at \url{https://github.com/joshuablake/CIS_survival_analysis_sims}.
+
+\item[Appendix:] Contains derivations and further details, as described in the main text (pdf).
 
 \end{description}
 
