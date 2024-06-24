@@ -114,6 +114,11 @@ ggsave(
 #############################################################################################
 
 update_stat_defaults("pointinterval", list(size = 0.5, .width = 0.95))
+colour_scheme_intervals = c(
+    "ATACCC-based" = "orange",
+    "Final" = "purple",
+    "Other" = "dark green"
+)
 
 ggplot_median_base = function(..., ataccc_x_loc = 0.1) {
     ggplot(...) +
@@ -124,25 +129,46 @@ ggplot_median_base = function(..., ataccc_x_loc = 0.1) {
         standard_plot_theming() +
         theme(legend.position = "bottom") +
         labs(colour = "", y = "Median survival time") +
-        coord_cartesian(ylim = c(0, 25))
+        coord_cartesian(ylim = c(0, 25)) +
+        scale_colour_manual(values = colour_scheme_intervals)
 }
 ggplot_day50_base = function(...) {
     ggplot(...) +
         standard_plot_theming() +
         coord_cartesian(ylim = c(0, 0.12)) +
-        labs(y = "Day 50 survival")
+        theme(legend.position = "bottom") +
+        labs(y = "Day 50 survival", colour = "") +
+        scale_colour_manual(values = colour_scheme_intervals)
+}
+
+change_colour_scheme_one_level = function(p, level_to_colour, custom_colour, base_scheme = scales::brewer_pal(palette = "Greens")) {
+    p = as.factor(p)
+    colour_scheme = base_scheme(nlevels(p))
+    names(colour_scheme) = levels(p)
+    colour_scheme[level_to_colour] = custom_colour
+    return(colour_scheme)
+}
+
+scale_colour_one_level = function(...) {
+    colour_scheme = change_colour_scheme_one_level(...)
+    return(scale_colour_manual(values = colour_scheme))
+}
+
+scale_fill_one_level = function(...) {
+    colour_scheme = change_colour_scheme_one_level(...)
+    return(scale_fill_manual(values = colour_scheme))
 }
 
 r_medians = median_survival |>
     filter(sensitivity == 0.8, survival_prior == "Informative", missed_model == "total") |>
     ggplot_median_base() +
-    stat_pointinterval(aes(r, median)) +
+    stat_pointinterval(aes(r, median, colour = ifelse(r == 22047, "Final", "Other"))) +
     scale_x_log10(limits = c(0.09, NA)) +
     labs(x = "r")
 r_day_50 = posterior_draws |>
     filter(sensitivity == 0.8, survival_prior == "Informative", time == 50, missed_model == "total") |>
     ggplot_day50_base() +
-    stat_pointinterval(aes(r, S)) +
+    stat_pointinterval(aes(r, S, colour = ifelse(r == 22047, "Final", "Other"))) +
     scale_x_log10() +
     labs(x = "r")
  r_curves = posterior_draws |>
@@ -151,8 +177,9 @@ r_day_50 = posterior_draws |>
     ggplot() +
     stat_lineribbon(aes(time, S, fill = r, colour = r), alpha = 0.5, .width = 0.95) +
     theme_survival_time_series() +
-    labs(colour = "r", fill = "r")
-
+    labs(colour = "r", fill = "r") +
+    scale_fill_one_level(posterior_draws$r, "22047", "purple") +
+    scale_colour_one_level(posterior_draws$r, "22047", "purple")
 
 sens_draws = posterior_draws |>
     filter(r == 22047, survival_prior == "Informative", missed_model == "total") |>
@@ -160,20 +187,21 @@ sens_draws = posterior_draws |>
 sens_medians = median_survival |>
     filter(r == 22047, survival_prior == "Informative", missed_model == "total") |>
     ggplot_median_base(ataccc_x_loc = 0.5) +
-    stat_pointinterval(aes(sensitivity, median)) +
+    stat_pointinterval(aes(sensitivity, median, colour = ifelse(sensitivity == 0.8, "Final", "Other"))) +
     labs(x = expression(p[sens])) +
     xlim(0.49, 1)
 sens_day_50 = sens_draws |>
     filter(time == 50) |>
     ggplot_day50_base() +
-    stat_pointinterval(aes(sensitivity, S)) +
+    stat_pointinterval(aes(sensitivity, S, colour = ifelse(sensitivity == 0.8, "Final", "Other"))) +
     labs(x = expression(p[sens]))
 sens_curves = sens_draws |>
     ggplot() +
     stat_lineribbon(aes(time, S, fill = sensitivity, colour = sensitivity), alpha = 0.5, .width = 0.95) +
     theme_survival_time_series() +
-    labs(colour = expression(p[sens]), fill = expression(p[sens]))
-
+    labs(colour = expression(p[sens]), fill = expression(p[sens])) +
+    scale_fill_one_level(posterior_draws$sensitivity, "0.8", "purple") +
+    scale_colour_one_level(posterior_draws$sensitivity, "0.8", "purple")
 ggsave(
     filename = here::here("figures/output/CIS_vary.pdf"),
     plot = (r_medians + r_day_50 + r_curves) / (sens_medians + sens_day_50 + sens_curves) +
