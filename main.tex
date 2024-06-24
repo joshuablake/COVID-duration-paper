@@ -499,6 +499,17 @@ Substituting into \cref{perf-test:eq:pu}:
 & \propto \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1).
 \end{align}
 
+For computational efficiency, note that this can be rewritten as:
+\begin{align}
+  1- p_u
+  &\propto \sum_{t=1}^{\dmax} S_{\vec\theta}(t) m_t
+\intertext{where}
+  m_t &= \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i}} \indicator(\tau_{\sched_{i}}(b) + 1 = t)
+\end{align}
+where $\indicator$ is the indicator function.
+The $m_t$s rely only on the test schedules, which are fixed, and can be computed once and stored.
+Furthermore, the sum can be efficiently implemented as a dot product.
+
 \section{Handling false negatives} \label{sec:false-negatives}
 
 Now we modify the survival framework to incorporate false negatives by assuming a test sensitivity, $\psens < 1$.
@@ -799,7 +810,7 @@ Furthermore, the simulation framework we developed can assist with the design of
 We estimate 5.3\% (95\% CrI: 3.5--7.4\%) of episodes last 50 days or longer.
 These episodes are unlikely to be infectious, but have implications for interpreting positive test results and for determining how long population positivity remains high following a large peak in infections.
 Furthermore, we find a mean duration of 21.2 days (95\% CrI: 20.5--21.9), higher than previous studies; the incidence will often be overestimated if not incorporating this information.
-The higher mean likely results from our larger estimates of the number of long episodes.
+The higher mean likely results from our larger estimates of the number of long episodes, which had not previously been well-known.
 
 In this work we assume that infection episodes being at independent times.
 The infectious nature of SARS-CoV-2 means that this is unlikely to be true, especially for individuals in the same household.
@@ -819,6 +830,7 @@ We make several assumptions around how false negatives can occur (see \cref{sec:
 Our simulation study shows that these assumptions are reasonable, and do not substantially impact performance when $\psens$, the test sensitivity, is high.
 However, when $\psens$ is low, these can lead to biased results.
 A promising direction for future work would is relaxing these assumptions.
+For example, inferring $\psens$ as a function of time since the episode began, similar to the generative model in \cref{sec:false-negatives}.
 
 We incorporate two sources of external information into our estimates.
 First, we use data from the ATACCC study as the basis for a prior for $\vec\theta$, the parameters of the survival function.
