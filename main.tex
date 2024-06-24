@@ -787,93 +787,113 @@ Therefore, we recommend this estimate, which has a mean survival time of 21.2 da
 
 \section{Discussion} \label{sec:discussion}
 
-\todo[inline]{There's a lot of discussion points here, I've just copied these across from my thesis. I think probably too many, especially the focus on limitations; this section is about twice as long as the standard discussion section in a JASA applications article. I'm not sure which are the interesting ones to keep and which to cut though.}
-This work is motivated by the challenge of exploiting data from the CIS, a unique long-running general population prevalence study conducted during the COVID-19 pandemic, to estimate the duration of SARS-CoV-2 infections. To do so, we extended the survival analysis framework in (REF) to deal with the CIS design. The result is new methodology to analyze doubly censored data with undetected events, when these undetected events occur with an arbitrary pattern in known individuals and the test sensitivity is imperfect.
+This work is motivated by the challenge of exploiting data from the CIS, a unique long-running general population prevalence study conducted during the COVID-19 pandemic, to estimate the duration of SARS-CoV-2 infections.
+To do so, we extended the survival analysis framework in \citet{heiseyModelling} to deal with the CIS design.
+The result is new methodology to analyse doubly censored data with imperfect test sensitivity and undetected events, when these undetected events occur with an arbitrary pattern in known individuals.
+We estimate a non-parametric discrete-time survival distribution in a fully Bayesian framework.
 
-... and is likely to serve as a template for studies in future pandemics.
-Therefore, this work is valuable for future studies that may have similar data.
+This CIS data is unique, and is likely to serve as a template for studies in future pandemics.
+Our methodological framework is general and will likely be useful for these studies.
+Furthermore, the simulation framework we developed can assist with the design of these studies.
 
-Our results show that..??? you might want to comment on the substantive results first?? And then the talk about the analysis framework and what you needed to do to make this work..? what are the limitations/assumptions?
+We estimate 5.3\% (95\% CrI: 3.5--7.4\%) of episodes last 50 days or longer.
+These episodes are unlikely to be infectious, but have implications for interpreting positive test results and for determining how long population positivity remains high following a large peak in infections.
+Furthermore, we find a mean duration of 21.2 days (95\% CrI: 20.5--21.9), higher than previous studies; the incidence will often be overestimated if not incorporating this information.
+The higher mean likely results from our larger estimates of the number of long episodes.
 
+In this work we assume that infection episodes being at independent times.
+The infectious nature of SARS-CoV-2 means that this is unlikely to be true, especially for individuals in the same household.
+A simulation study (not shown), suggested that exponentially changing incidence does not substantially affect the survival estimates.
+However, the interaction between individuals in the same household having both similar infection times and similar testing schedules may need to be considered, for example through incorporating random effects.
 
-What to be included
-\begin{itemize}
-\item Most important assumptions and limitations, as future work: uniform and independent (OK in simulation); stuff around false negs (sim study here shows OK); issue with $n_k$; $\psens$ is too low
-    \item Sensitivity to priors: need for prior information in incidence, and where it could come from (RTM not available in real-time)
+We also assume that the infection episodes are independent.
+In particular, that any observation pattern can be observed for any infection.
+This is not the case, as immunity means that an individual previously infected is less likely to be infected in the future.
+Furthermore, we cannot detect two concurrent infections in the same individual.
+The simulation study violated this assumption to a large extent: each individual could only have one infection.
+Despite this, the method recovered the true survival function.
+Therefore, it is unlikely that this assumption matters, possibly due to the large number of individuals without detected episodes.
+Further work could explore alternative assumptions, \eg a ``full immunity'' assumption meaning each individual has at most one episode in the period.
+
+We make several assumptions around how false negatives can occur (see \cref{sec:false-negatives}).
+Our simulation study shows that these assumptions are reasonable, and do not substantially impact performance when $\psens$, the test sensitivity, is high.
+However, when $\psens$ is low, these can lead to biased results.
+A promising direction for future work would is relaxing these assumptions.
+
+We incorporate two sources of external information into our estimates.
+First, we use data from the ATACCC study as the basis for a prior for $\vec\theta$, the parameters of the survival function.
+Second, we use information from \citet{birrellRTM2} to inform $\ntot$, the total number of infections.
+Investigations into alternative study designs, which would allow similar studies to estimate the duration without these sources of information, would be valuable.
+For example, assigning different testing schedules to each individual so that there are some short testing times or intensive follow-up of whole households once a single infection is detected in that household.
+We provide a flexible simulation framework for enabling this work.
+
+A final challenge this study faced is the use of the SRS.
+As well as providing limited computational power, the SRS has practical limitations.
+Internet access is unavailable when operating inside the SRS, and a lengthy approval process is required for software or data to be moved in or out of the environment.
+Workflows and software amenable to operating in such an environment would speed future work similar to this study.
+
+% What to be included
+% \begin{itemize}
+%   \item Most important assumptions and limitations, as future work: uniform and independent (OK in simulation); stuff around false negs (sim study here shows OK); issue with $n_k$; $\psens$ is too low
+%     \item Sensitivity to priors: need for prior information in incidence, and where it could come from (RTM not available in real-time)
 
     
-    \item Results only applicable to this point in time
-    \item Design of CIS - random testing times, households
-    \item Value of complementary studies - can we run them in parallel? Eg followup a sub-sample of the positives.
-    \item Use of TREs, both computational and practical challenges (latter due to moving in / out)
+%     \item Results only applicable to this point in time
+%     \item Design of CIS - random testing times, households
+%     \item Value of complementary studies - can we run them in parallel? Eg followup a sub-sample of the positives.
+%     \item Use of TREs, both computational and practical challenges (latter due to moving in / out)
     
  
-\end{itemize}
+% \end{itemize}
 
-$B_j$ is 2--3 days after the infection occurs~\citep{davisEstimating}, a small difference which we neglect in this study.
+% $B_j$ is 2--3 days after the infection occurs~\citep{davisEstimating}, a small difference which we neglect in this study.
 
-This work is motivated by the challenge of exploiting data from the CIS, a unique long-running general population prevalence study conducted during the COVID-19 pandemic, to estimate the duration of SARS-CoV-2 infections. To do so, we extended the survival analysis framework in (REF) to deal with the CIS design. The result is new methodology to analyze doubly censored data with undetected events, when these undetected events occur with an arbitrary pattern in known individuals and the test sensitivity is imperfect.
+% We found that an informative prior on $\ntot$, the total number of infections that occurred, is required is for the bulk of the distribution to agree with previous work.
+% In the simulation study, the uninformative prior on $\ntot$ performed well, even when the test sensitivity was misspecified.
+% A possible explanation is that the true changes in the test sensitivity is significantly different to the simulated test sensitivity.
+% In particular, the test sensitivity for long episodes may become much lower than 50\%.
+% This allows many more episodes to be missed than the model assumes, and hence a higher $\ntot$ is required to explain the data.
+% Furthermore, it violates assumptions made in \cref{sec:false-negatives}; this is similar to when the simulating using a too low test sensitivity.
+% Violating these assumptions would lead to unpredictable inference results, perhaps those seen here.
 
-... and is likely to serve as a template for studies in future pandemics.
-Therefore, this work is valuable for future studies that may have similar data.
+% Alternative study designs could be useful in providing more information on the duration of infection episodes.
+% For example, following up the first positive test for an infection episode with more frequent testing would allow the episode's end to be more accurately determined.
 
-Our results show that..??? you might want to comment on the substantive results first?? And then the talk about the analysis framework and what you needed to do to make this work..? Na what the limitations/assmptions are?
-
-We found that an informative prior on $\ntot$, the total number of infections that occurred, is required is for the bulk of the distribution to agree with previous work.
-In the simulation study, the uninformative prior on $\ntot$ performed well, even when the test sensitivity was misspecified.
-A possible explanation is that the true changes in the test sensitivity is significantly different to the simulated test sensitivity.
-In particular, the test sensitivity for long episodes may become much lower than 50\%.
-This allows many more episodes to be missed than the model assumes, and hence a higher $\ntot$ is required to explain the data.
-Furthermore, it violates assumptions made in \cref{sec:false-negatives}; this is similar to when the simulating using a too low test sensitivity.
-Violating these assumptions would lead to unpredictable inference results, perhaps those seen here.
-
-Alternative study designs could be useful in providing more information on the duration of infection episodes.
-For example, following up the first positive test for an infection episode with more frequent testing would allow the episode's end to be more accurately determined.
-
-We assumed a prior of constant incidence and that the time infection episodes begin is independent between individuals.
-Prevalence in the CIS data was approximately constant over the period of interest.
-A sensitivity analysis, where an epidemic in exponential growth or decline was simulated (not shown), showed minimal impact on survival estimates.
-An incorrect assumption of constant incidence can lead to biased estimates~\citep{degruttolaAnalysis}.
-Therefore, the assumption could be important in other contexts, especially if the incidence is changing rapidly.
+% We assumed a prior of constant incidence and that the time infection episodes begin is independent between individuals.
+% Prevalence in the CIS data was approximately constant over the period of interest.
+% A sensitivity analysis, where an epidemic in exponential growth or decline was simulated (not shown), showed minimal impact on survival estimates.
+% An incorrect assumption of constant incidence can lead to biased estimates~\citep{degruttolaAnalysis}.
+% Therefore, the assumption could be important in other contexts, especially if the incidence is changing rapidly.
 
 
-The derivation in \cref{sec:inference} relied on an assumption that $O(j)$ and $O(j')$ occur independently for $j \neq j'$.
-This is not the case, as immunity means that an individual previously infected is less likely to be infected in the future.
-Additionally, the same individual cannot have multiple detected concurrent infections, due to the way that the episodes dataset is constructed; this limits certain combinations from occurring.
-In practice, this means that $n_k > 1$ (\ie multiple infection episodes observed identically) cannot occur.
-The simulation study violated this assumption to a large extent: each individual could only have one infection.
-Despite this, the method performed well when $\psens = 1$, recovering the true survival function.
-Therefore, it is unlikely that this assumption matters, possibly due to the large number of individuals without detected episodes.
-Further work could explore different assumptions, \eg a ``full immunity'' assumption meaning each individual has zero or one episode in the period.
+% Ideally, the test sensitivity would be estimated simultaneously with the duration.
+% However, this would require incorporating time-varying test sensitivity into the likelihood.
+% If the current model, with a constant $\psens$, is used then the estimate of $\psens$ would be heavily informed be intermittent negatives (the first, constant term in \cref{imperf-test:eq:pia-prime}).
+% These negatives will, in general, be further from the end of an episode than a randomly selected test.
+% Therefore, the viral load will be higher and false negatives rarer.
 
-Ideally, the test sensitivity would be estimated simultaneously with the duration.
-However, this would require incorporating time-varying test sensitivity into the likelihood.
-If the current model, with a constant $\psens$, is used then the estimate of $\psens$ would be heavily informed be intermittent negatives (the first, constant term in \cref{imperf-test:eq:pia-prime}).
-These negatives will, in general, be further from the end of an episode than a randomly selected test.
-Therefore, the viral load will be higher and false negatives rarer.
+% Estimating the test sensitivity excluding intermittent negatives is not possible because \cref{imperf-test:eq:pia-prime-constant,imperf-test:eq:pit-prime} are both monotonically decreasing in $\psens$; therefore, the likelihood always favours $\psens = 0$ (\ie no true positives).
+% This aligns with the situation with singly interval censored, untruncated data, when stopping at the first observed time of the terminating event (which may be misclassified) means that the test sensitivity cannot be estimated~\citep[e.g.]{titmanMisclassify}.
 
-Estimating the test sensitivity excluding intermittent negatives is not possible because \cref{imperf-test:eq:pia-prime-constant,imperf-test:eq:pit-prime} are both monotonically decreasing in $\psens$; therefore, the likelihood always favours $\psens = 0$ (\ie no true positives).
-This aligns with the situation with singly interval censored, untruncated data, when stopping at the first observed time of the terminating event (which may be misclassified) means that the test sensitivity cannot be estimated~\citep[e.g.]{titmanMisclassify}.
+% Estimating a time-varying $\psens$ with $S_\theta$ jointly may cause identifiability issues.
+% Previous studies have avoided issues by including external information (such as a prior giving the magnitude) on $\psens$, or test results from later follow-up~\citep[and references therein]{piresIntervalMisclassify}.
+% However, these studies use a constant $\psens$.
+% Whether these methods are sufficient for the model to be identifiable with a time-varying $\psens$ needs further investigation.
+% A simple parametric form of the test sensitivity, such as that proposed by \citet{brownBayesian}, may be sufficient to allow identifiability.
+% In any case, the likelihood, especially $p_{iu}'$, would be substantially complicated by such an addition which may greatly increase the computational cost of inference.
 
-Estimating a time-varying $\psens$ with $S_\theta$ jointly may cause identifiability issues.
-Previous studies have avoided issues by including external information (such as a prior giving the magnitude) on $\psens$, or test results from later follow-up~\citep[and references therein]{piresIntervalMisclassify}.
-However, these studies use a constant $\psens$.
-Whether these methods are sufficient for the model to be identifiable with a time-varying $\psens$ needs further investigation.
-A simple parametric form of the test sensitivity, such as that proposed by \citet{brownBayesian}, may be sufficient to allow identifiability.
-In any case, the likelihood, especially $p_{iu}'$, would be substantially complicated by such an addition which may greatly increase the computational cost of inference.
+% We provide a flexible simulation and inference framework for this type of analysis.
+% This framework could be used to simulate alternate study designs.
+% The design of CIS was created on a very short timescale in March 2020, in response to the pandemic's rapid spread.
+% Therefore, it is likely that there are more efficient designs.
+% These could be more cost-effective.
+% Improved cost-effectiveness could allow more rapid response to potential pandemics because the threshold for policymakers to approve the study would be lower.
+% A long-term, preparatory effort to develop a more efficient design in preparation for a future pandemic would be worthwhile.
 
-We provide a flexible simulation and inference framework for this type of analysis.
-This framework could be used to simulate alternate study designs.
-The design of CIS was created on a very short timescale in March 2020, in response to the pandemic's rapid spread.
-Therefore, it is likely that there are more efficient designs.
-These could be more cost-effective.
-Improved cost-effectiveness could allow more rapid response to potential pandemics because the threshold for policymakers to approve the study would be lower.
-A long-term, preparatory effort to develop a more efficient design in preparation for a future pandemic would be worthwhile.
-
-Other useful preparatory work would be developing reasonable priors.
-These could be based on seasonal viruses that are of the same family as those likely to cause future pandemics.
-For example, seasonal influenzas and coronaviruses.
-These would allow analyses such as those performed in these chapters to be performed more rapidly in a future pandemic scenario.
+% Other useful preparatory work would be developing reasonable priors.
+% These could be based on seasonal viruses that are of the same family as those likely to cause future pandemics.
+% For example, seasonal influenzas and coronaviruses.
+% These would allow analyses such as those performed in these chapters to be performed more rapidly in a future pandemic scenario.
 
 \bibliographystyle{agsm}
 
