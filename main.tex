@@ -188,9 +188,10 @@ The \textbf{format requirements from JASA} are at \url{https://www.tandfonline.c
 \spacingset{1.9} % DON'T change the spacing!
 \section{Introduction} \label{sec:intro}
 
-The pandemic caused by the SARS-CoV-2 virus is estimated to have killed approximately 30 million people globally~\citep{whoCOVIDExcess,economistCOVIDExcess}, stretched healthcare services to the point of collapse~\citep{fongNHS} and disrupted societies.
-An effective response to this, and future pandemics, requires estimation of the incidence of infection, \ie the rate at which new infections occur.
-% This is a quantity very rarely observed, and needs estimating.
+The pandemic caused by the SARS-CoV-2 virus is estimated to have killed approximately 30 million people globally~\citep{whoCOVIDExcess,economistCOVIDExcess}, stretched healthcare services to the brink of collapse~\citep{fongNHS}, and disrupted societies worldwide.
+This pandemic highlighted the critical need for an effective public health response, informed by quantifying both the current and future burden, including the incidence of infection, \ie the rate at which new infections occur.
+This metric is rarely observed directly and thus requires estimation.
+
 
 % The unprecedented scale of this motivated large-scale surveillance studies of a type never before seen.
 % The analysis of these studies pose novel statistical questions, one of which we explore here.
@@ -219,7 +220,7 @@ However, the follow-up lasted for a maximum of 20 days, preventing estimation of
 This issue is exacerbated by the small sample size (\ie $n= 57$ infections).
 
 In this paper, we investigate an alternative source of data for the estimation of the duration of an infection episode, the Coronavirus Infection Survey (CIS)~\citep{CIS}.
-The CIS is a unique large scale longitudinal study of RT-PCR positivity in the general population, with around 500,000 individuals followed at regular intervals for a long period of time (see \cref{sec:data}).
+The CIS is a unique large-scale longitudinal study of RT-PCR positivity in the general population, with around 500,000 individuals followed at regular intervals for a long period of time (see \cref{sec:data}).
 % The size of the cohort varied, at the period we are concerned with is \numprint{437590}.
 %% We will consider \numprint{4800} infections.
 As the testing schedule was independent of infection status and had indefinite length, the study provides a unique opportunity to provide an unbiased estimate of the distribution of infection episode duration in the general population.
@@ -289,10 +290,7 @@ The inclusion of false negatives into survival analysis is an area of much inter
 \citet{piresIntervalMisclassify} providing a comprehensive review of approaches. However, including false negatives with either doubly interval censored data or missed events have not been addressed. The CIS data requires addressing both.
 
 In what follows, we adopt a Bayesian survival analysis framework to estimate the distribution of infection episode durations from the CIS data.
-A Bayesian framework provides several advantages.
-First, we can incorporate prior knowledge to address the lack of information over short episodes~\citep{caoBias}.
-Second, it enables uncertainty quantification, which is otherwise challenging in this setting~\citep{sunStatistical,dengNonparametric}.
-Finally, it provides the ability to include the undetected infections through data augmentation.
+A Bayesian framework allows incoporation of prior knowledge to address the lack of information over short episodes~\citep{caoBias}; uncertainty quantification, which is otherwise challenging in this setting~\citep{sunStatistical,dengNonparametric}; and it provides the ability to include the undetected infections through data augmentation.
 
 The paper is structured as follows: the survival analysis framework is developed in \cref{sec:inference}, after we describe the design of the CIS and the data it collects in \cref{sec:data}.
 In \cref{sec:false-negatives}, we extend the framework to incorporate false negative tests and in \cref{sec:parameters-priors} propose two possible priors for the survival time.
@@ -644,15 +642,14 @@ The following prior, based on the discrete Beta process prior~\citep{ibrahimBaye
   \beta_t &= k_t (1 - h_t) + \beta_0
 \end{align}
 where $k_t$, $\alpha_0$, and $\beta_0$ are hyperparameters; and $\vec{\mu}_A$ and $\matr{\Sigma}_A$ are posterior approximations of the ATACCC-based posterior (see \cref{sec:ataccc-prior} for details).
-We use $\alpha_0 = 0.1$ and $\beta_0 = 1.9$ to match the weakly informative prior.
-$k_t$ reflects the subjective belief that $h_t$ is a good estimate of $\lambda_t$ for small $t$ but increasingly unreliable.
+We use $\alpha_0 = 0.1$ and $\beta_0 = 1.9$ to match the weakly informative prior and the following form for $k_t$:
 \begin{align}
 k_t = \begin{cases}
   \expit(-0.4 * (t - 20)) &\text{for $t \leq 39$} \\
   0 &t > 39
 \end{cases}.
 \end{align}
-$k_t$ is large at 0, when ATACCC is reliable, but becomes small for $t \geq 20$.
+This form reflects the subjective belief that $h_t$ is a good estimate of $\lambda_t$ for small $t$ but increasingly unreliable; specifically, it is large at 0, when ATACCC is reliable, but becomes small for $t \geq 20$.
 
 
 \section{Simulations} \label{sec:simulation}
@@ -665,16 +662,16 @@ We use a simulation study to evaluate the performance of the method and the impa
 We simulate a dataset of detected episodes that has the same characteristics as that in the CIS by the following procedure.
 \begin{enumerate}
     \item Extract the test schedules for each individual who had at least one test during the period of interest.
-    \item Draw an episode start time, $b_{j}$ for each individual uniformly at random between 2nd July 2020 (100 days before the period where a detected episode would be included) and 6th December 2020 (the end of this period).
+    \item Draw an episode start time, $b_{j}$ for each individual uniformly at random between 2 July 2020 (100 days before the period where a detected episode would be included) and 6 December 2020 (the end of this period).
     \item Draw a duration of episode for their episode, $d_j$, based on a combination of previous estimates (described in \cref{sec:simulation-truth}). Then calculate the end of their infection episode, $e_{j} = b_{j} + d_i - 1$.
     \item Simulate the test results based on the test schedule, $b_{j}$, and $e_{j}$. A test on day $t$ between $b_{j}$ and $e_{j}$ (inclusive) is positive with probability $\psens$, where $\psens$ can vary with the time since infection, as defined below. All tests outside this interval are negative.
-    \item Discard episodes where there are no positive tests (\ie undetected episodes) and then apply the inclusion criteria from \cref{sec:data}.
-    \item Of these remaining episodes, sample 4,800 to match the sample size of the true dataset. This is needed because in step 2 the entire cohort was infected, while in the real study only a (unknown) portion is infected.
+    \item Discard episodes where there are no positive tests (\ie undetected episodes) and then apply the inclusion criteria from \cref{sec:data}. Denote by $p$ the proportion of episodes that are retained.
+    \item Of these remaining episodes, sample $\ndet = 4800$ to match the sample size of the true dataset. This is needed because in step 2 the entire cohort was infected, while in the real study only a (unknown) portion is infected.
     \item For this final set of episodes, calculate $(l_j^{(b)}, r_j^{b}, l_j^{(e)}, r_j^{(e)})$ by taking the day after the last negative prior to any positives, the first positive, the last positive, and the day before the negative following the last positive respectively.
 \end{enumerate}
 
-We simulate four scenarios for $\psens(t - b)$.
-The first three are constant, $\psens(t-b) = \psens$ where $\psens \in \{ 0.6, 0.8, 1.0 \}$.
+We simulate four scenarios for the test sensitivity.
+The first three are constant, $\psens \in \{ 0.6, 0.8, 1.0 \}$.
 The final scenario is a varying test sensitivity, which is more realistic~\citep{blakeThesis}.
 Specifically we use the following form:
 \begin{equation}
@@ -700,7 +697,7 @@ Simulation was performed in R~4.2.0~\citep{R-4-2-0} using tidyverse~2.0.0~\citep
 Inference was implemented in Stan via RStan~2.21.8~\citep{rstan2-21-8} using default settings.
 Convergence was assessed using Rhat and ESS~\cite{vehtariRhat}, and all runs checked for divergent transitions.
 
-We used a vague prior for $\ntot$, with $\mu$ equal to the true value and $r=1$.
+We used a vague prior for $\ntot$, with $\mu = n_d / p$ and $r = 1$.
 
 \subsection{Results}
 
