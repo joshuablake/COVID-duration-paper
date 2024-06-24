@@ -219,8 +219,8 @@ However, the follow-up lasted for a maximum of 20 days, preventing estimation of
 This issue is exacerbated by the small sample size (\ie $n= 57$ infections).
 
 In this paper, we investigate an alternative source of data for the estimation of the duration of an infection episode, the Coronavirus Infection Survey (CIS)~\citep{CIS}.
-The CIS is a unique longitudinal study of RT-PCR positivity in the general population, which followed individuals at regular intervals for a long period of time (see \cref{sec:data}).
-The size of the cohort varied, at the period we are concerned with is \numprint{437590}.
+The CIS is a unique large scale longitudinal study of RT-PCR positivity in the general population, with around 500,000 individuals followed at regular intervals for a long period of time (see \cref{sec:data}).
+% The size of the cohort varied, at the period we are concerned with is \numprint{437590}.
 %% We will consider \numprint{4800} infections.
 As the testing schedule was independent of infection status and had indefinite length, the study provides a unique opportunity to provide an unbiased estimate of the distribution of infection episode duration in the general population.
 However, the CIS study design, with weekly and four-weekly testing intervals, and its implementation pose several challenges to the estimation.
@@ -248,7 +248,7 @@ The end of the episode is similarly interval censored and hence the data is doub
 
 
 Thirdly, test results can be misclassified.
-The sensitivity of RT-PCR tests is less than 100\%~\citep{blakeThesis}, although the specificity is very high~\citep{cisMethodsONS}.
+The sensitivity, although not specificity, of RT-PCR tests is substantially less than 100\%~\citep{cisMethodsONS}.
 In particular, the negative test, providing the upper bound to an episode could be a false negative, incorrectly resulting in a shorter duration.  Furthermore, this increases the number of episodes undetected.
 
 Fourthly, there is a lack of information on the first 13 days of the duration distribution, which it is important to characterise correctly.
@@ -257,7 +257,7 @@ Data from the CIS dataset does not allow to distinguish whether this infections 
 % Furthermore, short infection episodes are much more likely to be undetected.
 % Therefore, there is a lack of information on what proportion of episodes are short.
 
-Finally, the CIS data constitute a highly sensitive dataset and is stored on a Trusted Research Environment, the ONS Secure Research Service (SRS)~\citep{onsSRS}.
+A further challenge is posed by the fact that the CIS data constitute a highly sensitive dataset and is stored on a Trusted Research Environment, the ONS Secure Research Service (SRS)~\citep{onsSRS}.
 The SRS possesses limited computational power which has to be shared across multiple users, resulting in little capacity for computationally intensive methods.
 % Specifically, it contains five \numprint[GHz]{2.40} dual-core Intel Xeon E5-4650 processors and \numprint[GB]{164} RAM.
 
@@ -265,8 +265,8 @@ The SRS possesses limited computational power which has to be shared across mult
 % \subsection{Related work}
 
 Methods that deal with doubly interval censored data are available~\citep{sunStatistical,bogaertsSurvival}.
-However few consider the additional challenges posed by undetected episodes; 
-theoretical frameworks~\citep{turnbullEmpirical,dempsterMaximum} have only been applied to the special case where the terminating event is either uncensored or right censored~\citep[e.g.][]{sunEmpirical,bacchettiNonparametric,shenNonparametric}.
+However, few consider the additional challenges posed by undetected episodes with
+theoretical frameworks~\citep{turnbullEmpirical,dempsterMaximum} only applied to the special case where the terminating event is either uncensored or right censored~\citep[e.g.][]{sunEmpirical,bacchettiNonparametric,shenNonparametric}.
 Inference in these studies depends on the interval lengths being fairly consistent throughout.
 % In these studies inference is based on a likelihood contribution for each detected infection episode conditional on the interval in which the episode is known to begin. For this conditional likelihood to be valid, it is assumed that this conditioning provides negligible information on the distribution of interest~\citePersonalComms{Nick Jewell}.
 % This assumption is reasonable when the length of the intervals is fairly constant.
@@ -279,7 +279,7 @@ However, the interval lengths change from one to four weeks in the CIS. %episode
 
 \citet{heiseyModelling} generalise the approaches above to allow arbitrary patterns of detection times and censoring.
 They categorise each combination of possible beginning and end times for an episode into whether the episode would be detected, and whether it is compatible with the pattern of interval censoring observed.
-This allows them to build a conditional likelihood, accounting for both these challenges,in a context where possible detection times are common to all individuals, leading to a simplification of the likelihood and a common probability of detection across all individuals.
+This allows them to build a conditional likelihood, accounting for both these challenges in a context where possible detection times are common to all individuals, leading to a simplification of the likelihood and a common probability of detection across all individuals.
 %Their approach was developed in the context of assessing the survival time of bird and insect nests, and has since been used widely~\citep{heiseyABCs}.
 % However, in this context, the visit times (possible detection times) are common to all the individuals, simplifying the likelihood and the structure of the missing data.
 % In particular, the probability of detection is common across all individuals.
@@ -335,7 +335,6 @@ Positive tests with negatives in-between may or may not be classed as the same i
 
 The crucial features of an infection episode are the start and end times of the infection.
 Ignoring misclassified test results, the latent time at which infection episode $j$ begins, $B_j$, is bounded between, $l_j^{(b)}$, the day after the last negative test, and $r_j^{(b)}$, the day of the first positive test (see \cref{fig:challenges}(B)); \ie $B_j \in [l_j^{(b)}, r_j^{(b)}]$.
-% $B_j$ is 2--3 days after the infection occurs~\citep{davisEstimating}, a small difference which we neglect in this study.
 Similarly, $E_j$, the latent end time of infection episode $j$ and is bounded by $l_j^{(e)}$, the day of the last positive test and $r_j^{(e)}$, the day before the following negative test; \ie $E_j \in [l_j^{(e)}, r_j^{(e)}]$.
 We define the infection episode such that the individual is detectable between days $B_j$ and $E_j$ inclusive.
 Therefore, all the relevant information about a detected infection episode $j$ is fully contained in the vector $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$ where $i_j$ is the individual in which episode $j$ occurs.
@@ -488,16 +487,16 @@ Therefore, omitting the conditioning on $\vec{\theta}$ and $i_j = i$:
 \begin{align}
 1 - p_{iu}
 % &= 1 - \prob((B_{j}, E_{j}) \in \Omega_i) \\
-&= \prob(D_j \geq \tau_{\sched_{i}}(B_j)+ 1, \min \sched_{i_j} < B_j \leq T_{i_j}) \\
-&= \sum_{b = \min \sched_{i} + 1}^{T_{i_j}} \prob(D_j \geq \tau_{\sched_{i}}(b) + 1 \mid B_j = b) \prob(B_j = b)\\
-&\propto \sum_{b = \min \sched_{i} + 1}^{T_{i_j}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1).
+&= \prob(D_j \geq \tau_{\sched_{i}}(B_j)+ 1, \min \sched_{i} < B_j \leq T_{i}) \\
+&= \sum_{b = \min \sched_{i} + 1}^{T_{i}} \prob(D_j \geq \tau_{\sched_{i}}(b) + 1 \mid B_j = b) \prob(B_j = b)\\
+&\propto \sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1).
 \label{perf-test:eq:piu}
 \end{align}
 
 Substituting into \cref{perf-test:eq:pu}:
 \begin{align}
 1 - p_u
-& \propto \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i_j}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1).
+& \propto \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1).
 \end{align}
 
 \section{Handling false negatives} \label{sec:false-negatives}
@@ -525,20 +524,20 @@ $\vec{\nu}'_k \in \set{E}'$ occurs if and only if all the following conditions a
 The final two conditions are due to the construction of the intervals as positive and negative tests bounding the beginning and end times of the episode.
 As condition 2 requires $y_{k,1} = 1$ and condition 3 requires $y_{k,m_k} = 0$, these conditions can only occur if $m_k \geq 2$.
 
-Let $O'(j)$ be the observations generated by episode $j$ including the new vector of results.
-As before, $O'(j) \in \set{E}'$ indicates that episode $j$ was detected; otherwise, $O'(j) = \emptyset$.
+Let $O'_j$ be the observations generated by episode $j$ including the new vector of results.
+If $j$ is detected then $O'_j = [O_j, Y_j]^T \in \set{E}'$; otherwise, $O'_j = \emptyset$.
 
 Similarly, we define $p_k'$, $p_{ik}'$, $p_u'$, and $p_{iu}'$ to replace $p_k$, $p_{ik}$, $p_u$, and $p_{iu}$ respectively.
 \begin{align}
-    p_{ik}' &= \prob(O'(j) = \vec{\nu}'_k \mid i_j = i_k, \vec{\theta}) \\
+    p_{ik}' &= \prob(O'_j = \vec{\nu}'_k \mid i_j = i_k, \vec{\theta}) \\
     p_k' &= \frac{1}{\Ncis} p_{ik}' \\
-    p_{iu}' &= \prob(O'(j) = \emptyset \mid i_j = i_k, \vec{\theta}) \\
+    p_{iu}' &= \prob(O'_j = \emptyset \mid i_j = i, \vec{\theta}) \\
     p_u' &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} p_{iu}'.
 \end{align}
 
 \subsection{Deriving $p'_{ik}$} \label{imperf-test:sec:modifying-p_ia}
 
-We will modify $p_{ik}$ to form $p_{ik}' = \prob(O'(j) = \vec{\nu}'_k \mid i_j = i_k, \vec{\theta})$, taking into account false negatives.
+We will modify $p_{ik}$ to form $p_{ik}' = \prob(O'_j = \vec{\nu}'_k \mid i_j = i_k, \vec{\theta})$, taking into account false negatives.
 We consider a mixture of two scenarios, defined by whether the final test in $\sched'_{k}$ is a false negative, with the mixture probability determined by the test sensitivity.
 
 Similar likelihoods have previously appeared in the literature~\citep[e.g.][eq.\ (2)]{piresIntervalMisclassify}.
@@ -546,12 +545,12 @@ However, this prior work was for singly interval censored data; incorporating th
 
 % We proceed by assuming that we have observed an arbitrary episode:
 % \begin{align}
-%   O'(j) = [[l_k^{(b)}, r_k^{(b)}, l_k^{(e)}, r_k^{(e)}, i_j]^T, \vec{y}_k]^T.
+%   O'_j = [[l_k^{(b)}, r_k^{(b)}, l_k^{(e)}, r_k^{(e)}, i_j]^T, \vec{y}_k]^T.
 % \end{align}
 % We derive $p_k$ by considering the generating process that could have produced this episode.
 
 For tractability, assume that the negative test bounding the start of the episode, on day $l_k^{(b)}-1$, is a true negative.
-This assumption is reasonable because, since a first positive test follows at $r_k^{(b)}$, to be a false negative, the test at $l_k^{(b)}-1$ would likely be early in the infection when the test sensitivity is typically high.
+This assumption is reasonable because a positive test follows at $r_k^{(b)}$; therefore, $l_k^{(b)}-1$ is likely to be early in the infection episode when the test sensitivity is typically high.
 True negatives occur with probability 1, and hence this test does not contribute to the likelihood.
 
 As we assume that there are no false positives, the infection episode must span at least the period $[r^{(b)}_k, l^{(e)}_k]$, a period starting and ending with a positive test.
@@ -571,7 +570,7 @@ Note that if $p_\text{sens} = 1$ then $p_{ik}' = p_{ik}$ (see \cref{perf-test:eq
 
 \subsection{Deriving $p'_{iu}$} \label{imperf-test:sec:modifying-p_iu}
 
-We now modify $p_{iu}$ to form $p_{iu}' = \prob(O'(j) = \emptyset \mid i_j = i, \vec{\theta})$ to take into account false negatives.
+We now modify $p_{iu}$ to form $p_{iu}' = \prob(O'_j = \emptyset \mid i_j = i, \vec{\theta})$ to take into account false negatives.
 Several mechanisms for episodes being undetected were previously considered when deriving $p_{iu}$, we now consider the additional mechanisms arising due to false negatives.
 Specifically, episode $j$ could be undetected if the first test after $b_j$ is a false negative and then there are no subsequent positive tests.
 
@@ -599,7 +598,7 @@ Therefore, this mechanism causes episode $j$ to be undetected if all the followi
 In \cref{sec:p-iu-dash} we show that this gives:
 \begin{align}
 1 - p_{iu}'
-=& \frac{1}{T} \sum_{b=\min(\sched_{i_j}) + 1}^{T_{i_j}} \left( p_\text{sens} S_{\vec{\theta}}(\tau_{\sched_{i_j}}(b) + 1) + (1 - p_\text{sens}) S_{\vec{\theta}}(\tau^2_{\sched_{i_j}}(b) + 1)\right).
+=& \frac{1}{T} \sum_{b=\min(\sched_{i}) + 1}^{T_{i}} \left( p_\text{sens} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1) + (1 - p_\text{sens}) S_{\vec{\theta}}(\tau^2_{\sched_{i}}(b) + 1)\right).
 \label{imperf-test:eq:pit-prime}
 \end{align}
 
@@ -624,8 +623,8 @@ The central estimate, of 0.05, is in line with previous estimates that the media
 
 The second is a strongly informative prior; it incorporates prior information from reliable estimates of $\lambda_t$ for $t < 20$.
 We take a previous Bayesian analysis~\citep{blakeThesis} of data from The Assessment of Transmission and Contagiousness of COVID-19 in Contacts (ATACCC) study~\citep{hakkiOnset}, which tested individuals who had been exposed to infection daily up to a maximum of 20 days.
-This ATACCC-based analysis produces posterior estimates of $\lambda_t$; however, its leads to a posterior distribution with positive correlation between $\lambda_t$ and $\lambda_{t'}$, especially for small $|t-t'|$.
-Furthermore, the uncertainty in the prior estimates for $\lambda_t$ for $t\geq20$ are underestimated because they are based on extrapolation of the ATACCC data using strong model assumptions.
+This ATACCC-based analysis produces posterior estimates of $\lambda_t$; however, it leads to a posterior distribution with positive correlation between $\lambda_t$ and $\lambda_{t'}$, especially for small $|t-t'|$.
+Furthermore, the uncertainty in the prior estimates for $\lambda_t$ for $t\geq20$ are underestimated because they are based on extrapolation of the ATACCC data under strong model assumptions.
 The following prior, based on the discrete Beta process prior~\citep{ibrahimBayesian,sunStatisticala}, incorporates both these aspects:
 \begin{align}
   \logit \vec{h} &\dist \MNorm(\vec{\mu}_A, \matr{\Sigma}_A) \\
@@ -642,6 +641,7 @@ k_t = \begin{cases}
   0 &t > 39
 \end{cases}.
 \end{align}
+$k_t$ is large at 0, when ATACCC is reliable, but becomes small for $t \geq 20$.
 
 
 \section{Simulations} \label{sec:simulation}
@@ -656,7 +656,7 @@ We simulate a dataset of detected episodes that has the same characteristics as 
     \item Extract the test schedules for each individual who had at least one test during the period of interest.
     \item Draw an episode start time, $b_{j}$ for each individual uniformly at random between 2nd July 2020 (100 days before the period where a detected episode would be included) and 6th December 2020 (the end of this period).
     \item Draw a duration of episode for their episode, $d_j$, based on a combination of previous estimates (described in \cref{sec:simulation-truth}). Then calculate the end of their infection episode, $e_{j} = b_{j} + d_i - 1$.
-    \item Simulate the test results based on the test schedule, $b_{j}$, and $e_{j}$. A test on day $t$ between $b_{j}$ and $e_{j}$ (inclusive) is positive with probability $\psens(t - b_j)$, defined below. All tests outside this interval are negative.
+    \item Simulate the test results based on the test schedule, $b_{j}$, and $e_{j}$. A test on day $t$ between $b_{j}$ and $e_{j}$ (inclusive) is positive with probability $\psens$, where $\psens$ can vary with the time since infection, as defined below. All tests outside this interval are negative.
     \item Discard episodes where there are no positive tests (\ie undetected episodes) and then apply the inclusion criteria from \cref{sec:data}.
     \item Of these remaining episodes, sample 4,800 to match the sample size of the true dataset. This is needed because in step 2 the entire cohort was infected, while in the real study only a (unknown) portion is infected.
     \item For this final set of episodes, calculate $(l_j^{(b)}, r_j^{b}, l_j^{(e)}, r_j^{(e)})$ by taking the day after the last negative prior to any positives, the first positive, the last positive, and the day before the negative following the last positive respectively.
@@ -667,12 +667,13 @@ The first three are constant, $\psens(t-b) = \psens$ where $\psens \in \{ 0.6, 0
 The final scenario is a varying test sensitivity, which is more realistic~\citep{blakeThesis}.
 Specifically we use the following form:
 \begin{equation}
-  p_\text{sens}(t) = \begin{cases}
+  v(t) = \begin{cases}
     0.9 - \frac{0.9-0.5}{50}t &t \leq 50 \\
     0.5 &t > 50
   \end{cases}
   \label{imperf-test:eq:variable-test-sensitivity}
 \end{equation}
+where $t$ is the number of days since the infection occurred.
 We denote by $\psenss$ the true test sensitivity used in the simulation, with $\psenss = v$ indicating the varying test sensitivity.
 
 For each scenario, we infer the survival function using the procedure proposed in this paper, assuming $\psens$ equals 0.6, 0.8, or 1.0.
@@ -746,7 +747,7 @@ Therefore, we used an informative prior for $\ntot$, $\ntot \sim \NBc(\mu\inform
 Approximating this distribution as a negative binomial and scaling the mean to the size of the CIS cohort gives the prior $\mu\inform = 25132$ and $r\inform = 22047$.
 
 With this prior, the model produces plausible estimates of the duration distribution (see \cref{imperf-test:fig:cis-estimates}).
-The estimate (blue) has more long episodes than the ATACCC-based estimate used for the prior in \cref{sec:informative-prior} (red).
+The estimate (blue) has more long episodes than the ATACCC-based estimate used for the prior in \cref{sec:ataccc-prior} (red).
 
 The qualitative increase in long episodes is robust to the choice of prior for $\ntot$, the assumed value for $\psens$ (see \cref{imperf-test:fig:cis-sensitivity}), and the choice of prior for the hazards, $\lambda_t$.
 However, the survival proportion over the first 4 weeks is sensitive to these choices.
@@ -787,16 +788,29 @@ Therefore, we recommend this estimate, which has a mean survival time of 21.2 da
 \section{Discussion} \label{sec:discussion}
 
 \todo[inline]{There's a lot of discussion points here, I've just copied these across from my thesis. I think probably too many, especially the focus on limitations; this section is about twice as long as the standard discussion section in a JASA applications article. I'm not sure which are the interesting ones to keep and which to cut though.}
+This work is motivated by the challenge of exploiting data from the CIS, a unique long-running general population prevalence study conducted during the COVID-19 pandemic, to estimate the duration of SARS-CoV-2 infections. To do so, we extended the survival analysis framework in (REF) to deal with the CIS design. The result is new methodology to analyze doubly censored data with undetected events, when these undetected events occur with an arbitrary pattern in known individuals and the test sensitivity is imperfect.
+
+... and is likely to serve as a template for studies in future pandemics.
+Therefore, this work is valuable for future studies that may have similar data.
+
+Our results show that..??? you might want to comment on the substantive results first?? And then the talk about the analysis framework and what you needed to do to make this work..? what are the limitations/assumptions?
+
 
 What to be included
 \begin{itemize}
-    \item Design of CIS
-    \item Use of TREs, both computational and practical challenges (latter due to moving in / out)
-    \item Most important assumptions: uniform and independent (OK in simulation); stuff around false negs (sim study here shows OK); issue with $n_k$
-    \item Sensitivity to priors: need for prior information in incidence
+\item Most important assumptions and limitations, as future work: uniform and independent (OK in simulation); stuff around false negs (sim study here shows OK); issue with $n_k$; $\psens$ is too low
+    \item Sensitivity to priors: need for prior information in incidence, and where it could come from (RTM not available in real-time)
+
+    
     \item Results only applicable to this point in time
+    \item Design of CIS - random testing times, households
     \item Value of complementary studies - can we run them in parallel? Eg followup a sub-sample of the positives.
+    \item Use of TREs, both computational and practical challenges (latter due to moving in / out)
+    
+ 
 \end{itemize}
+
+$B_j$ is 2--3 days after the infection occurs~\citep{davisEstimating}, a small difference which we neglect in this study.
 
 This work is motivated by the challenge of exploiting data from the CIS, a unique long-running general population prevalence study conducted during the COVID-19 pandemic, to estimate the duration of SARS-CoV-2 infections. To do so, we extended the survival analysis framework in (REF) to deal with the CIS design. The result is new methodology to analyze doubly censored data with undetected events, when these undetected events occur with an arbitrary pattern in known individuals and the test sensitivity is imperfect.
 
@@ -807,7 +821,7 @@ Our results show that..??? you might want to comment on the substantive results 
 
 We found that an informative prior on $\ntot$, the total number of infections that occurred, is required is for the bulk of the distribution to agree with previous work.
 In the simulation study, the uninformative prior on $\ntot$ performed well, even when the test sensitivity was misspecified.
-A possible explanation is that the true changes in the test sensitivity is significantly different to the simulated test sensitivity
+A possible explanation is that the true changes in the test sensitivity is significantly different to the simulated test sensitivity.
 In particular, the test sensitivity for long episodes may become much lower than 50\%.
 This allows many more episodes to be missed than the model assumes, and hence a higher $\ntot$ is required to explain the data.
 Furthermore, it violates assumptions made in \cref{sec:false-negatives}; this is similar to when the simulating using a too low test sensitivity.
@@ -826,7 +840,7 @@ Therefore, the assumption could be important in other contexts, especially if th
 The derivation in \cref{sec:inference} relied on an assumption that $O(j)$ and $O(j')$ occur independently for $j \neq j'$.
 This is not the case, as immunity means that an individual previously infected is less likely to be infected in the future.
 Additionally, the same individual cannot have multiple detected concurrent infections, due to the way that the episodes dataset is constructed; this limits certain combinations from occurring.
-In practice, this means that $n_k > 1$ cannot occur.
+In practice, this means that $n_k > 1$ (\ie multiple infection episodes observed identically) cannot occur.
 The simulation study violated this assumption to a large extent: each individual could only have one infection.
 Despite this, the method performed well when $\psens = 1$, recovering the true survival function.
 Therefore, it is unlikely that this assumption matters, possibly due to the large number of individuals without detected episodes.
@@ -967,9 +981,9 @@ In this case, the test at $r_k^{(e)}+1$ is a true negative and the end of the ep
 % In this case, the test at $r_k^{(e)} + 1$ is a true negative, as are all other tests not in $\sched'_{k}$.
 The true negative occurs with probability 1, by the assumption of no false positives.
 \begin{align}
-&\prob(O'(j) = \vec{\nu}_k', E_j \leq r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
-&= \prob(O'(j) = \vec{\nu}_k', l_k^{(e)} \leq E_j \leq r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) &\text{the test at $l_k^{(e)}$ is positive} \\
-&= \prob(O'(j) = \vec{\nu}_k' \mid l_k^{(e)} \leq E_j \leq r_k^{(e)}, B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
+&\prob(O'_j = \vec{\nu}_k', E_j \leq r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
+&= \prob(O'_j = \vec{\nu}_k', l_k^{(e)} \leq E_j \leq r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) &\text{the test at $l_k^{(e)}$ is positive} \\
+&= \prob(O'_j = \vec{\nu}_k' \mid l_k^{(e)} \leq E_j \leq r_k^{(e)}, B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
 &\ \ \  \times \prob(l_k^{(e)} \leq E_j \leq r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
 &= p_\text{sens}^{t_+} (1 - p_\text{sens})^{f_-} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right)
 \label{imperf-test:eq:ll-ei-lt-ri}
@@ -980,8 +994,8 @@ In this case, the test at $r_k^{(e)}+1$ is a false negative, occurring with prob
 To avoid having to consider tests after $r_k^{(e)}$, which could greatly complicate the likelihood, we model this case as the episode being right censored at $r_k^{(e)}$.
 Taking the same approach as before:
 \begin{align}
-&\prob(O'(j) = \vec{\nu}_k', E_j > r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
-&= \prob(O'(j) = \vec{\nu}_k' \mid E_j > r_k^{(e)}, B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
+&\prob(O'_j = \vec{\nu}_k', E_j > r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
+&= \prob(O'_j = \vec{\nu}_k' \mid E_j > r_k^{(e)}, B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
   &\ \ \  \times \prob(E_j > r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
 &= p_\text{sens}^{t_+} (1 - p_\text{sens})^{f_-} (1 - p_\text{sens}) S_{\vec{\theta}}(r_k^{(e)} - b + 2)
 \label{imperf-test:eq:ll-ei-gt-ri}
@@ -991,8 +1005,8 @@ These expressions can now be used to derive $p'_{ik}$.
 First, augment the data with $b$, and split into the cases just discussed, omitting the conditioning on $\psens$, $\vec{\theta}$, and $i_j = i_k$:
 \begin{align}
 p_{ik}'
-=& \prob(O'(j) = \vec{\nu}_k') \\
-=& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( \prob(O'(j) = \vec{\nu}_k', E_j \leq r_k^{(e)} \mid B_j = b) + \prob(O'(j) = \vec{\nu}_k, E_j > r_k^{(e)} \mid B_j = b) \right) \prob(B_j = b). \\
+=& \prob(O'_j = \vec{\nu}_k') \\
+=& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( \prob(O'_j = \vec{\nu}_k', E_j \leq r_k^{(e)} \mid B_j = b) + \prob(O'_j = \vec{\nu}_k, E_j > r_k^{(e)} \mid B_j = b) \right) \prob(B_j = b). \\
 \intertext{Now, substitute in \cref{imperf-test:eq:ll-ei-lt-ri,imperf-test:eq:ll-ei-gt-ri} and take out the common factor:}
 =\ &  p_\text{sens}^{t_+} (1 - p_\text{sens})^{f_-} \\
  & \times \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) + (1 - p_\text{sens}) S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right) \\ 
