@@ -29,7 +29,7 @@
 \usepackage{bm}
 % \usepackage{algorithm2e}
 \usepackage[unicode,psdextra]{hyperref}
-\usepackage[nameinlink]{cleveref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
 \usepackage{csquotes}
 \usepackage[T1]{fontenc}
 \usepackage{textcomp} % provide symbols
@@ -40,7 +40,7 @@
 \npfourdigitnosep
 \npdecimalsign{.}
 % \usepackage{microtype}
-\usepackage{todonotes}
+\usepackage[disable]{todonotes}
 
 % Generic maths commands
 \def\reals{\mathbb{R}}
@@ -50,7 +50,8 @@
 \DeclareMathOperator{\E}{\mathbb{E}}
 \DeclareMathOperator{\V}{\mathbb{V}}
 \DeclareMathOperator{\I}{\mathbb{I}}
-\DeclareMathOperator{\prob}{\mathbb{P}}
+%\DeclareMathOperator{\prob}{\mathbb{P}}
+\DeclareMathOperator{\prob}{\mathrm{Pr}}
 \DeclareMathOperator{\p}{\pi}
 \DeclareMathOperator{\var}{\mathbb{V}}
 \DeclareMathOperator{\indicator}{\mathbb{I}}
@@ -95,8 +96,10 @@
 \newcommand{\ncis}{\vec{n_\text{CIS}}}
 \newcommand{\na}{\vec{n}_\text{obs}}
 \newcommand{\pcis}{\vec{p_\text{CIS}}}
-\newcommand{\sched}{\mathbb{T}}
-\newcommand{\nsched}{n_{\sched}}
+%\newcommand{\sched}{\mathbb{T}}
+%\newcommand{\nsched}{n_{\sched}}
+\newcommand{\sched}{\mathcal{T}}
+\newcommand{\nsched}{|\sched{}|}
 \newcommand{\inform}{{_{\text{inform}}}}
 
 
@@ -160,11 +163,11 @@
 
 \bigskip
 \begin{abstract}
-The text of your abstract. 200 or fewer words.
+Monitoring the incidence of new infections during a pandemic is critical for effective public health response. General population prevalence surveys for SARS-CoV-2 provided high-quality data for estimating incidence, yet accurate estimation hinges on understanding the duration individuals remain detectable via RT-PCR testing. This study addresses this need using data from the Coronavirus Infection Survey (CIS), a long-term, longitudinal, general population survey conducted in the UK. Analysing these data presents unique challenges such as double interval censoring, undetected infections, and false negatives. We propose a Bayesian survival analysis approach, estimating a non-parametric discrete-time distribution of survival durations and integrating prior information derived from a complementary study. Our methodology is validated through a simulation study, including its resilience to model misspecification, and then applied to the CIS dataset, producing the first comprehensive estimate of detectable duration in a general population. This results in the first estimate of the full duration distribution in a general population sample, as well as methodology that could be transferred to new contexts.
 \end{abstract}
 
 \noindent%
-{\it Keywords:}  3 to 6 keywords, that do not appear in the title
+{\it Keywords:}  Survival analysis, false negatives, missclasification, Bayesian inference
 \vfill
 
 \newpage
@@ -188,19 +191,33 @@ The \textbf{format requirements from JASA} are at \url{https://www.tandfonline.c
 \spacingset{1.9} % DON'T change the spacing!
 \section{Introduction} \label{sec:intro}
 
-The pandemic caused by the SARS-CoV-2 virus is estimated to have killed approximately 30 million people globally~\citep{whoCOVIDExcess,economistCOVIDExcess}, stretched healthcare services to the brink of collapse~\citep{fongNHS}, and disrupted societies worldwide.
-This pandemic highlighted the critical need for an effective public health response, informed by quantifying both the current and future burden, including the incidence of infection, \ie the rate at which new infections occur.
-This metric is rarely observed directly and thus requires estimation.
+The COVID-19 pandemic caused by the SARS-CoV-2 virus is, to date, estimated to have killed approximately 30 million people globally~\citep{whoCOVIDExcess,economistCOVIDExcess}, stretched healthcare services to the brink of collapse~\citep{fongNHS}, and disrupted societies worldwide.
+This pandemic highlighted the critical need for an effective public health response, informed by quantifying both the current and future burden. One such key quantity is the \emph{incidence of infection}, defined as the rate at which new infections occur.
 
+The importance of incidence as an epidemiological quantity arises because it drives important outcomes for health such as hospital admissions and deaths. 
+More explicitly, given a number of new SARS-CoV-2 infections on one day, we expect some fraction of this number to develop symptoms, a smaller fraction t
+to require hospitalisation, and a still smaller fraction to die.
+This means that data from testing based on symptoms, on hospitalisations, and on deaths, can be used to estimate incidence.
+Such estimation, however, will be sensitive to often highly uncertain values of the fractions of new infections that develop symptoms, that require hospitalisation, and that die.
+
+Community surveillance of the epidemic based on a random population sample can be used to estimate incidence directly provided individuals in the cohort are tested regularly, although the exact time of infection between a negative and positive test will need to be imputed.
+Such community surveillance can be used, without repeated measurements of participants, to estimate prevalence of infection -- \ie the number of individuals currently positive -- in an unbiased and accurate manner.
+While prevalence is an important epidemiological quantity in its own right, it is not so directly related to e.g.\ hospitalisations as incidence is.
+
+% This metric is rarely observed directly and thus requires estimation.
 
 % The unprecedented scale of this motivated large-scale surveillance studies of a type never before seen.
 % The analysis of these studies pose novel statistical questions, one of which we explore here.
 % These included large-scale prevalence surveys, which estimate the proportion of the population currently positive, combined with back-calculation methodology. HOW DOES IT WORK?
 
-Incidence of infection can be estimated through back-calculation~\citep{brookmeyerBackcalculation}, a methodology which relates observations of a disease outcome with its incidence through a delay distribution and a convolution equation.
+In addition to the relatively uncertain approaches of estimating incidence from outcomes like hospitalisations or measuring it via repeated testing of a cohort, we can also work to infer it from two
+relatively accurately measurable quantities: community prevalence; and the
+distribution of duration of test positivity after infection. In this work,
+we present a method for this task, applied to community data on COVID,
+in which incidence of infection is estimated through back-calculation~\citep{brookmeyerBackcalculation}, a methodology which relates observations of a disease outcome (\eg occurence of symptoms) to its incidence through a delay distribution and a convolution equation.
 In the context of SARS-CoV-2, this approach allows estimation of incidence based on: a time series of the proportion of the population that have a detectable infection; and the distribution of the duration of infection episodes, \ie the duration of time an individual is detectable for following infection.
-As SARS-CoV-2 is detected by performing RT-PCR testing on an appropriate sample (\eg a nasal swab), this duration is the period over which an infected individual would return a positive RT-PCR result.
-In the UK, estimates of the proportion of the population that is detectable are available from to large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
+As SARS-CoV-2 is detected by performing Reverse Transcription Polymerase Chain Reaction (RT-PCR) testing on an appropriate sample (\eg a nasal swab), this duration is the period over which an infected individual would return a positive RT-PCR result.
+In the UK, estimates of the proportion of the population that were detectable were available from two large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
 Here, we estimate the second back-calculation component: the distribution of the duration of infection episodes.
 % Back-calculation requires knowledge of the distribution of the length of time  an individual remains positive after acquiring an infection.
 % In the context of SARS-CoV-2, and other RNA viruses positivity is measured by performing RT-PCR testing on an appropriate sample (\eg a nasal swab) and its duration is the period during which an infected individual would return a positive RT-PCR result. 
@@ -209,26 +226,27 @@ Here, we estimate the second back-calculation component: the distribution of the
 % RT-PCR testing is a highly sensitive and specific technique to detect the presence of a specific RNA sequence in a sample.
 % Therefore, the required distribution is the duration of positivity for SARS-CoV-2 RT-PCR testing.
 
-An early meta-analysis estimated the mean duration as 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}. However, most studies included in the meta-analysis involved short follow-up and/or hospitalised patients or had unclear inclusion criteria, and hence may not be representative of the general population.
+An early meta-analysis estimated the mean duration of detectability as 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}. However, most studies included in the meta-analysis involved short follow-up and/or hospitalised patients or had unclear inclusion criteria, and hence may not be representative of the general population.
 This remains true of later studies~\citep[e.g.][]{ealesCharacterising,hellewellPCRSensitivity}.
 % Furthermore, studies tend to have short follow-up and may not provide good estimates of the mean duration of positivity, which is a right-skewed distribution.
 % For backcalculation, the mean is the most important feature~\citep{freemanPrevalence}, but results can be sensitive to the entire distribution.
 
 Other studies have estimated the duration by inferring the dynamics of viral load, \ie the quantity of virus in an individual~\citep[e.g.][]{kisslerViral,hakkiOnset,blakeThesis}.
 The work of \citet{hakkiOnset} is particularly relevant, as it is based on a representative sample of individuals exposed to infection and subsequently tested daily.
-However, the follow-up lasted for a maximum of 20 days, preventing estimation of the upper tail of the duration distribution.
+However, the follow-up lasted for a maximum of 20 days, preventing estimation of the upper tail of the duration distribution without making strong model (\eg parameteric distribution) assumptions that extrapolate beyond the data.
 This issue is exacerbated by the small sample size (\ie $n= 57$ infections).
 
 In this paper, we investigate an alternative source of data for the estimation of the duration of an infection episode, the Coronavirus Infection Survey (CIS)~\citep{CIS}.
-The CIS is a unique large-scale longitudinal study of RT-PCR positivity in the general population, with around 500,000 individuals followed at regular intervals for a long period of time (see \cref{sec:data}).
+The CIS was a unique large-scale longitudinal study of RT-PCR positivity in the general population, performing monthly RT-PCR testing on 3--400,000 individuals for nearly three years. (see \cref{sec:data}).
 % The size of the cohort varied, at the period we are concerned with is \numprint{437590}.
 %% We will consider \numprint{4800} infections.
 As the testing schedule was independent of infection status and had indefinite length, the study provides a unique opportunity to provide an unbiased estimate of the distribution of infection episode duration in the general population.
-However, the CIS study design, with weekly and four-weekly testing intervals, and its implementation pose several challenges to the estimation.
+However, the CIS study design, with weekly (for an individual's first month after enrolment) and then approimately four-weekly testing intervals, and its implementation pose several challenges to the estimation.
 
 Firstly, infections can be undetected.
-Four-weekly testing is longer than many infection episodes, so that they could begin and end between tests.
+Four-weekly testing is longer than the duration of detectability for around two-thirds of infection episodes~\citep{killingleySafety}, meaning that detectability could begin and end between tests.
 Specifically, for individuals without a positive test, we do not know if they were infected but undetected, or if they were never infected (compare the two outcomes in \cref{fig:challenges}(A)).
+Infection episodes that are detectable for longer are more likely to be detected; hence, detected infection episodes are not a representative sample of all infection episodes.
 This is different from standard left truncation~\cite[e.g.][]{sunEmpirical,bacchettiNonparametric} because we have information on the individuals in which the short infection episodes occur (\ie their testing times), which constrains undetected infection episode lengths.
 % This is subtly different from the standard left truncation problem~\cite[e.g.][]{sunEmpirical,bacchettiNonparametric} where individuals that have experienced a terminating event are excluded from the study and no information is available on them. In CIS, individuals in which undetected infections occur are enrolled in the study and their testing times are known, providing bounds on how long any possible infection episodes may have lasted.
 % We refer to these events as ``undetected'', rather than truncated, to emphasise this difference.
@@ -249,18 +267,14 @@ The end of the episode is similarly interval censored and hence the data is doub
 
 
 Thirdly, test results can be misclassified.
-The sensitivity, although not specificity, of RT-PCR tests is substantially less than 100\%~\citep{cisMethodsONS}.
-In particular, the negative test, providing the upper bound to an episode could be a false negative, incorrectly resulting in a shorter duration.  Furthermore, this increases the number of episodes undetected.
+The sensitivity, although not the specificity, of the testing procedure is substantially less than 100\%~\citep{cisMethodsONS}; we refer to clinical sensitivity and specificity throughout this article, incorporating all reasons for misclassified test results, including poor self-swabbing, contamination.
+In particular, the negative test providing the upper bound to an episode could be a false negative, incorrectly resulting in a shorter duration.  Furthermore, this increases the number of episodes undetected.
 
 Fourthly, there is a lack of information on the first 13 days of the duration distribution, which it is important to characterise correctly.
-The most precise information on an infection episode lasting 13 days is provided by a single positive test with negative tests in the preceding and following seven days.
+For an individual with perfect adherence to the testing schedule protocol, the most precise information on an infection episode lasting 13 days is provided by a single positive test with negative tests in the preceding and following seven days.
 Data from the CIS dataset does not allow to distinguish whether this infections episode lasted one day, 13, or anywhere in-between.
 % Furthermore, short infection episodes are much more likely to be undetected.
 % Therefore, there is a lack of information on what proportion of episodes are short.
-
-A further challenge is posed by the fact that the CIS data constitute a highly sensitive dataset and is stored on a Trusted Research Environment, the ONS Secure Research Service (SRS)~\citep{onsSRS}.
-The SRS possesses limited computational power which has to be shared across multiple users, resulting in little capacity for computationally intensive methods.
-% Specifically, it contains five \numprint[GHz]{2.40} dual-core Intel Xeon E5-4650 processors and \numprint[GB]{164} RAM.
 
 
 % \subsection{Related work}
@@ -272,7 +286,7 @@ Inference in these studies depends on the interval lengths being fairly consiste
 % In these studies inference is based on a likelihood contribution for each detected infection episode conditional on the interval in which the episode is known to begin. For this conditional likelihood to be valid, it is assumed that this conditioning provides negligible information on the distribution of interest~\citePersonalComms{Nick Jewell}.
 % This assumption is reasonable when the length of the intervals is fairly constant.
 % In particular, when the interval lengths are near-constant, the probability of detecting an episode is independent of when it occurs.
-However, the interval lengths change from one to four weeks in the CIS. %episodes are more likely to be detected when an individual is tested weekly, in their first four weeks of testing.
+However, the interval lengths change from one to four weeks (and after the period we consider, even longer) in the CIS. %episodes are more likely to be detected when an individual is tested weekly, in their first four weeks of testing.
 % Conditioning on the interval in which the episode begins is mathematically convenient; however, it will lead to an overestimation of the probability of detection.
 % Infection episodes in an individual's one-week testing period are over-represented in the detected infections.
 % This is because more frequent testing will detect a higher proportion of infections.
@@ -287,13 +301,13 @@ This allows them to build a conditional likelihood, accounting for both these ch
 
 
 The inclusion of false negatives into survival analysis is an area of much interest, with
-\citet{piresIntervalMisclassify} providing a comprehensive review of approaches. However, including false negatives with either doubly interval censored data or missed events have not been addressed. The CIS data requires addressing both.
+\citet{piresIntervalMisclassify} providing a comprehensive review of approaches. However, including false negatives with either doubly interval censored data or missed events has not been addressed. The CIS data requires both.
 
-In what follows, we adopt a Bayesian survival analysis framework to estimate the distribution of infection episode durations from the CIS data.
-A Bayesian framework allows incoporation of prior knowledge to address the lack of information over short episodes~\citep{caoBias}; uncertainty quantification, which is otherwise challenging in this setting~\citep{sunStatistical,dengNonparametric}; and it provides the ability to include the undetected infections through data augmentation.
+Here, we adopt a Bayesian survival analysis framework to estimate the distribution of infection episode durations from the CIS data.
+A Bayesian framework allows incorporation of prior knowledge to address the lack of information over short episodes~\citep{caoBias}; uncertainty quantification, which is otherwise challenging in this setting~\citep{sunStatistical,dengNonparametric}; and it provides the ability to include the undetected infections through data augmentation.
 
-The paper is structured as follows: the survival analysis framework is developed in \cref{sec:inference}, after we describe the design of the CIS and the data it collects in \cref{sec:data}.
-In \cref{sec:false-negatives}, we extend the framework to incorporate false negative tests and in \cref{sec:parameters-priors} propose two possible priors for the survival time.
+The paper is structured as follows: we start by describing the design of the CIS and the data it collects in \cref{sec:data}, then develop the survival analysis framework in \cref{sec:inference};
+in \cref{sec:false-negatives}, we extend the framework to incorporate false negative tests and in \cref{sec:parameters-priors} propose two possible priors for the survival time.
 We test the framework in a simulation study in \cref{sec:simulation}, then apply it to the CIS data in \cref{sec:CIS}.
 We conclude with a discussion in \cref{sec:discussion}.
 
@@ -301,26 +315,27 @@ We conclude with a discussion in \cref{sec:discussion}.
 \section{Study design and data} \label{sec:data}
 
 The CIS~\citep{CIS} was set up in April 2020.
-The dataset is globally unique in providing a representative, longitudinal, and large-scale study across the pandemic.
+The dataset is globally unique in providing a representative, longitudinal, and large-scale study across almost three years of the pandemic.
 Individuals were visited on a pre-determined schedule.
-At each visit, a questionnaire was completed and a combined throat and nose swab was collected for RT-PCR testing; a subset of individuals and visits also collected a blood sample for serological testing.
+At each visit, a questionnaire was completed and a combined throat and nose swab was collected for RT-PCR testing; a subset of individuals also collected a blood sample for serological testing.
 We consider only the result of the RT-PCR testing.
 % Initially, it was limited to England, but expanded to cover the whole of the UK in September 2020.
 Enrolment was continuously ongoing until 31st Jan 2022, with data collected until 13th Mar 2023~\citep{weiRisk}. 
 
 We focus on the period between 10 Oct 2020 and 6 Dec 2020 inclusive over which the CIS estimated stable infection prevalence of around 1\%~\citep{onsCISdec2020}.
-Additionally, it is prior to either vaccination or the emergence of the alpha variant, which potentially impacted the duration of infection episodes~\citep{hakkiOnset,russellWithinhost}.
-Our analysis considers a cohort of $\Ncis = \numprint{437590}$ individuals with at least one test in the chosen period.
+Stable infection prevalence allows an assumption of constant incidence, simplifying the likelihood.
+Additionally, it is prior to both vaccination and the emergence of the alpha variant, which potentially impacted the duration of infection episodes~\citep{hakkiOnset,russellWithinhost}.
+Our analysis considers a cohort of $\Ncis = \numprint{437590}$ individuals with at least one test in this period.
 
-The CIS had a household-based design inviting all individuals aged over 2 years from selected households.
-Once invited, an enrolment swab would be taken at the first visit followed by 4 further weekly visits (giving a total of 5 swabs on days 0, 7, 14, 21, 28 relative to enrolment) after which visits were four-weekly.
+The CIS had a household-based design inviting all individuals aged 2 years and over from households randomly selected from previously surveys and address lists.
+Once invited and consented, an enrolment swab would be taken at the first visit followed by an optional 4 further weekly visits (giving a total of 5 swabs on days 0, 7, 14, 21, 28 relative to enrolment) after which visits were four-weekly.
 The gap between visits means that infection episodes can be undetected, in which case the observations are indistinguishable from an individual remaining undetected (see \cref{fig:challenges}(A)).
-In reality, visits were often not on this precise schedule, and occasionally visits were missed %%  (\eg a test would occur on days 28 and 84 but not 56).
+In reality, visits were often not on this precise schedule, and occasionally visits were missed. %%  (\eg a test would occur on days 28 and 84 but not 56).
 A full description of the study can be found in the study protocol~\citep{cisProtocol}.
 
-We denote by $\sched_i$ the set of times individual $i = 1, \dots, \Ncis$ is tested.
+We denote by $\sched_i$ the set of times individual labelled $i \in \{ 1, \dots, \Ncis \}$ is tested.
 Time is defined such that the first day of the period considered, 10 Oct 2020, is day 1 and the final day of the period considered, 6 Dec 2020, is day $T$.
-The smallest element of $\sched_i$ is $i$'s last test prior to time 1, if it exists, or their first test following enrolment in the study otherwise, and including all subsequent tests even those that occur after day $T$.
+The smallest element of $\sched_i$ is individual $i$'s last test prior to time 1, if it exists, or their first test following enrolment in the study otherwise, and including all subsequent tests even those that occur after day $T$.
 Each individual has exactly one test schedule, but it is possible that $\sched_i = \sched_{i'}$ for $i \neq i'$.
 We assume that the test schedules are uninformative on all quantities of interest, in particular the presence or absence of infection, because they are part of the study design.
 Therefore, we condition on them implicitly in all the calculations that follow.
@@ -331,11 +346,15 @@ Positive tests with negatives in-between may or may not be classed as the same i
 % Negative tests between positives in the same episode are known as \emph{intermittent negatives}; these are false negative tests.
 % Other tests could also be misclassified, but this is not known.
 
-The crucial features of an infection episode are the start and end times of the infection.
-Ignoring misclassified test results, the latent time at which infection episode $j$ begins, $B_j$, is bounded between, $l_j^{(b)}$, the day after the last negative test, and $r_j^{(b)}$, the day of the first positive test (see \cref{fig:challenges}(B)); \ie $B_j \in [l_j^{(b)}, r_j^{(b)}]$.
-Similarly, $E_j$, the latent end time of infection episode $j$ and is bounded by $l_j^{(e)}$, the day of the last positive test and $r_j^{(e)}$, the day before the following negative test; \ie $E_j \in [l_j^{(e)}, r_j^{(e)}]$.
-We define the infection episode such that the individual is detectable between days $B_j$ and $E_j$ inclusive.
-Therefore, all the relevant information about a detected infection episode $j$ is fully contained in the vector $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$ where $i_j$ is the individual in which episode $j$ occurs.
+% The crucial features of an infection episode are the start and end times of the infection.
+For our purposes, an infection episode is the triplet $(B_j, E_j, i_j)$ where $B_j$ is the beginning of the episode, the first day the individual is detectable; $E_j$ is the end of the episode, the last day the individual is detectable; and $i_j$ is the individual in which the infection occurs.
+Infection episode $j$ is \emph{detected} if there is at least one positive test for $i_j$ in the interval $[B_j, E_j]$ and $j$ satisfies the inclusion criteria just described.
+Otherwise, it is \emph{undetected}.
+
+Ignoring misclassified test results, the latent time $B_j$ for a detected infection episode $j$ is bounded between, $l_j^{(b)}$, the day after the last negative test; and $r_j^{(b)}$, the day of the first positive test associated with episode $j$ (see \cref{fig:challenges}(B)).
+Similarly, $E_j$ is bounded by $l_j^{(e)}$, the day of the last positive test; and $r_j^{(e)}$, the day before the following negative test.
+That is $B_j \in [l_j^{(b)}, r_j^{(b)}]$ and $E_j \in [l_j^{(e)}, r_j^{(e)}]$.
+Therefore, all information from the observations of a detected infection episode $j$ is fully contained in the vector $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^{\mathsf{T}}$ where $i_j$ is the individual in which episode $j$ occurs.
 
 The duration of infection episode $j$, $D_j$, is the number of days on which a positive result would be returned by a RT-PCR testing procedure that has 100\% specificity and sensitivity.
 Hence, $D_j = E_j - B_j + 1$.
@@ -350,16 +369,22 @@ In total, there were $\ndet = \numprint{4800}$ such detected episodes.
 \section{Inference framework} \label{sec:inference}
 
 The target of inference is $\vec{\theta}$, the parameters of the survival function $S_{\vec{\theta}}(t) = \prob(D_j \geq t \mid \vec\theta)$ for random variable $D_j$, the duration of the $j$th infection episode.
-We adopt a Bayesian framework to derive a posterior distribution for $\vec{\theta}$ given the partial information provided by the set of observed $o_j$ vectors and accounting for the double interval censoring and undetected episodes.
+We adopt a Bayesian framework to derive a posterior distribution for $\vec{\theta}$ given the partial information provided by the set of observed vectors $\{ o_j \}$ and accounting for the double interval censoring and undetected episodes.
 The composition of $\vec{\theta}$ and appropriate priors for $\theta$ are discussed in \cref{sec:parameters-priors}.
 In this section, we derive a statistical model for the case where that there are no misclassified test results; in \cref{sec:false-negatives} we generalise the framework to include false negatives.
 
-We assume the observation $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$ is a realisation of the discrete random variable $O_j$, taking values in $\set{E}' = \{ \emptyset \} \cup \set{E}$ where $\set{E} = \{ \vec{\nu}_1, \dots, \vec{\nu}_{N_E} \}$ is the set of all $N_E$ (a priori) possible unique observations of detected episodes and $o_j = \emptyset$ if and only if $o_j$ is undetected.
-Therefore, $\vec{\nu}_k = [l^{(b)}_k, r^{(b)}_k, l^{(e)}_k, r^{(e)}_k, i_k]^T$ for $k = 1, \dots, N_E$.
+An important aspect of our approach is that the dimension of the posterior distribution estimated via MCMC does not increase with either the cohort size of number of detected infections.
+Previous approaches to related problems augmented the data with a parameter per detected infection~\citep{heBayesiana,heBayesian,caoModeling}.
+Such an approach would be computationally prohibitive here because of the large number of detected infections and the regulatory requirement for the data to be stored on a Trusted Research Environment, the ONS Secure Research Service (SRS)~\citep{onsSRS}, which cannot handle computationally-intensive methods.
+% Specifically, it contains five \numprint[GHz]{2.40} dual-core Intel Xeon E5-4650 processors and \numprint[GB]{164} RAM.
+
+
+We assume the observation $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^{\mathsf{T}}$ is a realisation of the discrete random variable $O_j$, taking values in $\set{O} = \{ \varnothing \} \cup \set{E}$ where $\set{E} = \{ \vec{\nu}_1, \dots, \vec{\nu}_{N_E} \}$ is the set of all $N_E$ (a priori) possible unique observations of detected episodes and $o_j = \varnothing$ if and only if $o_j$ is undetected.
+Therefore, $\vec{\nu}_k = [l^{(b)}_k, r^{(b)}_k, l^{(e)}_k, r^{(e)}_k, i_k]^{\mathsf{T}}$ for $k = 1, \dots, N_E$.
 The state space is illustrated in \cref{perf-test:fig:partitionSpace}.
 % Infection episodes are indexed by $j = 1, \dots, \ntot$.
-% If $j$ is a detected episode, then $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$, as before. 
-% If $j$ is undetected, then define $o_j = \emptyset$.
+% If $j$ is a detected episode, then $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^{\mathsf{T}}$, as before. 
+% If $j$ is undetected, then define $o_j = \varnothing$.
 
 \begin{figure}
     \makebox[\textwidth][c]{\includegraphics[width=0.9\paperwidth]{figures/output/regions_diag}}
@@ -370,19 +395,19 @@ The state space is illustrated in \cref{perf-test:fig:partitionSpace}.
       $i$ had negative tests at times 0, 7, 14, 56, and 84 (not shown) and positive tests at times 21 and 28.
       The purple region corresponds to a doubly interval censored episode observed in this individual.
       That is, $n_8 = 1$ and $n_k = 0$ for $k = 1, \dots, 7, 9, \dots, 15$.
-      The red region corresponds to combinations giving $O_j = \emptyset$.
+      The red region corresponds to combinations giving $O_j = \varnothing$.
       The grey impossible region violates $b_j \leq e_j$.
     }
     \label{perf-test:fig:partitionSpace}
 \end{figure}
 
 Let $p_k = \prob(O_j = \vec{\nu}_k \mid \vec{\theta})$, the probability that $O_j$ takes the value $\vec{\nu}_k$.
-Similarly, let $p_u = \prob(O_j = \emptyset \mid \vec{\theta})$, the probability that $j$ is undetected.
-Then, the probability distribution for $O_j$ is specified by $\vec{p} = [p_1, \dots, p_{N_E}, p_u]^T$.
+Similarly, let $p_u = \prob(O_j = \varnothing \mid \vec{\theta})$, the probability that $j$ is undetected.
+Then, the probability distribution for $O_j$ is specified by $\vec{p} = [p_1, \dots, p_{N_E}, p_u]^{\mathsf{T}}$.
 
-Let $n_k$ denote the number of times $\vec{\nu}_k$ is observed; $\nnodet$ denote the latent number of undetected episodes; and $\vec{n} = [n_1, \dots, n_{N_E}, \nnodet]^T$.
-Formally, $n_k = \sum_{j=1}^{\ntot} \indicator(O_j = \vec{\nu}_k)$ and $\nnodet = \sum_{j=1}^{\ntot} \indicator(O_j = \emptyset)$.
-Let $\na = [n_{1}, \dots, n_{N_E}]^T$ be the observed portion of $\vec{n}$; $\na$ contains all the relevant information we observe.
+Let $n_k$ denote the number of times $\vec{\nu}_k$ is observed; $\nnodet$ denote the latent number of undetected episodes; and $\vec{n} = [n_1, \dots, n_{N_E}, \nnodet]^{\mathsf{T}}$.
+Formally, $n_k = \sum_{j=1}^{\ntot} \indicator(O_j = \vec{\nu}_k)$ and $\nnodet = \sum_{j=1}^{\ntot} \indicator(O_j = \varnothing)$.
+Let $\na = [n_{1}, \dots, n_{N_E}]^{\mathsf{T}}$ be the observed portion of $\vec{n}$; $\na$ contains all the relevant information we observe.
 The total number of infection episodes is $\ntot = \ndet + \nnodet$.
 
 If $\vec{n}$ was known, then the problem reduces to the well-studied problem of inferring a distribution from doubly interval censored data; however, only $\na$ is observed.
@@ -392,7 +417,7 @@ Hence:
 \begin{align}
   \vec{n} \mid \ntot, \vec{\theta} &\dist \MN(\ntot, \vec{p})
 \intertext{that is:}
-  p(\vec{n} \mid \ntot, \vec{\theta}) &= \frac{\ntot!}{\nnodet!\prod_{k=1}^{N_D} n_k!} p_u^{\nnodet} \prod_{k=1}^{N_D} p_k^{n_k}.
+  p(\vec{n} \mid \ntot, \vec{\theta}) &= \frac{\ntot!}{\nnodet!\prod_{k=1}^{N_E} n_k!} p_u^{\nnodet} \prod_{k=1}^{N_E} p_k^{n_k}.
   \label{perf-test:eq:multinomial-ll}
 \end{align}
 
@@ -415,7 +440,7 @@ p(\vec{\theta} \mid \na)
 \label{perf-test:eq:posterior1}
 \end{align}
 
-For mathematical convenience, we assume the prior $\ntot \dist \NBc(\mu, r)$, and that it is independent of $\vec{\theta}$, the parameters of the survival distribution.
+For mathematical convenience, we assume the prior $\ntot \dist \NBc(\mu, r)$ (where $\mu$ is the prior mean and $r$ its overdispersion), and that it is independent of $\vec{\theta}$, the parameters of the survival distribution.
 In this case \cref{perf-test:eq:posterior1} simplifies to:
 \begin{align}
 p(\vec{\theta} \mid \na)
@@ -444,22 +469,25 @@ The final component of \cref{perf-test:eq:full-posterior} required is $1 - p_u$.
 \Cref{sec:derivations} shows that
 \begin{align}
   1 - p_u
-  &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \emptyset \mid i_j = i, \vec{\theta})).
+  &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \varnothing \mid i_j = i, \vec{\theta})).
   \label{perf-test:eq:pu}
 \end{align}
 %% assuming $P(i_j = i \mid \vec{\theta}) = 1/\Ncis$ as before.
-Let $p_{iu} = \prob(O_j = \emptyset \mid i_j = i, \vec{\theta})$.
+Let $p_{iu} = \prob(O_j = \varnothing \mid i_j = i, \vec{\theta})$.
 %% Therefore, the crucial component is $1 - p_{iu}$.
 %% This is one minus the probability that an episode in individual $i$ was undetected, \ie the probability of the episode being detected.
 An episode $j$ in individual $i_j$ is detected if and only if all the following conditions are met.
 \begin{enumerate}
-    \item $\exists t \in \sched_{i_j}$ such that $b_j \leq t \leq e_j$; this condition is equivalent to having at least one positive test for the episode.
-    \item $b_j > \min \sched_{i_j}$.
+    \item 
+    $t\in[b_j, e_j]$ for some $t \in \sched_{i_j}$;
+    % $\exists t \in \sched_{i_j}$ such that $b_j \leq t \leq e_j$; 
+    this condition is equivalent to having at least one positive test for the episode.
+    \item $b_j > \min ( \sched_{i_j} )$.
       For individuals enrolled during the period considered ($\min \sched_{i_j} > 0$), this ensures that the beginning of the episode is lower bounded; thereby adjusting for those who enrolled during the period being less likely to have a detected infection.
       For individuals enrolled prior to the period considered ($\min \sched_{i_j} \leq 0$), this means that the episode was not detected prior to time 1.
     \item $b_j \leq T_{i_j}$ where $T_{i_j} = \max \{ t \in \sched_{i_j} \ssep t \leq T \}$ is the last time that $i_j$ is tested in the period, meaning that the test is detected within the period.
     \item $\exists t \in \sched_{i_j}$ such that $t > e_j$, upper bounding the end of the episode.
-      For episodes detected in the period we consider, a negligible number of episodes are excluded due to this criteria.
+      For episodes detected in the period we consider, a negligible number of episodes are excluded due to this criteria (<5\% of detected episodes, themselves likely around 15\% of all episodes).
       It only occurs in individuals lost to follow-up; therefore, we neglect this possibility.
       % For a new context, including recent infections, this condition could be relaxed by considering episodes that do not meet this criterion as right censored.
 \end{enumerate}
@@ -471,7 +499,7 @@ First define $\tau_{\sched_i}(t)$ as the time until the next test at or after ti
 \tau_{\sched_i}(t) &= \min \{ t' \in \sched_i : t' \geq t \} - t
 \label{perf-test:eq:tau-def}
 \end{align}
-% defining $\min \emptyset = \infty$; \ie $\tau_{\sched_i}(t) = \infty$ if there is no $t' \in \sched_i$ such that $t' \geq t$.
+% defining $\min \varnothing = \infty$; \ie $\tau_{\sched_i}(t) = \infty$ if there is no $t' \in \sched_i$ such that $t' \geq t$.
 The first condition can now be expressed as $e_j \geq b_j + \tau_{\sched_{i_j}}(b_j)$.
 Equivalently, $d_j \geq \tau_{\sched_{i_j}}(b_j) + 1$.
 % The fourth condition can be expressed as $\tau_{\sched_{i_j}}(b_j) < \infty$.
@@ -522,7 +550,7 @@ For tractability, we include only tests between the negative tests at $l_j^{(b)}
 Define this set of tests to be $\sched'_k = \{ t \in \sched_{i_k} \ssep r_k^{(b)} \leq t \leq r_k^{(e)} + 1 \}$ and let $m_k$ denote the size of this set.
 Denote the elements of $\sched'_k$ by $t_{k,1} < \dots < t_{k,m_k}$.
 Let $\set{E}' = \{ \vec{\nu}_1', \dots, \vec{\nu}_{N_E'}' \}$ be a new set of possible observations of detected episodes, including the pattern of positive and negative tests.
-Represent the observations such that for any $\vec{\nu}_k' \in \set{E}'$, $\vec{\nu}_k' = [\vec{\nu}_{k}, \vec{y}_k]^T$, where $\vec{y}_k \in \{ 0, 1 \}^{m_k}$ with $y_{k,l}$ being the test result at time $t_{k,l}$.
+Represent the observations such that for any $\vec{\nu}_k' \in \set{E}'$, $\vec{\nu}_k' = [\vec{\nu}_{k}, \vec{y}_k]^{\mathsf{T}}$, where $\vec{y}_k \in \{ 0, 1 \}^{m_k}$ with $y_{k,l}$ being the test result at time $t_{k,l}$.
 
 $\vec{\nu}'_k \in \set{E}'$ occurs if and only if all the following conditions are met.
 \begin{enumerate}
@@ -534,13 +562,13 @@ The final two conditions are due to the construction of the intervals as positiv
 As condition 2 requires $y_{k,1} = 1$ and condition 3 requires $y_{k,m_k} = 0$, these conditions can only occur if $m_k \geq 2$.
 
 Let $O'_j$ be the observations generated by episode $j$ including the new vector of results.
-If $j$ is detected then $O'_j = [O_j, Y_j]^T \in \set{E}'$; otherwise, $O'_j = \emptyset$.
+If $j$ is detected then $O'_j = [O_j, Y_j]^{\mathsf{T}} \in \set{E}'$; otherwise, $O'_j = \varnothing$.
 
 Similarly, we define $p_k'$, $p_{ik}'$, $p_u'$, and $p_{iu}'$ to replace $p_k$, $p_{ik}$, $p_u$, and $p_{iu}$ respectively.
 \begin{align}
     p_{ik}' &= \prob(O'_j = \vec{\nu}'_k \mid i_j = i_k, \vec{\theta}) \\
     p_k' &= \frac{1}{\Ncis} p_{ik}' \\
-    p_{iu}' &= \prob(O'_j = \emptyset \mid i_j = i, \vec{\theta}) \\
+    p_{iu}' &= \prob(O'_j = \varnothing \mid i_j = i, \vec{\theta}) \\
     p_u' &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} p_{iu}'.
 \end{align}
 
@@ -554,7 +582,7 @@ However, this prior work was for singly interval censored data; incorporating th
 
 % We proceed by assuming that we have observed an arbitrary episode:
 % \begin{align}
-%   O'_j = [[l_k^{(b)}, r_k^{(b)}, l_k^{(e)}, r_k^{(e)}, i_j]^T, \vec{y}_k]^T.
+%   O'_j = [[l_k^{(b)}, r_k^{(b)}, l_k^{(e)}, r_k^{(e)}, i_j]^{\mathsf{T}}, \vec{y}_k]^{\mathsf{T}}.
 % \end{align}
 % We derive $p_k$ by considering the generating process that could have produced this episode.
 
@@ -579,7 +607,7 @@ Note that if $p_\text{sens} = 1$ then $p_{ik}' = p_{ik}$ (see \cref{perf-test:eq
 
 \subsection{Deriving $p'_{iu}$} \label{imperf-test:sec:modifying-p_iu}
 
-We now modify $p_{iu}$ to form $p_{iu}' = \prob(O'_j = \emptyset \mid i_j = i, \vec{\theta})$ to take into account false negatives.
+We now modify $p_{iu}$ to form $p_{iu}' = \prob(O'_j = \varnothing \mid i_j = i, \vec{\theta})$ to take into account false negatives.
 Several mechanisms for episodes being undetected were previously considered when deriving $p_{iu}$, we now consider the additional mechanisms arising due to false negatives.
 Specifically, episode $j$ could be undetected if the first test after $b_j$ is a false negative and then there are no subsequent positive tests.
 
@@ -615,7 +643,7 @@ In \cref{sec:p-iu-dash} we show that this gives:
 
 Next we specify the form and priors for $S_{\vec{\theta}}(t)$.
 We parameterize $S$ in terms of the discrete-time hazard $S_{\vec{\theta}}(t) = \prod_{i=1}^{t-1} (1 - \lambda_{i})$; the lack of monotonicity or sum constraint on the hazard makes it an attractive parameterization for inference~\citep{heBayesian}.
-Therefore, $\vec{\theta} = [\lambda_1, \dots, \lambda_{\dmax-1}]^T$, where $\dmax$ is the longest possible duration assumed as the maximum possible duration of the observed episodes, \ie $\dmax = \max_{k \in \set{D}} r^{(e)}_k - l^{(b)}_k + 1$.
+Therefore, $\vec{\theta} = [\lambda_1, \dots, \lambda_{\dmax-1}]^{\mathsf{T}}$, where $\dmax$ is the longest possible duration assumed as the maximum possible duration of the observed episodes, \ie $\dmax = \max_{k \in \set{D}} r^{(e)}_k - l^{(b)}_k + 1$.
 We consider two priors (depicted in \cref{fig:priors}), with varying degrees of informativeness regarding $S_{\vec{\theta}(t)}$.
 \begin{figure}
   \includegraphics{figures/output/prior_predictive_survival}
@@ -626,7 +654,7 @@ We consider two priors (depicted in \cref{fig:priors}), with varying degrees of 
 \end{figure}
 
 The first prior for $S_{\vec{\theta}}$ is weakly informative, centred on prior estimates.
-Specifically, we assume an independent prior distribution for each $\lambda_t$ of Beta(0.1, 1.9), which has mean 0.05 and little information.
+Specifically, we assume an independent prior distribution for each $\lambda_t$ of Beta(0.1, 1.9), which has mean 0.05 and little information (standard deviation of 0.13).
 The central 95\% probability mass of Beta(0.1, 1.9) is 0.00--0.47.
 The central estimate, of 0.05, is in line with previous estimates that the median duration in the range 15--20 days~\citep{cevikShedding}.
 
@@ -645,11 +673,11 @@ where $k_t$, $\alpha_0$, and $\beta_0$ are hyperparameters; and $\vec{\mu}_A$ an
 We use $\alpha_0 = 0.1$ and $\beta_0 = 1.9$ to match the weakly informative prior and the following form for $k_t$:
 \begin{align}
 k_t = \begin{cases}
-  \expit(-0.4 * (t - 20)) &\text{for $t \leq 39$} \\
+  \expit(-0.4 \times (t - 20)) &\text{for $t \leq 39$} \\
   0 &t > 39
 \end{cases}.
 \end{align}
-This form reflects the subjective belief that $h_t$ is a good estimate of $\lambda_t$ for small $t$ but increasingly unreliable; specifically, it is large at 0, when ATACCC is reliable, but becomes small for $t \geq 20$.
+The form and choice of constants reflects the subjective belief that $h_t$ is a good estimate of $\lambda_t$ for small $t$ but increasingly unreliable; specifically, it is large at 0, when ATACCC is reliable, but becomes small for $t \geq 20$.
 
 
 \section{Simulations} \label{sec:simulation}
@@ -667,7 +695,7 @@ We simulate a dataset of detected episodes that has the same characteristics as 
     \item Simulate the test results based on the test schedule, $b_{j}$, and $e_{j}$. A test on day $t$ between $b_{j}$ and $e_{j}$ (inclusive) is positive with probability $\psens$, where $\psens$ can vary with the time since infection, as defined below. All tests outside this interval are negative.
     \item Discard episodes where there are no positive tests (\ie undetected episodes) and then apply the inclusion criteria from \cref{sec:data}. Denote by $p$ the proportion of episodes that are retained.
     \item Of these remaining episodes, sample $\ndet = 4800$ to match the sample size of the true dataset. This is needed because in step 2 the entire cohort was infected, while in the real study only a (unknown) portion is infected.
-    \item For this final set of episodes, calculate $(l_j^{(b)}, r_j^{b}, l_j^{(e)}, r_j^{(e)})$ by taking the day after the last negative prior to any positives, the first positive, the last positive, and the day before the negative following the last positive respectively.
+    \item For this final set of episodes, calculate $(l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)})$ by taking the day after the last negative prior to any positives, the first positive, the last positive, and the day before the negative following the last positive respectively.
 \end{enumerate}
 
 We simulate four scenarios for the test sensitivity.
@@ -702,8 +730,8 @@ We used a vague prior for $\ntot$, with $\mu = n_d / p$ and $r = 1$.
 \subsection{Results}
 
 When $\psens = 0.8$ and is correctly specified, the model recovers the true survival time well (see \cref{imperf-test:fig:constant-test-sensitivity}(B)).
-The informative prior for $\vec\theta$, in comparison to the weakly informative prior, helps to overcome the misspecification due to the simplifying assumptions, moving the estimated survival function closer to its true survival time.
-However, when $\psens = 0.6$, this is no longer the case (see \cref{imperf-test:fig:constant-test-sensitivity}(A)).
+The strongly informative prior for $\vec\theta$, in comparison to the weakly informative prior, helps to overcome the misspecification due to the simplifying assumptions, moving the estimated survival function closer to its true survival time; in particular, the central estimate is smoother and has less uncertainty.
+However, when $\psens = 0.6$, both priors lead to underestimation (see \cref{imperf-test:fig:constant-test-sensitivity}(A)).
 This is likely caused by too large a violation of the simplifying assumptions made in \cref{sec:false-negatives}.
 \begin{figure}
   \includegraphics[width=\textwidth]{figures/output/sim-constant-sensitivity}
@@ -714,7 +742,7 @@ This is likely caused by too large a violation of the simplifying assumptions ma
   \label{imperf-test:fig:constant-test-sensitivity}
 \end{figure}
 
-Next, we considered the consequence of $\psens$ being misspecified and using the model combination prior, the better performing prior in the correctly specified case.
+Next, we considered the consequence of $\psens$ being misspecified and using the strongly informative prior, the better performing prior in the correctly specified case.
 If the test sensitivity is misspecified then the survival time is biased.
 If $\psensi < \psenss$, then the posterior estimate initially follows the true value but then separates (see \cref{imperf-test:fig:misspecified-test-sensitivity}(A)).
 The number of episodes inferred to have truly ended by the first negative is too low, and hence the survival time is overestimated.
@@ -738,7 +766,7 @@ Therefore, we conclude that including a varying test sensitivity is not required
   \includegraphics[width=\textwidth]{figures/output/sim-variable-sensitivity}
   \caption[Simulation study results with varying test sensitivity]{%
     Posterior (median and 95\% CrI) of the survival time.
-    $\psensi$ is indicated on the panel label, $\psenss = 0.8$.
+    $\psensi$ is indicated on the panel label, $\psenss = v$.
   }
   \label{imperf-test:fig:variable-test-sensitivity}
 \end{figure}
@@ -752,14 +780,14 @@ Therefore, we used an informative prior for $\ntot$, $\ntot \sim \NBc(\mu\inform
 \citet{birrellRTM2} estimated the total number of infections in England over the time period we consider, with posterior mean \numprint{4136368} and standard deviation \numprint{27932}.
 \todo{cite latest RTM paper}
 % This model gives a posterior mean of \numprint{4136368} cumulative infections in England in the time period we consider, with a posterior standard deviation of \numprint{27932}~\citePersonalComms{Paul Birrell}.
-Approximating this distribution as a negative binomial and scaling the mean to the size of the CIS cohort gives the prior $\mu\inform = 25132$ and $r\inform = 22047$.
+Approximating this distribution as a negative binomial and scaling the mean to the size of the CIS sample gives the prior $\mu\inform = 25132$ and $r\inform = 22047$.
 
 With this prior, the model produces plausible estimates of the duration distribution (see \cref{imperf-test:fig:cis-estimates}).
 The estimate (blue) has more long episodes than the ATACCC-based estimate used for the prior in \cref{sec:ataccc-prior} (red).
 
 The qualitative increase in long episodes is robust to the choice of prior for $\ntot$, the assumed value for $\psens$ (see \cref{imperf-test:fig:cis-sensitivity}), and the choice of prior for the hazards, $\lambda_t$.
 However, the survival proportion over the first 4 weeks is sensitive to these choices.
-The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ give a median survival time most similar to the ATACCC-based estimate.
+The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ gives a median survival time most similar to the ATACCC-based estimate.
 \begin{figure}
   \centering \includegraphics{figures/output/CIS_final}
   \caption{Duration estimates using CIS and ATACCC data}
@@ -803,15 +831,15 @@ To estimate duration, we extended the survival analysis framework in \citet{heis
 We estimate a non-parametric discrete-time survival distribution in a fully Bayesian framework.
 These estimates incorporate data from a complementary study, ATACCC, through the use of an appropriately-discounted prior.
 
-This CIS data is unique, and is likely to serve as a template for population prevalence studies in future pandemics.
+This CIS data is unique, and is may serve as a template for population prevalence studies in future pandemics.
 Accordingly, our methodological framework, which is generic, will inform these studies.
 Furthermore, the simulation framework we developed can assist with designing more efficient studies, for example embedding an intensive, ATACCC-like study with a CIS-like study.
 
 We estimate a mean duration of 21.2 days (95\% CrI: 20.5--21.9) with 5.3\% (95\% CrI: 3.5--7.4\%) of episodes lasting 50 days or longer.
-This is a higher proportion than estimated using other studies such as ATACCC (see \cref{imperf-test:fig:cis-estimates}), leading to a longer mean, driven by the better information resulting from the longer follow-up of the CIS.
+This is a higher proportion than estimated using other studies such as ATACCC (see \cref{imperf-test:fig:cis-estimates}), leading to a longer mean, resulting from the better information resulting from the longer follow-up of the CIS.
 Long episodes are unlikely to be infectious, but change the interpretation of positive test results, determine how long population positivity remains high following a peak in infections and, crucially, the longer mean duration implies lower incidence when estimated from known prevalence.
 
-Our methodology depends on a few important assumptions.
+Our methodology depends on several assumptions.
 An important one is that infection episodes are independent, which is a simplification of the real-world in several ways.
 The times infection episodes begin are correlated between different individuals.
 During an epidemic, there are periods of time when all individuals are at higher risk of infection, due to the disease having a high prevalence in the population.
@@ -825,7 +853,7 @@ Further work could consider the impact of this design on the estimates, for exam
 Infection episodes within the same individual also affect each other.
 An infected individual who recovers is less likely to be infected in the future, due to having some immunity to the disease.
 Additionally, the multinomial likelihood proposed in \cref{sec:inference} allows the possibility of concurrent infections; however, these would appear in the dataset as the same infection episode.
-The simulation study assumed non-independence between infections in the same individual, with each individual experiencing at most one infection.
+The simulation study assumed non-independence between infections in the same individual, with each individual experiencing at most one infection, a plausible assumption over the short period of time considered~\citep{milneImmunity}.
 Despite this, the method we propose recovered the true survival function.
 Therefore, it is unlikely that assuming independence of infection episodes in the same individual matters, possibly due to the large number of individuals without detected episodes.
 Further work could explore alternative assumptions, \eg a ``full immunity'' assumption limiting each individual to one episode in the period.
@@ -999,10 +1027,10 @@ This is the standard form of the likelihood for doubly interval censored data wi
 
 \begin{align}
   1 - p_u
-  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \emptyset, i_j = i \mid \vec{\theta}) \\
-  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}) P(i_j = i \mid \vec{\theta}) \\
-  &= 1 - \frac{1}{\Ncis}\sum_{i=1}^{\Ncis} \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}) \\
-  &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \emptyset \mid i_j = i, \vec{\theta}))
+  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \varnothing, i_j = i \mid \vec{\theta}) \\
+  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \varnothing \mid i_j = i, \vec{\theta}) P(i_j = i \mid \vec{\theta}) \\
+  &= 1 - \frac{1}{\Ncis}\sum_{i=1}^{\Ncis} \prob(O_j = \varnothing \mid i_j = i, \vec{\theta}) \\
+  &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \varnothing \mid i_j = i, \vec{\theta}))
 \end{align}
 
 \section{Derivation of quantities in \cref{sec:false-negatives}}
