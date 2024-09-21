@@ -51,6 +51,7 @@
 \DeclareMathOperator{\V}{\mathbb{V}}
 \DeclareMathOperator{\I}{\mathbb{I}}
 %\DeclareMathOperator{\prob}{\mathbb{P}}
+\newcommand{\ind}{\mathrel{\perp\!\!\!\perp}}
 \DeclareMathOperator{\prob}{\mathrm{Pr}}
 \DeclareMathOperator{\p}{\pi}
 \DeclareMathOperator{\var}{\mathbb{V}}
@@ -101,6 +102,8 @@
 \newcommand{\sched}{\mathcal{T}}
 \newcommand{\nsched}{|\sched{}|}
 \newcommand{\inform}{{_{\text{inform}}}}
+\newcommand{\posResults}{r_{+}}
+\newcommand{\negResults}{r_{-}}
 
 
 %% Bibliography
@@ -342,49 +345,67 @@ Therefore, we condition on them implicitly in all the calculations that follow.
 
 
 % Positive tests from the same individual are grouped into infection episodes.
-Positive tests with negatives in-between may or may not be classed as the same infection episode based on the time between the tests, the number of negative tests between the positives, and the variant of the infection; see \citet{weiRisk} for details.
+Positive tests with negatives in-between in the same individual may or may not be classed as the same infection episode using a pre-existing heuristic based on the time between the tests, the number of negative tests between the positives, and the variant of the infection; see \citet{weiRisk} for details.
+For the $j$th infection episode, there are up to four important times: the day after the negative test in that individual prior to the first positive test, $l_j^{(b)}$; the day of the first positive test, $r_j^{(b)}$; the day of the last positive test, $l_j^{(e)}$; and the day before the subsequent negative test, $r_j^{(e)}$.
 % Negative tests between positives in the same episode are known as \emph{intermittent negatives}; these are false negative tests.
 % Other tests could also be misclassified, but this is not known.
 
-% The crucial features of an infection episode are the start and end times of the infection.
-For our purposes, an infection episode is the triplet $W_j = (B_j, E_j, i_j)$ where $B_j$ is the beginning of the episode, the first day the individual is detectable; $E_j$ is the end of the episode, the last day the individual is detectable; and $i_j$ is the individual in which the infection occurs.
-Infection episode $j$ is \emph{detected} if there is at least one positive test for $i_j$ in the interval $[B_j, E_j]$ and $j$ satisfies the inclusion criteria just described.
-Otherwise, it is \emph{undetected}.
-
-Ignoring misclassified test results, the latent time $B_j$ for a detected infection episode $j$ is bounded between, $l_j^{(b)}$, the day after the last negative test; and $r_j^{(b)}$, the day of the first positive test associated with episode $j$ (see \cref{fig:challenges}(B)).
-Similarly, $E_j$ is bounded by $l_j^{(e)}$, the day of the last positive test; and $r_j^{(e)}$, the day before the following negative test.
-That is $B_j \in [l_j^{(b)}, r_j^{(b)}]$ and $E_j \in [l_j^{(e)}, r_j^{(e)}]$.
-Therefore, all information from the observations of a detected infection episode $j$ is fully contained in the vector $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^{\mathsf{T}}$ where $i_j$ is the individual in which episode $j$ occurs.
-
-The duration of infection episode $j$, $D_j$, is the number of days on which a positive result would be returned by a RT-PCR testing procedure that has 100\% specificity and sensitivity.
-Hence, $D_j = E_j - B_j + 1$.
-The distribution is commonly expressed using the survival function, $S_{\vec{\theta}}(d) = \prob(D_j \geq d \mid \vec{\theta})$, and is characterised by parameter vector $\vec{\theta}$.
-We assume that the $D_j$s are independent of each other and $B_j$, and identically distributed.
-
-%We analyse the $\ndet = \numprint{4800}$
 We include only episodes for which: (i) the episode's first positive test occurred between 10 Oct 2020 and 6 Dec 2020 inclusive, \ie $r_j^{(b)} \in [1, T]$; and (ii) a negative test bounds both the beginning and end of the episode,
 therefore, both $l_j^{(b)}$ and $r_j^{(e)}$ exist.
 In total, there were $\ndet = \numprint{4800}$ such detected episodes.
 
-\section{Inference framework} \label{sec:inference}
 
-The target of inference is $\vec{\theta}$, the parameters of the survival function $S_{\vec{\theta}}(t) = \prob(D_j \geq t \mid \vec\theta)$ for random variable $D_j$, the duration of the $j$th infection episode.
+\section{Duration modelling} \label{sec:modelling}
+
+The target of inference is $\vec{\theta}$, the parameters of the survival function $S_{\vec{\theta}}(t) = \prob(D_j \geq t \mid \vec\theta)$ for random variable $D_j$, representing the number of days on which a positive result would be returned by a RT-PCR testing procedure that has 100\% specificity and sensitivity due to infection episode $j$.
 We adopt a Bayesian framework to derive a posterior distribution for $\vec{\theta}$ given the partial information provided by the set of observed vectors $\{ o_j \}$ and accounting for the double interval censoring and undetected episodes.
 The composition of $\vec{\theta}$ and appropriate priors for $\theta$ are discussed in \cref{sec:parameters-priors}.
-In this section, we derive a statistical model for the case where that there are no misclassified test results; in \cref{sec:false-negatives} we generalise the framework to include false negatives.
+In this section, we explain the data generating process and derive a statistical model for the case where that there are no misclassified test results; in \cref{sec:false-negatives} we generalise the framework to include false negatives.
 
 An important aspect of our approach is that the dimension of the posterior distribution estimated via MCMC does not increase with either the cohort size of number of detected infections.
 Previous approaches to related problems augmented the data with a parameter per detected infection~\citep{heBayesiana,heBayesian,caoModeling}.
 Such an approach would be computationally prohibitive here because of the large number of detected infections and the regulatory requirement for the data to be stored on a Trusted Research Environment, the ONS Secure Research Service (SRS)~\citep{onsSRS}, which cannot handle computationally-intensive methods.
 % Specifically, it contains five \numprint[GHz]{2.40} dual-core Intel Xeon E5-4650 processors and \numprint[GB]{164} RAM.
 
+\subsection{Data generating process}
 
-We assume the observation $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^{\mathsf{T}}$ is a realisation of the discrete random variable $O_j$, taking values in $\set{O} = \{ \varnothing \} \cup \set{E}$ where $\set{E} = \{ \vec{\nu}_1, \dots, \vec{\nu}_{N_E} \}$ is the set of all $N_E$ (a priori) possible unique observations of detected episodes and $o_j = \varnothing$ if and only if $o_j$ is undetected.
-Therefore, $\vec{\nu}_k = [l^{(b)}_k, r^{(b)}_k, l^{(e)}_k, r^{(e)}_k, i_k]^{\mathsf{T}}$ for $k = 1, \dots, N_E$.
-The state space is illustrated in \cref{perf-test:fig:partitionSpace}.
-% Infection episodes are indexed by $j = 1, \dots, \ntot$.
-% If $j$ is a detected episode, then $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^{\mathsf{T}}$, as before. 
-% If $j$ is undetected, then define $o_j = \varnothing$.
+% The crucial features of an infection episode are the start and end times of the infection.
+For our purposes, the $j$th ($j = 1, \dots, \ntot$ where $\ntot$ is the total number of infection epsidoes) infection episode is the triplet $W_j = (B_j, E_j, i_j)$ where $B_j$ is the beginning of the episode, the first day the individual is detectable; $E_j$ is the end of the episode, the last day the individual is detectable; and $i_j$ is the individual in which the infection occurs.
+The episode's duration is a deterministic transformation of these variables, $D_j = E_j - B_j + 1$; and I assume that $B_j$, $D_j$, and $i_j$ are independent.
+$D_j$'s distribution is determined by $\vec{\theta}$; both $B_j$ and $i_j$ are modelled as draws from uniform distributions over their respective discrete state spaces.
+Additionally, we assume that the $D_j$s are independent of each other and $B_j$, and identically distributed.
+
+% Infection episode $j$ is \emph{detected} if there is at least one positive test for $i_j$ in the interval $[B_j, E_j]$ and $j$ satisfies the inclusion criteria in \cref{sec:data}.
+% Otherwise, it is \emph{undetected}.
+
+To make this problem tractable, we model infection episodes as independent conditional on $\ntot$ and $\vec{\theta}$; \ie $W_j \ind W_{j'} \mid \ntot, \vec{\theta}$ for $j \neq j'$.
+This is true both for infection episodes within the same individual and across individuals; this assumption is discussed in \cref{sec:discussion}.
+
+The test results for any individual is fully determined by any infection episodes that occur in that individual and their test schedule.
+The set of times $i_j$ tests positive at due to $W_j$ is $\posResults(W_j) = \{ t \in \sched_{i_j} \ssep B_j \leq t \leq E_j \}$.
+The negative test immediately before the start of the episode (if there is one) is $\negResults^{(b)}(W_j) = \max \{ t \in \sched_{i_j} \ssep t < B_j \}$.
+The negative test immediately after the end of the episode (if there is one) is $\negResults^{(e)}(W_j) = \min \{ t \in \sched_{i_j} \ssep t > E_j \}$.
+
+Next, we define $O_j$ to contain the test results due to $W_j$ that give information on $W_j$'s length, and hence are relevant to inference about $\vec{\theta}$.
+If $\posResults(W_j) = \emptyset$, $\min \posResults(W_j) \notin [1, T]$, or either $\negResults^{(b)}$ or $\negResults^{(e)}$ is undefined then the episode is undetected, in which case $O_j = \emptyset$.
+Otherwise, $O_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$, where $i_j$ is the individual in which the episode occurs; $l_j^{(b)} = \negResults^{(b)}(W_j) + 1$ and $r_j^{(b)} = \min \posResults(W_j)$ are the earliest and latest time the episode could have begun and produced the observed series of test results respectively; and $l_j^{(e)} = \max \posResults(W_j)$ and $r_j^{(e)} = \negResults^{(e)}(W_j) - 1$ are the earliest and latest time the episode could have ended respectively.
+These definitions coincide with the way the dataset is constructed (see \cref{sec:data}).
+
+Ignoring misclassified test results, the latent time $B_j$ for a detected infection episode $j$ is bounded between, $l_j^{(b)}$, the day after the last negative test; and $r_j^{(b)}$, the day of the first positive test associated with episode $j$ (see \cref{fig:challenges}(B)).
+Similarly, $E_j$ is bounded by $l_j^{(e)}$, the day of the last positive test; and $r_j^{(e)}$, the day before the following negative test.
+That is $B_j \in [l_j^{(b)}, r_j^{(b)}]$ and $E_j \in [l_j^{(e)}, r_j^{(e)}]$.
+Therefore, all information from the observations of a detected infection episode $j$ is fully contained in the vector $O_j$.
+
+%We analyse the $\ndet = \numprint{4800}$
+\subsection{Inference} \label{sec:inference}
+
+Define an integer $N_E$ and $\set{E} = \{ \vec{\nu}_1, \dots, \vec{\nu}_{N_E} \}$ as the set of all possible values $O(j)$ can take, excluding $\varnothing$, conditional on the test schedules but no other data; that is, $O(j) \in \set{E}$ if and only if $j$ is a detected infection.
+Let $\vec{\nu}_k = [l^{(b)}_k, r^{(b)}_k, l^{(e)}_k, r^{(e)}_k, i_k]^T$ be an arbitrary member of $\set{E}$, visualised in \cref{perf-test:fig:partitionSpace}.
+
+Let $n_k$ denote the number of times that $\vec{\nu}_k$ appears in the episodes dataset (\ie the observed data); $\nnodet$ denote the latent number of undetected episodes; and $\vec{n} = [n_1, \dots, n_{N_E}, \nnodet]^T$.
+Hence, $\ntot = \nnodet + \ndet = \sum_{i=1}^{N_E} n_i + \nnodet$.
+If $\vec{n}$ was known, then the problem reduces to the well-studied problem of inferring a distribution from doubly interval censored data; however, only $\na$ is observed.
+Therefore, to infer $\vec\theta$, we augment $\na$ with the latent quantity $\nnodet$.
 
 \begin{figure}
     \makebox[\textwidth][c]{\includegraphics[width=0.9\paperwidth]{figures/output/regions_diag}}
@@ -401,19 +422,11 @@ The state space is illustrated in \cref{perf-test:fig:partitionSpace}.
     \label{perf-test:fig:partitionSpace}
 \end{figure}
 
-Let $p_k = \prob(O_j = \vec{\nu}_k \mid \vec{\theta})$, the probability that $O_j$ takes the value $\vec{\nu}_k$.
+Let $p_k = \prob(O_j = \vec{\nu}_k \mid \vec{\theta})$, the probability that $O_j$ takes the value $\vec{\nu}_k$ for $k = 1, \dots, N_E$.
 Similarly, let $p_u = \prob(O_j = \varnothing \mid \vec{\theta})$, the probability that $j$ is undetected.
 Then, the probability distribution for $O_j$ is specified by $\vec{p} = [p_1, \dots, p_{N_E}, p_u]^{\mathsf{T}}$.
 
-Let $n_k$ denote the number of times $\vec{\nu}_k$ is observed; $\nnodet$ denote the latent number of undetected episodes; and $\vec{n} = [n_1, \dots, n_{N_E}, \nnodet]^{\mathsf{T}}$.
-Formally, $n_k = \sum_{j=1}^{\ntot} \indicator(O_j = \vec{\nu}_k)$ and $\nnodet = \sum_{j=1}^{\ntot} \indicator(O_j = \varnothing)$.
-Let $\na = [n_{1}, \dots, n_{N_E}]^{\mathsf{T}}$ be the observed portion of $\vec{n}$; $\na$ contains all the relevant information we observe.
-The total number of infection episodes is $\ntot = \ndet + \nnodet$.
-
-If $\vec{n}$ was known, then the problem reduces to the well-studied problem of inferring a distribution from doubly interval censored data; however, only $\na$ is observed.
-Therefore, to infer $\theta$, we augment $\na$ with the latent quantity $\nnodet$.
-Assume, for tractability, that the events $O_j = \vec{\nu}_k$ and $O_{j'} = \vec{\nu}_{k'}$ are independent for $j \neq j'$ (conditional on $\theta$); this assumption is discussed in \cref{sec:discussion}.
-Hence:
+As we assume independence:
 \begin{align}
   \vec{n} \mid \ntot, \vec{\theta} &\dist \MN(\ntot, \vec{p})
 \intertext{that is:}
@@ -446,13 +459,12 @@ In this case \cref{perf-test:eq:posterior1} simplifies to:
 p(\vec{\theta} \mid \na)
 &\propto p(\vec{\theta}) \left( \prod_{i \in \set{D}} p_k \right) (r + \mu (1- \pnodet))^{-(r+\ndet)} \label{perf-test:eq:full-posterior}.
 \end{align}
-
 The rest of this section derives expressions for each of $p_{k}$, $p_{u}$ and $\eta$.
 
 Decompose $p_k$ as $p_k = p_{ik} \prob(i_j = i_k \mid \vec{\theta})$
 where $p_{ik} = \prob(O_j = \vec{\nu}_k \mid i_j = i_k, \vec{\theta})$.
 % This is valid as $\prob(O_j = \nu_k \mid i_j \neq i_k) = 0$ due to the condition here being equivalent to equating the two vectors' final elements.
-Assume that each infection episode occurs independently and with equal probability in any individual, \ie $\prob(i_j = i_k) = 1/\Ncis$ for all $j$ and $k$, and $B_j$ is uniformly distributed over the length of the epidemic.
+By assumption $\prob(i_j = i_k \mid \vec{\theta}) = 1/\Ncis$ for all $j$ and $k$.
 
 Therefore, $p_{ik}$ takes the standard form of the likelihood for doubly interval censored data without truncation~\citep[e.g.][]{sunEmpirical}:
 \begin{align}
@@ -529,40 +541,39 @@ For computational efficiency, note that this can be rewritten as:
 \begin{align}
   1- p_u
   &\propto \sum_{t=1}^{\dmax} S_{\vec\theta}(t) m_t
+  \label{eq:Sm-sum}
 \intertext{where}
   m_t &= \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i}} \indicator(\tau_{\sched_{i}}(b) + 1 = t)
 \end{align}
 where $\indicator$ is the indicator function.
 The $m_t$s rely only on the test schedules, which are fixed, and can be computed once and stored.
-Furthermore, the sum can be efficiently implemented as a dot product.
+Furthermore, the sum in \cref{eq:Sm-sum} can be efficiently implemented as a dot product.
 
 \section{Handling false negatives} \label{sec:false-negatives}
 
-Now we modify the survival framework to incorporate false negatives by assuming a test sensitivity, $\psens < 1$.
+Now we modify the survival framework to incorporate false negatives by assuming a test sensitivity, $\psens < 1$, but continuing to assume a negligible probability of false positives.
 Using a simple model, in particular a constant test sensitivity, means calculating the likelihood remains tractable.
+Additionally, we limit the number of permutations of false negative and true positive tests that we consider to have non-negligible probability.
+Specifically, we assume that, if $i_j$ is tested during infection episode $j$, either: the individual has a single false negative test and the episode ends before their next test, or the first test is a true positive test.
+This assumption is reasonable because false negatives normally occur when the viral load is low, which is normally late in the infection episode.
+For the same reason, we assume there is at most one false negative test following the final true positive test in the episode.
+In \cref{sec:simulation} we show that these assumptions still give acceptable performance as long as $\psens$ is not too low.
 
-% We start, in \cref{imperf-test:sec:notation}, by introducing some additional notation needed.
-% We then modify the components of the likelihood in \cref{imperf-test:sec:modifying-p_ia,imperf-test:sec:modifying-p_iu} to incorporate false negatives.
-Introducing false negatives means that $O_j$, the observation vector of episode $j$, is now random, even if $i_j$, $B_j$, and $E_j$ are known and the results between the tests that bound episode $j$'s beginning and end times enter into the likelihood.
-For tractability, we include only tests between the negative tests at $l_j^{(b)}-1$ and $r_j^{(e)}+1$. 
-%To formalise this, we define analogous variables to those in \cref{sec:inference}.
-%To start with, define the relevant testing times for any episode $j$ with $O_j = \vec{\nu}_k$ as 
-Define this set of tests to be $\sched'_k = \{ t \in \sched_{i_k} \ssep r_k^{(b)} \leq t \leq r_k^{(e)} + 1 \}$ and let $m_k$ denote the size of this set.
-Denote the elements of $\sched'_k$ by $t_{k,1} < \dots < t_{k,m_k}$.
-Let $\set{E}' = \{ \vec{\nu}_1', \dots, \vec{\nu}_{N_E'}' \}$ be a new set of possible observations of detected episodes, including the pattern of positive and negative tests.
-Represent the observations such that for any $\vec{\nu}_k' \in \set{E}'$, $\vec{\nu}_k' = [\vec{\nu}_{k}, \vec{y}_k]^{\mathsf{T}}$, where $\vec{y}_k \in \{ 0, 1 \}^{m_k}$ with $y_{k,l}$ being the test result at time $t_{k,l}$.
+The test results which bound $B_j$ and $E_j$, contained in $O_j$, are now random because there could be additional false negative results.
+Additionally, all results between these times are random and hence should enter into the likelihood.
+For tractability, I consider only tests between the negative tests providing an upper bound on the length of episode $j$.
 
-$\vec{\nu}'_k \in \set{E}'$ occurs if and only if all the following conditions are met.
+To do so, define a random vector $O'(j)$ with state space $\{\varnothing\} \cup \set{E}'$ which will replace $O(j)$.
+As before, $O'(j) = \varnothing$ if episode $j$ is undetected.
+Otherwise, $O'(j) \in \set{E}'$ where $\set{E}' = \{ \vec{\nu}_1', \dots, \vec{\nu}_{N_E'}' \}$ augments the space $\set{E}$ with test results during the episode.
+The elements of $\set{E}'$ are all $\vec{\nu}_k' = [\vec{\nu}_k, \vec{y}_k]^T$ where $\vec{\nu}_k \in \set{E}$ and $\vec{y}_k$ is a vector of test results for the relevant testing times, $\sched'_k = \{ t \in \sched_{i_k} \ssep r_k^{(b)} \leq t \leq r_k^{(e)} + 1 \}$.
+To formalise the definition of $\vec{y}_k$, let $m_k$ denote the size of $\sched'_k$ and denote the elements of $\sched'_k$ by $t_{k,1} < \dots < t_{k,m_k}$.
+Then, $\vec{y}_k \in \{0, 1\}^{m_k}$ and satisfies the following two conditions.
 \begin{enumerate}
-  \item $\vec{\nu}_k \in \set{E}$.
   \item The elements of $\vec{y}_k$ corresponding to the tests at times $r_k^{(b)}$ and $l_k^{(e)}$ are positive, \ie $y_{k,1} = y_{k,m_k-1} = 1$.
   \item The element of $\vec{y}_k$ corresponding to the test at time $r_k^{(e)} + 1$ is negative, \ie $y_{k,m_k} = 0$.
 \end{enumerate}
-The final two conditions are due to the construction of the intervals as positive and negative tests bounding the beginning and end times of the episode.
-As condition 2 requires $y_{k,1} = 1$ and condition 3 requires $y_{k,m_k} = 0$, these conditions can only occur if $m_k \geq 2$.
-
-Let $O'_j$ be the observations generated by episode $j$ including the new vector of results.
-If $j$ is detected then $O'_j = [O_j, Y_j]^{\mathsf{T}} \in \set{E}'$; otherwise, $O'_j = \varnothing$.
+These conditions are due to the construction of the intervals as positive and negative tests bounding the beginning and end times of the episode.
 
 Similarly, we define $p_k'$, $p_{ik}'$, $p_u'$, and $p_{iu}'$ to replace $p_k$, $p_{ik}$, $p_u$, and $p_{iu}$ respectively.
 \begin{align}
@@ -586,8 +597,7 @@ However, this prior work was for singly interval censored data; incorporating th
 % \end{align}
 % We derive $p_k$ by considering the generating process that could have produced this episode.
 
-For tractability, assume that the negative test bounding the start of the episode, on day $l_k^{(b)}-1$, is a true negative.
-This assumption is reasonable because a positive test follows at $r_k^{(b)}$; therefore, $l_k^{(b)}-1$ is likely to be early in the infection episode when the test sensitivity is typically high.
+By assumption, the negative test bounding the start of the episode, on day $l_k^{(b)}-1$, is a true negative.
 True negatives occur with probability 1, and hence this test does not contribute to the likelihood.
 
 As we assume that there are no false positives, the infection episode must span at least the period $[r^{(b)}_k, l^{(e)}_k]$, a period starting and ending with a positive test.
@@ -617,7 +627,7 @@ The episode has not yet ended at the time of the test if $e_j = b_j + d_j - 1 \g
 Conditional on the episode having not yet ended, the test result is negative with probability $1 - \psens$.
 
 For there to be no subsequent positive tests, all tests up until day $e_j$ are false negatives.
-We assume there is a negligible probability of missing an episode due to two false negative tests.
+By assumption, there is a negligible probability of missing an episode due to two false negative tests.
 This is because that would require both a long episode, encompassing two test times, and for both these tests to be false negatives.
 Therefore, an episode is undetected only if the episode ends before a second test.
 Denote the number of days between $b_j$ and the test following the false negative as $\tau^2_{\sched_{i_j}}(b_j) \stackrel{\text{def}}{=} \tau_{\sched_{i_j}}(\tau_{\sched_{i_j}}(b_j) + 1)$.
@@ -684,6 +694,9 @@ The form and choice of constants reflects the subjective belief that $h_t$ is a 
 
 
 We use a simulation study to evaluate the performance of the method and the impact of the simplifying assumptions made.
+We simulate from a misspecified model, avoiding the independence assumption made in \cref{sec:modelling} and without assuming that some patterns of test results have negligible probability, as in \cref{sec:false-negatives}.
+Further, we consider the impact of misspecifying $\psens$ as this parameter cannot be inferred within our set-up.
+We show that, as long as $\psens$ is not too small, inference performance remains acceptable.
 
 \subsection{Setup}
 
@@ -712,7 +725,7 @@ Specifically we use the following form:
 where $t$ is the number of days since the infection occurred.
 We denote by $\psenss$ the true test sensitivity used in the simulation, with $\psenss = v$ indicating the varying test sensitivity.
 
-For each scenario, we infer the survival function using the procedure proposed in this paper, assuming $\psens$ equals 0.6, 0.8, or 1.0.
+For each scenario, we infer the survival function using the procedure proposed in this paper, with a point prior of $\psens$ of 0.6, 0.8, or 1.0.
 That is, the value of $\psens$ used in inference is not necessarily $\psenss$, and we consider the impact of this misspecification.
 We denote by $\psensi$ the assumed test sensitivity in inference.
 
@@ -863,6 +876,11 @@ Most importantly, that the negative immediately before a detected episode is a t
 Our simulation study shows that these assumptions are reasonable, and do not substantially impact performance when $\psens$, the test sensitivity, is high.
 However, when $\psens$ is low, these can lead to biased results.
 A promising direction for future work would look at the relaxation of these assumptions, for example, by inferring $\psens$ as a function of time since the episode began, similar to the generative model in \cref{sec:false-negatives}.
+
+Ideally, $\psens$ would be estimated from the data.
+However, this would require incorporating time-varying test sensitivity into the likelihood.
+If the current model, with a constant $\psens$, is used then the estimate of $\psens$ would be heavily informed by intermittent negatives which will generally be close to the beginning of the episode with a higher test sensitivity than average.
+Estimating the test sensitivity excluding intermittent negatives is not possible because the likelihood is monotonically decreasing in $\psens$; therefore, the likelihood always favours $\psens = 0$ (\ie no true positives).
 
 An important avenue for further work is removing the need for an informative prior for $\ntot$, the total number of infections in the cohort in the period (including undetected infections).
 % The reason an informative prior is required is unclear because it was not required in the simulation study.
@@ -1082,11 +1100,12 @@ p_{ik}'
 \end{align}
 Note that if $p_\text{sens} = 1$ then $p_{ik}' = p_{ik}$ (see \cref{perf-test:eq:pia}).
 
-If $\psens$ is fixed (\ie has a point prior) and $\prob(B_j = b \mid \psens, \vec{\theta}) \propto 1$ then:
+We use a fixed $\psens$ (\ie a point prior) and $\prob(B_j = b \mid \psens, \vec{\theta}) \propto 1$ giving:
 \begin{align}
 p_{ik}'
 &\propto \sum_{b = l_k^{(b)}}^{r_k^{(b)}} S_{\vec{\theta}}(l_k^{(e)} - b + 1) - p_\text{sens} S_{\vec{\theta}}(r_k^{(e)} - b + 2).
 \end{align}
+Estimating $\psens$ is not possible in the current framework (see \cref{sec:discussion}).
 
 \subsection{Expressions in \cref{imperf-test:sec:modifying-p_iu}} \label{sec:p-iu-dash}
 
