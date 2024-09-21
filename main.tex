@@ -255,15 +255,16 @@ This is different from standard left truncation~\cite[e.g.][]{sunEmpirical,bacch
 % We refer to these events as ``undetected'', rather than truncated, to emphasise this difference.
 
 Secondly, we observe the beginning of an episode when a previously negative individual returns a positive test.
-However, the episode could start at any point between those two tests; \ie its duration is interval censored (see \cref{fig:challenges}(B)).
+However, the episode could start at any point between those two tests; \ie its duration is interval censored (see \cref{fig:challenges}(C)).
 The end of the episode is similarly interval censored and hence the data is doubly interval censored.
 
 \begin{figure}
   \makebox[\textwidth][c]{\includegraphics{figures/output/challenges}}
   \caption{%
     Challenges posed by the CIS design.
-    (A) Undetected episodes.
-    (B) Doubly interval censored episodes.
+    (A) An undetected episode in the bottom individual.
+    (B) An excluded episode because the individual is positive at their first test.
+    (C) Doubly interval censored episodes, shaded regions indicate the censoring bounding the start between $l_j^{(b)}$ and $r_j^{(b)}$, and the end between $l_j^{(e)}$ and $r_j^{(e)}$.
   }
   \label{fig:challenges}
 \end{figure}
@@ -391,7 +392,7 @@ If $\posResults(W_j) = \emptyset$, $\min \posResults(W_j) \notin [1, T]$, or eit
 Otherwise, $O_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$, where $i_j$ is the individual in which the episode occurs; $l_j^{(b)} = \negResults^{(b)}(W_j) + 1$ and $r_j^{(b)} = \min \posResults(W_j)$ are the earliest and latest time the episode could have begun and produced the observed series of test results respectively; and $l_j^{(e)} = \max \posResults(W_j)$ and $r_j^{(e)} = \negResults^{(e)}(W_j) - 1$ are the earliest and latest time the episode could have ended respectively.
 These definitions coincide with the way the dataset is constructed (see \cref{sec:data}).
 
-Ignoring misclassified test results, the latent time $B_j$ for a detected infection episode $j$ is bounded between, $l_j^{(b)}$, the day after the last negative test; and $r_j^{(b)}$, the day of the first positive test associated with episode $j$ (see \cref{fig:challenges}(B)).
+Ignoring misclassified test results, the latent time $B_j$ for a detected infection episode $j$ is bounded between, $l_j^{(b)}$, the day after the last negative test; and $r_j^{(b)}$, the day of the first positive test associated with episode $j$ (see \cref{fig:challenges}(C)).
 Similarly, $E_j$ is bounded by $l_j^{(e)}$, the day of the last positive test; and $r_j^{(e)}$, the day before the following negative test.
 That is $B_j \in [l_j^{(b)}, r_j^{(b)}]$ and $E_j \in [l_j^{(e)}, r_j^{(e)}]$.
 Therefore, all information from the observations of a detected infection episode $j$ is fully contained in the vector $O_j$.
