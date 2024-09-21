@@ -1,5 +1,6 @@
 library(dplyr)
 library(ggplot2)
+library(latex2exp)
 
 neg_test_dates = c(0, 7, 14, 56)
 pos_test_dates = c(28, 21)
@@ -58,8 +59,8 @@ plot = ggplot() +
         colour = "grey"
     ) +
     labs(
-        x = expression(b[j]),
-        y = expression(e[j]),
+        x = TeX("$b_j$, episode start time"),
+        y = TeX("$e_j$, episode end time"),
         colour = "Test results",
         fill = "Regions"
     ) +
