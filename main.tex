@@ -347,12 +347,12 @@ We include only episodes for which: (i) the episode's first positive test occurr
 therefore, both $l_j^{(b)}$ and $r_j^{(e)}$ exist.
 In total, there were $\ndet = \numprint{4800}$ such detected episodes.
 
-\section{Inference framework} \label{sec:inference}
+\section{Modelling and inference framework} \label{sec:inference}
 
 The target of inference is $\vec{\theta}$, the parameters of the survival function $S_{\vec{\theta}}(t) = \prob(D_j \geq t \mid \vec\theta)$ for random variable $D_j$, the duration of the $j$th infection episode.
 We adopt a Bayesian framework to derive a posterior distribution for $\vec{\theta}$ given the partial information provided by the set of observed $o_j$ vectors and accounting for the double interval censoring and undetected episodes.
 The composition of $\vec{\theta}$ and appropriate priors for $\theta$ are discussed in \cref{sec:parameters-priors}.
-In this section, we derive a statistical model for the case where that there are no misclassified test results; in \cref{sec:false-negatives} we generalise the framework to include false negatives.
+In this section, we give the generating process and then derive a statistical model for the case where that there are no misclassified test results; in \cref{sec:false-negatives} we generalise the framework to include false negatives.
 
 We assume the observation $o_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$ is a realisation of the discrete random variable $O_j$, taking values in $\set{E}' = \{ \emptyset \} \cup \set{E}$ where $\set{E} = \{ \vec{\nu}_1, \dots, \vec{\nu}_{N_E} \}$ is the set of all $N_E$ (a priori) possible unique observations of detected episodes and $o_j = \emptyset$ if and only if $o_j$ is undetected.
 Therefore, $\vec{\nu}_k = [l^{(b)}_k, r^{(b)}_k, l^{(e)}_k, r^{(e)}_k, i_k]^T$ for $k = 1, \dots, N_E$.
