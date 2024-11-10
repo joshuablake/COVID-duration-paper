@@ -82,8 +82,25 @@ ggsave(
 ### FIGURE WITH FINAL RESULTS
 #############################################################################################
 
-p_final = posterior_draws |>
-    filter(sensitivity == 0.8, survival_prior == "Informative", r == 22047, missed_model == "total") |>
+final_curve = posterior_draws |>
+    filter(sensitivity == 0.8, survival_prior == "Informative", r == 22047, missed_model == "total")
+check_counts = final_curve |>
+    count(.draw, time)
+stopifnot(check_counts$n == 1)
+rm(check_counts)
+
+final_curve |>
+    filter(time %in% c(12, 26, 88)) |>
+    group_by(time) |>
+    median_qi(S) |>
+    print()
+
+ataccc_duration |>
+    filter(time %in% c(12, 26, 88)) |>
+    select(time, starts_with("S")) |>
+    print()
+
+p_final = final_curve |>
     ggplot() +
     stat_lineribbon(
         aes(time, S, fill = "CIS-based", colour = "CIS-based"),
