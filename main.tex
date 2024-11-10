@@ -788,7 +788,7 @@ Therefore, we conclude that including a varying test sensitivity is not required
 \section{Application to the CIS data} \label{sec:CIS}
 
 In this section we apply the approach described in this chapter to the CIS infection episode dataset.
-Unlike in the simulation studies, an uninformative prior on $\ntot$ led to implausible estimates of the duration distribution.
+Unlike in the simulation studies, an uninformative prior on $\ntot$ led to implausible estimates of the duration distribution (small values of $r$ in \cref{fig:priors}(A) give estimates with a median survival time of 5 days).
 The uninformative prior led to high posterior estimates of $\ntot$, and hence an implausibly large number of episodes with durations of less than five days.
 Therefore, we used an informative prior for $\ntot$, $\ntot \sim \NBc(\mu\inform, r\inform)$ from pre-existing estimates of the total number of infections to give $\mu\inform$ and $r\inform$.
 \citet{birrellRTM2} estimated the total number of infections in England over the time period we consider, with posterior mean \numprint{4136368} and standard deviation \numprint{27932}.
