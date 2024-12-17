@@ -34,7 +34,7 @@ plot_testing_schedule = function(x, break_modifier = 0) {
     geom_point(aes(shape = type, colour = type), size = 2, stroke = 2) +
     geom_hline(aes(yintercept = individual), colour = "grey") +
     scale_y_discrete() +
-    scale_x_continuous(breaks = x_breaks, minor_breaks = NULL) +
+    scale_x_continuous(breaks = NULL, minor_breaks = x_breaks) +
     scale_shape_manual(values = scale_shapes) +
     scale_colour_manual(values = scale_colours) +
     xlab("Time") +
