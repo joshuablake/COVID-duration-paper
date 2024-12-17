@@ -304,7 +304,7 @@ Enrolment was continuously ongoing until 31st January 2022, with data collected 
 
 We focus on the period between 10 October 2020 and 6 December 2020 inclusive over which the CIS estimated stable infection prevalence of around 1\%~\citep{onsCISdec2020}.
 Stable infection prevalence allows an assumption of constant incidence, simplifying the likelihood.
-Additionally, it is prior to both vaccination and the emergence of the alpha variant, which potentially impacted the duration of infection episodes~\citep{hakkiOnset,russellWithinhost}.
+Additionally, it is prior to both vaccination and before the alpha variant was dominant~\citep{lythgoeLineage}, which potentially impacted the duration of infection episodes~\citep{hakkiOnset,russellWithinhost}.
 Our analysis considers the cohort of $\Ncis = \numprint{437590}$ CIS participants with at least one test in this period.
 
 The CIS had a household-based design inviting all individuals aged 2 years and over from households randomly selected from previously surveys and address lists.
@@ -317,7 +317,7 @@ We denote by $\sched_i$ the set of times individual labelled $i \in \{ 1, \dots,
 Time is defined such that the first day of the period considered, 10 October 2020, is day 1 and the final day of the period considered, 6 December 2020, is day $T = 58$.
 The smallest element of $\sched_i$ is individual $i$'s last test prior to time 1, if it exists, or their first test following enrolment in the study otherwise, and including all subsequent tests even those that occur after day $T$.
 Each individual has exactly one test schedule, but it is possible that $\sched_i = \sched_{i'}$ for $i \neq i'$; this occurs commonly for individuals in the same household.
-We assume that the test schedules are uninformative on all quantities of interest, in particular the presence or absence of infection, because they are part of the study design.
+We assume that the test schedules are uninformative on all quantities of interest, in particular the presence or absence of infection, because their timings were prespecified in the study design.
 Therefore, we condition on them implicitly in all the calculations that follow.
 
 
@@ -332,16 +332,17 @@ therefore, both $l_j^{(b)}$ and $r_j^{(e)}$ exist.
 In total, there were $\ndet = \numprint{4800}$ such detected episodes.
 
 
-\section{A Bayesian approach to estimation} \label{sec:modelling}
+\section{A Bayesian estimation approach} \label{sec:modelling}
 
 The target of inference is $\vec{\theta}$, the parameters of the survival function $S_{\vec{\theta}}(t) = \prob(D_j \geq t \mid \vec\theta)$ for the random variable $D_j$, representing the number of days on which a positive result would be returned by a RT-PCR testing procedure that has 100\% specificity and sensitivity due to infection episode $j$.
+Here, 100\% an individual's true infection status refers to whether their viral load is above the test's limit of detection.
 We adopt a Bayesian framework to derive a posterior distribution for $\vec{\theta}$ given appropriate prior knowledge (\cref{sec:parameters-priors}) and partial information provided by the set of observed vectors $\{ o_j \}$ (defined later), accounting for the doubly interval censoring and undetected episodes.
 %The composition of $\vec{\theta}$ and appropriate priors for $\theta$ are discussed in \cref{sec:parameters-priors}.
 In what follows, we explain the data generating process and derive a statistical model for the case where that there are no misclassified test results; in \cref{sec:false-negatives} we generalise the framework to include false negatives.
 
 An important aspect of our approach is that the dimension of the posterior distribution does not increase with either the cohort size of number of detected infections.
 Previous approaches to related problems augmented the data with a parameter per detected infection~\citep{heBayesiana,heBayesian,caoModeling}.
-Such an approach would be computationally prohibitive here because of the large number of detected infections and the regulatory requirement for the data to be stored on a Trusted Research Environment, the ONS Secure Research Service (SRS)~\citep{onsSRS}, which cannot handle computationally-intensive methods.
+Such an approach would be computationally prohibitive here because of the large number of detected infections and the regulatory requirement for the data to be stored on a Trusted Research Environment, the ONS Secure Research Service (SRS)~\citep{onsSRS}, which means that methods requiring high-performance computing cannot be used.
 % Specifically, it contains five \numprint[GHz]{2.40} dual-core Intel Xeon E5-4650 processors and \numprint[GB]{164} RAM.
 
 \subsection{Data generating process}
@@ -349,6 +350,7 @@ Such an approach would be computationally prohibitive here because of the large 
 % The crucial features of an infection episode are the start and end times of the infection.
 For our purposes, the $j$th ($j = 1, \dots, \ntot$, where $\ntot$ is the unobserved total number of infection episodes) infection episode is the triplet $W_j = (B_j, E_j, i_j)$ where $B_j$ is the beginning of the episode, the first day the individual is detectable; $E_j$ is the end of the episode, the last day the individual is detectable; and $i_j$ is the individual in which the $j$th infection occurs.
 The episode's duration is a deterministic transformation of these variables, $D_j = E_j - B_j + 1$; and we assume that $B_j$, $D_j$, and $i_j$ are independent.
+The independence of infection times is a simplifying assumption that does not hold in a household-based survey such as CIS but is required for the problem to remain analytically tractable; independence is discussed further in \cref{sec:discussion}.
 $D_j$'s distribution is determined by $\vec{\theta}$; both $B_j$ and $i_j$ are modelled as draws from uniform distributions over their respective discrete state spaces.
 Additionally, we assume that the $D_j$s are independent of each other and $B_j$ (\ie the length of the episode is independent of when it occurs), and identically distributed.
 
@@ -364,7 +366,7 @@ The negative test immediately before the start of the episode (if there is one) 
 The negative test immediately after the end of the episode (if there is one) is $\negResults^{(e)}(W_j) = \min \{ t \in \sched_{i_j} \ssep t > E_j \}$.
 
 Next, we define $O_j$ to contain the test results due to $W_j$ that give information on $W_j$'s length, and hence are relevant to inference about $\vec{\theta}$.
-If $\posResults(W_j) = \emptyset$, $\min \posResults(W_j) \notin [1, T]$, $\negResults^{(b)}$ is undefined, or $\negResults^{(e)}$ is undefined then the episode is undetected, in which case $O_j = \varnothing$.
+If $\posResults(W_j) = \varnothing$, $\min \posResults(W_j) \notin [1, T]$, $\negResults^{(b)}$ is undefined, or $\negResults^{(e)}$ is undefined then the episode is undetected, in which case $O_j = \varnothing$.
 Otherwise, $O_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$, where $i_j$ is the individual in which the episode occurs; $l_j^{(b)} = \negResults^{(b)}(W_j) + 1$ and $r_j^{(b)} = \min \posResults(W_j)$ are the earliest and latest time the episode could have begun and produced the observed series of test results respectively; and $l_j^{(e)} = \max \posResults(W_j)$ and $r_j^{(e)} = \negResults^{(e)}(W_j) - 1$ are the earliest and latest time the episode could have ended respectively.
 These definitions coincide with the way the dataset is constructed (see \cref{sec:data}).
 
@@ -374,7 +376,7 @@ That is $B_j \in [l_j^{(b)}, r_j^{(b)}]$ and $E_j \in [l_j^{(e)}, r_j^{(e)}]$.
 Therefore, all information from the observations of a detected infection episode $j$ is fully contained in the vector $O_j$.
 
 %We analyse the $\ndet = \numprint{4800}$
-\subsection{Inference} \label{sec:inference}
+\subsection{Set up} \label{sec:inference}
 
 Define an integer $N_E = |\set{E}|$ (the cardinality of $\set{E}$) and $\set{E} = \{ \vec{\nu}_1, \dots, \vec{\nu}_{N_E} \}$ as the set of all possible values $O_j$ can take, excluding $\varnothing$, conditional on the test schedules but no other data; that is, $O_j \in \set{E}$ if and only if $j$ is a detected infection.
 Let $\vec{\nu}_k = [l^{(b)}_k, r^{(b)}_k, l^{(e)}_k, r^{(e)}_k, i_k]^T$ be an arbitrary member of $\set{E}$, visualised in \cref{perf-test:fig:partitionSpace}.
@@ -492,8 +494,6 @@ First define $\tau_{\sched_i}(t)$ as the time until the next test at or after ti
 The first condition can now be expressed as $e_j \geq b_j + \tau_{\sched_{i_j}}(b_j)$.
 Equivalently, $d_j \geq \tau_{\sched_{i_j}}(b_j) + 1$.
 % The fourth condition can be expressed as $\tau_{\sched_{i_j}}(b_j) < \infty$.
-
-
 % Then $\Omega_i$ can be written as:
 % \begin{align}
 % \Omega_i = \{ (b, e) \ssep \tau_{\sched_i}(b) + b > e \vee b \leq \min(\sched_i) \}.
@@ -507,13 +507,11 @@ Therefore, omitting the conditioning on $\vec{\theta}$ and $i_j = i$:
 &\propto \sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1).
 \label{perf-test:eq:piu}
 \end{align}
-
 Substituting into \cref{perf-test:eq:pu}:
 \begin{align}
 1 - p_u
 & \propto \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1).
 \end{align}
-
 For computational efficiency, note that this can be rewritten as:
 \begin{align}
   1- p_u
@@ -522,7 +520,7 @@ For computational efficiency, note that this can be rewritten as:
 \intertext{where}
   m_t &= \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i}} \indicator(\tau_{\sched_{i}}(b) + 1 = t)
 \end{align}
-where $\indicator$ is the indicator function.
+where $\indicator$ is the indicator function taking the value $1$ when the statement in its argument is true and $0$ otherwise.
 The $m_t$s rely only on the test schedules, which are fixed, and can be computed once and stored.
 Furthermore, the sum in \cref{eq:Sm-sum} can be efficiently implemented as a dot product.
 
