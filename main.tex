@@ -141,7 +141,7 @@
 {
   \title{\bf \fulltitle}
   \author{%
-    Joshua Blake, Paul Birrell, A.\ Sarah Walker, Koen Pouwels, Thomas House,\\Brian Tom, Theo Kyparios, Daniela De Angelis  
+    Joshua Blake, Paul Birrell, A.\ Sarah Walker, Koen B. Pouwels, Thomas House,\\Brian Tom, Theodore Kypraios, Daniela De Angelis  
     % Author 1\thanks{
     % The authors gratefully acknowledge/ \textit{please remember to list all relevant funding sources in the unblinded version}}\hspace{.2cm}\\
     % Department of YYY, University of XXX\\
@@ -165,11 +165,11 @@
 
 \bigskip
 \begin{abstract}
-Monitoring the incidence of new infections during a pandemic is critical for effective public health response. General population prevalence surveys for SARS-CoV-2 provided high-quality data for estimating incidence, yet accurate estimation hinges on understanding the duration individuals remain detectable. This study addresses this need using data from the Coronavirus Infection Survey (CIS), a long-term, longitudinal, general population survey conducted in the UK. Analysing these data presents unique challenges such as doubly interval censoring, undetected infections, and false negatives. We propose a Bayesian non-parametric survival analysis approach, estimating a discrete-time distribution of durations and integrating prior information derived from a complementary study. Our methodology is validated through a simulation study, including its resilience to model mis-specification, and then applied to the CIS dataset. This results in the first estimate of the full duration distribution in a general population, as well as methodology that could be transferred to new contexts.
+Monitoring the incidence of new infections during a pandemic is critical for effective public health response to make predictions of future burden. General population prevalence surveys for SARS-CoV-2 can provide high-quality data for estimating incidence, yet accurate estimation hinges on understanding the duration individual infections remain detectable. This study addresses this need using data from the Coronavirus Infection Survey (CIS), a long-term, longitudinal, general population survey conducted in the UK. Analysing these data presents unique challenges such as doubly interval censoring, undetected infections, and false negatives. We propose a Bayesian non-parametric survival analysis approach, estimating a discrete-time distribution of durations and integrating prior information derived from a complementary study. Our methodology is validated through a simulation study, including its resilience to model misspecification, and then applied to the CIS dataset. This results in the first estimate of the full duration distribution in a general population, as well as methodology that could be transferred to new contexts.
 \end{abstract}
 
 \noindent%
-{\it Keywords:}  Survival analysis, false negatives, missclasification, Bayesian inference
+{\it Keywords:}  Survival analysis, false negatives, misclassification, Bayesian inference
 \vfill
 
 % \newpage
@@ -192,14 +192,14 @@ Monitoring the incidence of new infections during a pandemic is critical for eff
 \spacingset{1.9} % DON'T change the spacing!
 \section{Introduction} \label{sec:intro}
 
-The COVID-19 pandemic caused by the SARS-CoV-2 virus is, to date, estimated to have killed approximately 30 million people globally~\citep{whoCOVIDExcess,economistCOVIDExcess}, stretched healthcare services to the brink of collapse~\citep{fongNHS}, and disrupted societies worldwide.
+The COVID-19 pandemic caused by the SARS-CoV-2 virus is, to to the end of 2021, estimated to have killed approximately 30 million people globally~\citep{whoCOVIDExcess,economistCOVIDExcess}, stretched healthcare services to the brink of collapse~\citep{fongNHS}, and disrupted societies worldwide.
 This pandemic highlighted the critical need for an effective public health response, informed by quantifying both the current and future burden. One such key quantity is the \emph{incidence of infection}, defined as the rate at which new infections occur, which drives important health outcomes such as the number of symptomatic cases, hospital admissions and deaths. 
 
 
 Incidence of infection can be estimated through back-calculation~\citep{brookmeyerBackcalculation}, a methodology which relates observations of a disease outcome with its incidence through a delay distribution and a convolution equation.
-In the context of SARS-CoV-2, this approach allows estimation of incidence based on: a time series of the proportion of the population that have a detectable infection; and the distribution of the duration of infection episodes, \ie the duration of time an individual is detectable for following infection.
+In the context of SARS-CoV-2, this approach allows estimation of incidence based on: a time series of the proportion of the population that have a detectable infection; and the distribution of the duration of infection episodes, \ie the duration of time a virus that infected an individual has a detectable infection using a particular test following infection.
 As SARS-CoV-2 is detected by performing RT-PCR testing on an appropriate sample (\eg a nasal swab), this duration is the period over which an infected individual would return a positive RT-PCR result.
-In the UK, estimates of the proportion of the population that is detectable are available from to large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
+In the UK, estimates of the proportion of the population that have detectable levels of the virus are available from to large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
 Here, we estimate the second back-calculation component: the distribution of the duration of infection episodes.
 
 A meta-analysis from the early stages of the pandemic estimated the mean duration of detectability as 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}. However, most studies included in the meta-analysis involved short follow-up, included only hospitalised patients and/or had unclear inclusion criteria, and hence may not be representative of the general population.
@@ -211,20 +211,21 @@ Other studies have estimated the duration by inferring the dynamics of viral loa
 The data from \citet{hakkiOnset} is particularly relevant, as it is based on a representative sample of individuals exposed to infection and subsequently tested daily.
 However, the follow-up lasted for a maximum of 20 days, preventing estimation of the upper tail of the duration distribution without making strong model (\eg parameteric distribution) assumptions that extrapolate beyond the data.
 This issue is exacerbated by the small sample size (\ie $n= 57$ infections).
-Furthermore, they did not estimate the duration distribution in the published estimate.
+Furthermore, they did not provide an estimate of the duration distribution.
 
-In this paper, we investigate an alternative source of data for the estimation of the duration of an infection episode, the Coronavirus Infection Survey (CIS)~\citep{CIS}.
+In this paper, we investigate an alternative source of data for the estimation of the duration of an infection episode, Coronavirus Infection Survey (CIS), run by the Office for National Statistics (ONS)~\citep{CIS}.
 The CIS was a unique large-scale longitudinal study of RT-PCR positivity in the general population, performing weekly and then monthly RT-PCR testing on 3--400,000 individuals for nearly three years. (see \cref{sec:data}).
 % The size of the cohort varied, at the period we are concerned with is \numprint{437590}.
 %% We will consider \numprint{4800} infections.
 As the testing schedule was independent of infection status and had indefinite length, the study provides a unique opportunity to provide an estimate of the distribution of infection episode duration in the general population.
-However, the CIS study design, with weekly (for an individual's first month after enrolment) and then approimately four-weekly testing intervals, and its implementation pose several challenges to the estimation.
+However, the CIS study design, with weekly (for an individual's first month after enrolment) and then approximately four-weekly testing intervals, and its implementation pose several challenges to the estimation.
 
-Firstly, infections can be undetected.
+Firstly, infections can remain undetected.
 Four-weekly testing is longer than the duration of detectability for around two-thirds of infection episodes~\citep{killingleySafety}, meaning that detectability could begin and end between tests.
-Specifically, for individuals without a positive test, we do not know if they were infected but undetected, or if they were never infected (compare the two situations in \cref{fig:challenges}(A)).
+Specifically, for individuals without a positive test, we do not know if they were infected but undetected, or if they were never infected (compare the two situations visualised in \cref{fig:challenges}(A)).
 Infection episodes that are detectable for longer are more likely to be detected; hence, detected infection episodes are not a representative sample of all infection episodes.
 This is different from standard left truncation~\cite[e.g.][]{sunEmpirical,bacchettiNonparametric} because we have information on the individuals in which the short infection episodes occur (\ie their testing times), which constrains undetected infection episode lengths.
+
 % This is subtly different from the standard left truncation problem~\cite[e.g.][]{sunEmpirical,bacchettiNonparametric} where individuals that have experienced a terminating event are excluded from the study and no information is available on them. In CIS, individuals in which undetected infections occur are enrolled in the study and their testing times are known, providing bounds on how long any possible infection episodes may have lasted.
 % We refer to these events as ``undetected'', rather than truncated, to emphasise this difference.
 
@@ -238,7 +239,7 @@ The end of the episode is similarly interval censored and hence the data is doub
     Challenges posed by the CIS design.
     (A) An undetected episode in the bottom individual.
     (B) An excluded episode because the individual is positive at their first test.
-    (C) Doubly interval censored episodes, shaded regions indicate the censoring bounding the start between $l_j^{(b)}$ and $r_j^{(b)}$, and the end between $l_j^{(e)}$ and $r_j^{(e)}$ (defined later).
+    (C) Doubly interval censored episodes, shaded regions indicate the censoring bounding the start between $l_j^{(b)}$ and $r_j^{(b)}$, and the end between $l_j^{(e)}$ and $r_j^{(e)}$ (defined mathematically later).
   }
   \label{fig:challenges}
 \end{figure}
@@ -802,7 +803,7 @@ Our estimates are sensitive to the choice of $r$, the strength of the prior on $
 A low value for $r$, giving a very weak, almost uninformative, prior on $\ntot$ causes its posterior estimate to be much higher than the estimate from \citet{birrellRTM2}.
 When increasing the prior's strength, the posterior estimate moves towards the prior smoothly, as expected (see \cref{imperf-test:fig:ntot}).
 As discussed previously, the prior information is reliable for the first 2--3 weeks, notably including the median time.
-The median using $r\inform$ matched the prior's median estimate and is a principled choice because it is based directly on the prior work \citet{birrellRTM2}.
+The median using $r\inform$ matched the prior's median estimate and is a principled choice because it is based directly on the previous posterior estimate~\citet{birrellRTM2}.
 Therefore, we recommend this estimate, which has a mean survival time of 21.2 days (95\% CrI: 20.5--21.9).
 \begin{figure}
   \centering \includegraphics{figures/output/CIS_ntot}
