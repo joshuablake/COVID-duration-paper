@@ -1,0 +1,382 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{enumerate}
+\usepackage{natbib}
+
+% DON'T change margins - should be 1 inch all around.
+\addtolength{\oddsidemargin}{-.5in}%
+\addtolength{\evensidemargin}{-1in}%
+\addtolength{\textwidth}{1in}%
+\addtolength{\textheight}{1.7in}%
+\addtolength{\topmargin}{-1in}%
+
+%% ABOVE THIS LINE IS JASA TEMPLATE
+%% BELOW THIS LINE IS MY STUFF
+
+% add bibliography to TOC - remove for final version
+% \usepackage[nottoc,numbib]{tocbibind}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb}
+\usepackage{floatpag}
+\usepackage{bm}
+% \usepackage{algorithm2e}
+\usepackage[unicode,psdextra]{hyperref}
+\usepackage[nameinlink,capitalise,noabbrev]{cleveref}
+\usepackage{csquotes}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp} % provide symbols
+\usepackage{xr}
+\usepackage{afterpage}
+\usepackage{caption}
+\usepackage{numprint}
+\npfourdigitnosep
+\npdecimalsign{.}
+% \usepackage{microtype}
+
+% Generic maths commands
+\def\reals{\mathbb{R}}
+\def\nats{\mathbb{N}}
+\def\sampSpace{\mathcal{X}}
+\def\dist{\sim}
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\V}{\mathbb{V}}
+\DeclareMathOperator{\I}{\mathbb{I}}
+%\DeclareMathOperator{\prob}{\mathbb{P}}
+\newcommand{\ind}{\mathrel{\perp\!\!\!\perp}}
+\DeclareMathOperator{\prob}{\mathrm{Pr}}
+\DeclareMathOperator{\p}{\pi}
+\DeclareMathOperator{\var}{\mathbb{V}}
+\DeclareMathOperator{\indicator}{\mathbb{I}}
+\DeclareMathOperator{\cov}{Cov}
+\DeclareMathOperator{\cor}{Cor}
+\DeclareMathOperator{\logit}{logit}
+\DeclareMathOperator{\Ber}{Bernoulli}
+\DeclareMathOperator{\Bin}{Binomial}
+\DeclareMathOperator{\Poi}{Poisson}
+\DeclareMathOperator{\BetaDist}{Beta}
+\DeclareMathOperator{\Exponential}{Exponential}
+\DeclareMathOperator{\NBr}{NegBin}
+\newcommand{\NBc}{\NBr}
+% \newcommand{\NBs}{\NBr_{s}}
+\DeclareMathOperator{\BB}{BetaBin}
+\DeclareMathOperator{\GamDist}{Gamma}
+\DeclareMathOperator{\MN}{Multinomial}
+\DeclareMathOperator{\N}{N}
+\DeclareMathOperator{\MNorm}{N}
+\DeclareMathOperator{\LN}{LN}
+\DeclareMathOperator{\LKJ}{LKJ}
+\DeclareMathOperator{\expit}{expit}
+\newcommand\matr{\bm}
+\newcommand\set{\mathcal}
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand{\ssep}{:}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand\citePersonalComms[1]{(#1, personal communication)}
+
+% Thesis-specific maths commands
+\newcommand{\dmax}{d_\text{max}}
+\newcommand{\psens}{p_\text{sens}}
+\newcommand{\psenss}{p_\text{sens}^{(s)}}
+\newcommand{\psensi}{p_\text{sens}^{(i)}}
+\newcommand{\ntot}{n_\text{tot}}
+\newcommand{\ndet}{n_\text{d}}
+\newcommand{\nnodet}{n_\text{u}}
+\newcommand{\pnodet}{p_\text{u}}
+\newcommand{\Npop}{N_\text{pop}}
+\newcommand{\Ncis}{N_\text{CIS}}
+\newcommand{\ncis}{\vec{n_\text{CIS}}}
+\newcommand{\na}{\vec{n}_\text{obs}}
+\newcommand{\pcis}{\vec{p_\text{CIS}}}
+%\newcommand{\sched}{\mathbb{T}}
+%\newcommand{\nsched}{n_{\sched}}
+\newcommand{\sched}{\mathcal{T}}
+\newcommand{\nsched}{|\sched{}|}
+\newcommand{\inform}{{_{\text{inform}}}}
+\newcommand{\posResults}{r_{+}}
+\newcommand{\negResults}{r_{-}}
+
+
+%% Bibliography
+% \usepackage[authordate-trad,backend=biber]{biblatex-chicago}
+% \addbibresource{references.bib}
+
+% Macros for common abbreviations to get the spacing right
+% See: https://stackoverflow.com/questions/3282319/correct-way-to-define-macros-etc-ie-in-latex
+\usepackage{xspace}
+\makeatletter
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+\def\eg{e.g\onedot} \def\Eg{{E.g}\onedot}
+\def\ie{i.e\onedot} \def\Ie{{I.e}\onedot}
+\def\cf{c.f\onedot} \def\Cf{{C.f}\onedot}
+\def\etc{etc\onedot} \def\vs{{vs}\onedot}
+\def\wrt{w.r.t\onedot} \def\dof{d.o.f\onedot}
+\def\etal{et al\onedot}
+\makeatother
+
+%% LINE NUMBERS
+\usepackage{lineno} % Include the package for line numbering
+\linenumbers % Activates line numbering for the document
+
+
+%----Helper code for dealing with external references----
+% (by cyberSingularity at http://tex.stackexchange.com/a/69832/226)
+
+\usepackage{xr}
+\makeatletter
+
+\newcommand*{\addFileDependency}[1]{% argument=file name and extension
+\typeout{(#1)}% latexmk will find this if $recorder=0
+% however, in that case, it will ignore #1 if it is a .aux or 
+% .pdf file etc and it exists! If it doesn't exist, it will appear 
+% in the list of dependents regardless)
+%
+% Write the following if you want it to appear in \listfiles 
+% --- although not really necessary and latexmk doesn't use this
+%
+\@addtofilelist{#1}
+%
+% latexmk will find this message if #1 doesn't exist (yet)
+\IfFileExists{#1}{}{\typeout{No file #1.}}
+}\makeatother
+
+\newcommand*{\myexternaldocument}[1]{%
+\externaldocument{#1}%
+\addFileDependency{#1.aux}%
+\addFileDependency{#1.tex}%
+}
+\myexternaldocument{main}
+%------------End of helper code--------------
+
+
+\begin{document}
+
+%\bibliographystyle{natbib}
+
+\def\spacingset#1{\renewcommand{\baselinestretch}%
+{#1}\small\normalsize} \spacingset{1}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\appendix
+
+\section{Derivations of quantities in \cref{sec:inference}} \label{sec:derivations}
+
+\subsection{Expressions in \cref{sec:inference}}
+
+First, the derivation of $p(\vec{\theta} \mid \na)$:
+\begin{align}
+p(\vec{\theta} \mid \na)
+&\propto p(\vec{\theta}) p(\na \mid \vec{\theta}) \\
+&= p(\vec\theta) \sum_{\ntot= \ndet}^{\infty} p(\ntot, \na \mid \vec{\theta}) \\
+&= p(\vec{\theta}) \sum_{\ntot=\ndet}^\infty p(\ntot \mid \vec{\theta}) p(\na \mid \ntot, \vec{\theta}) \\
+&= p(\vec{\theta}) \sum_{\ntot=\ndet}^\infty p(\ntot \mid \vec{\theta}) \frac{\ntot!}{(\ntot - \ndet)!} \pnodet^{\ntot - \ndet} \prod_{k \in \set{D}} p_k &\text{by \cref{perf-test:eq:multinomial}} \\
+&= p(\vec{\theta}) \left( \prod_{k \in \set{D}} p_k \right) \left( \sum_{\ntot=\ndet}^\infty p(\ntot \mid \vec{\theta}) \frac{\ntot!}{(\ntot - \ndet)!} \pnodet^{\ntot - \ndet} \right).
+\intertext{For convenience, define the summation term as:}
+\eta &= 
+\sum_{\ntot=\ndet}^\infty p(\ntot \mid \vec{\theta}) \frac{\ntot!}{(\ntot - \ndet)!} \pnodet^{\ntot - \ndet}. \label{perf-test:eq:eta}
+\end{align}
+
+Next, we derive an analytical solution to $\eta$ (defined in \cref{perf-test:eq:eta}) assuming the prior $\ntot \dist \NBc(\mu, r)$, and that it is independent of $\vec{\theta}$, the parameters of the survival distribution.
+Therefore, $p(\ntot \mid \vec{\theta}) = p(\ntot)$.
+This assumption makes $\eta$ analytically tractable, allowing computationally feasible inference.
+
+Putting a negative binomial prior on $\ntot$ is equivalent to the following gamma-Poisson composite; its use simplifies the derivation.
+\begin{align}
+\ntot \mid \lambda &\dist \Poi(\lambda) \\
+\lambda &\dist \GamDist(a, b)
+\end{align}
+where $b = r / \mu$ and $a = r$.
+Hence:
+\begin{align}
+\eta
+&= \int \sum_{\ntot=\ndet}^\infty \frac{\ntot!}{(\ntot-\ndet)!} \pnodet^{\ntot-\ndet} p(\ntot \mid \lambda) p(\lambda) d\lambda &\text{$\lambda$ explicit}\\
+&= \int \sum_{\ntot=\ndet}^\infty \frac{\ntot!}{(\ntot-\ndet)!} \pnodet^{\ntot-\ndet} \frac{\lambda^{\ntot} e^{-\lambda}}{\ntot!} p(\lambda) d\lambda &\ntot \dist \Poi\\
+%&= \int \sum_{\ntot=\ndet}^\infty \frac{1}{(\ntot-\ndet)!} \pnodet^{\ntot-\ndet} \lambda^{\ntot-\ndet} \lambda^{\ndet} e^{-\lambda} p(\lambda) d\lambda \\
+&= \int \lambda^{\ndet} e^{-\lambda} p(\lambda) \sum_{\nnodet=0}^\infty \frac{(\pnodet \lambda)^{\nnodet}}{\nnodet!} d\lambda &\nnodet = \ntot-\ndet\\
+&= \int \lambda^{\ndet} e^{-\lambda} p(\lambda) e^{\lambda \pnodet} d\lambda &\text{Maclaurin series of $e$} \\
+&= \int \lambda^{\ndet} e^{-\lambda(1 - \pnodet)} \frac{b^a}{\Gamma(a)} \lambda^{a-1} e^{-b\lambda} d\lambda &\lambda \dist \GamDist\\
+&= \int \frac{b^a}{\Gamma(a)} \lambda^{a+\ndet-1} e^{-(b+1-\pnodet)\lambda} d\lambda \\
+&= \frac{b^a}{\Gamma(a)} \frac{\Gamma(a+\ndet)}{(b+1-\pnodet)^{a+\ndet}} &\text{Gamma pdf}\\
+&\propto (b+1-\pnodet)^{-(a+\ndet)} &\text{only $p_u$ depends on $\theta$}\\
+&= (r/\mu + 1 - \pnodet)^{-(r+\ndet)} &\text{sub in $\mu$ and $r$}\\
+&\propto(r + \mu (1- \pnodet))^{-(r+\ndet)}.
+\end{align}
+
+\subsection{Expressions in \cref{sec:prob-undetected}}
+
+If $i_j = i_k$ then the event $O_j = \vec{\nu}_k$ occurs if and only if the episode starts in the interval $[l^{(b)}_k, r^{(b)}_k]$ and ends in the interval $[l^{(e)}_k, r^{(e)}_k]$.
+ on $\vec{\theta}$ and $i_j = i_k$, this gives:
+\begin{align}
+p_{ik}
+=& \prob \left( l_k^{(b)} \leq B_{j} \leq r_k^{(b)}, l_k^{(e)} \leq E_{j} \leq r_k^{(e)} \right) \\
+=& \prob \left( l_k^{(e)} \leq E_{j} \leq r_k^{(e)} \mid l_k^{(b)} \leq B_{j} \leq r_k^{(b)} \right) \times\prob \left( l_k^{(b)} \leq B_{j} \leq r_k^{(b)} \right) \\
+=& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \prob \left( l_k^{(e)} \leq E_{j} \leq r_k^{(e)} \mid B_{j} = b \right) \prob \left(B_{j} = b \right) \\
+=& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \prob \left( l_k^{(e)} - b + 1 \leq D_{j} \leq r_k^{(e)} - b + 1 \right) \prob \left(B_{j} = b \right) &\text{by def of $D_{j}$} \\
+=& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right) \prob \left(B_{j} = b \right) &\text{by def of $S_{\vec{\theta}}$} \\
+\propto& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right)
+\end{align}
+under the assumption of uniform probability of infection time.
+This is the standard form of the likelihood for doubly interval censored data without truncation~\citep[e.g.][]{sunEmpirical}.
+
+\subsection{Expression for $p_{u}$}
+
+\begin{align}
+  1 - p_u
+  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \varnothing, i_j = i \mid \vec{\theta}) \\
+  &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \varnothing \mid i_j = i, \vec{\theta}) P(i_j = i \mid \vec{\theta}) \\
+  &= 1 - \frac{1}{\Ncis}\sum_{i=1}^{\Ncis} \prob(O_j = \varnothing \mid i_j = i, \vec{\theta}) \\
+  &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \varnothing \mid i_j = i, \vec{\theta}))
+\end{align}
+
+\section{Derivation of quantities in \cref{sec:false-negatives}}
+
+\subsection{Expressions in \cref{imperf-test:sec:modifying-p_ia}} \label{sec:p-ia-dash}
+
+We proceed by first considering whether $E_j > r_k^{(e)}$ is the case and conditioning on $B_j = b$.
+Then, we combine the cases and remove the conditioning.
+
+First, the case when $E_j \leq r_k^{(e)}$.
+In this case, the test at $r_k^{(e)}+1$ is a true negative and the end of the episode is interval censored as in the previous chapter.
+% In this case, the test at $r_k^{(e)} + 1$ is a true negative, as are all other tests not in $\sched'_{k}$.
+The true negative occurs with probability 1, by the assumption of no false positives.
+\begin{align}
+&\prob(O'_j = \vec{\nu}_k', E_j \leq r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
+&= \prob(O'_j = \vec{\nu}_k', l_k^{(e)} \leq E_j \leq r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) &\text{the test at $l_k^{(e)}$ is positive} \\
+&= \prob(O'_j = \vec{\nu}_k' \mid l_k^{(e)} \leq E_j \leq r_k^{(e)}, B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
+&\ \ \  \times \prob(l_k^{(e)} \leq E_j \leq r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
+&= p_\text{sens}^{t_+} (1 - p_\text{sens})^{f_-} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right)
+\label{imperf-test:eq:ll-ei-lt-ri}
+\end{align}
+
+Second, the case when $E_j > r_k^{(e)}$.
+In this case, the test at $r_k^{(e)}+1$ is a false negative, occurring with probability $(1 - p_\text{sens})$.
+To avoid having to consider tests after $r_k^{(e)}$, which could greatly complicate the likelihood, we model this case as the episode being right censored at $r_k^{(e)}$.
+Taking the same approach as before:
+\begin{align}
+&\prob(O'_j = \vec{\nu}_k', E_j > r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
+&= \prob(O'_j = \vec{\nu}_k' \mid E_j > r_k^{(e)}, B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
+  &\ \ \  \times \prob(E_j > r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
+&= p_\text{sens}^{t_+} (1 - p_\text{sens})^{f_-} (1 - p_\text{sens}) S_{\vec{\theta}}(r_k^{(e)} - b + 2)
+\label{imperf-test:eq:ll-ei-gt-ri}
+\end{align}
+
+These expressions can now be used to derive $p'_{ik}$.
+First, augment the data with $b$, and split into the cases just discussed, omitting the conditioning on $\psens$, $\vec{\theta}$, and $i_j = i_k$:
+\begin{align}
+p_{ik}'
+=& \prob(O'_j = \vec{\nu}_k') \\
+=& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( \prob(O'_j = \vec{\nu}_k', E_j \leq r_k^{(e)} \mid B_j = b) + \prob(O'_j = \vec{\nu}_k, E_j > r_k^{(e)} \mid B_j = b) \right) \prob(B_j = b). \\
+\intertext{Now, substitute in \cref{imperf-test:eq:ll-ei-lt-ri,imperf-test:eq:ll-ei-gt-ri} and take out the common factor:}
+=\ &  p_\text{sens}^{t_+} (1 - p_\text{sens})^{f_-} \\
+ & \times \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) + (1 - p_\text{sens}) S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right) \\ 
+  & \times \prob(B_j = b \mid p_\text{sens}, \vec{\theta}) \\
+=\ &  p_\text{sens}^{t_+} (1 - p_\text{sens})^{f_-} \\
+  & \times \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - p_\text{sens} S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right) \\
+  & \times \prob(B_j = b \mid p_\text{sens}, \vec{\theta}).
+\label{imperf-test:eq:pia-prime}
+\end{align}
+Note that if $p_\text{sens} = 1$ then $p_{ik}' = p_{ik}$ (see \cref{perf-test:eq:pia}).
+
+We use a fixed $\psens$ (\ie a point prior) and $\prob(B_j = b \mid \psens, \vec{\theta}) \propto 1$ giving:
+\begin{align}
+p_{ik}'
+&\propto \sum_{b = l_k^{(b)}}^{r_k^{(b)}} S_{\vec{\theta}}(l_k^{(e)} - b + 1) - p_\text{sens} S_{\vec{\theta}}(r_k^{(e)} - b + 2).
+\end{align}
+Estimating $\psens$ is not possible in the current framework (see \cref{sec:discussion}).
+
+\subsection{Expressions in \cref{imperf-test:sec:modifying-p_iu}} \label{sec:p-iu-dash}
+
+The probability of one of the conditions that cause an episode to be missed (specified in \cref{imperf-test:sec:modifying-p_iu}) occurring, conditional on $B_j = b$ where $\min(\sched_{i_j}) < b \leq T_{i_j}$ is:
+\begin{align}
+&\prob \left(
+    \tau_{\sched_{i_j}}(b) + 1 \leq D_j \leq \tau^2_{\sched_{i_j}}(b)
+    \mid B_j = b, \vec{\theta} \right) (1 - \psens) \\
+&= \left( S_{\vec{\theta}}(\tau_{\sched_{i_j}}(b) + 1) - S_{\vec{\theta}}(\tau^2_{\sched_{i_j}}(b) + 1) \right) (1 - \psens).
+\end{align}
+Summing over $b$, in the same way as \cref{perf-test:eq:piu}, gives:
+\begin{align}
+\zeta = (1 - p_\text{sens})\frac{1}{T} \sum_{b=\min(\sched_{i_j}) + 1}^{T_{i_j}} \left( S_{\vec{\theta}}(\tau_{\sched_{i_j}}(b) + 1) - S_{\vec{\theta}}(\tau^2_{\sched_{i_j}}(b) + 1) \right).
+\label{imperf-test:eq:zeta}
+\end{align}
+
+$p_{iu}'$ is the probability of episode $i$ being undetected, considering both the previous and new mechanisms.
+The previous and new mechanisms are mutually exclusive.
+Hence, $p_{iu}'$ is the sum of these, $p_{iu}' = p_{iu} + \zeta$.
+As previously, $1 - p_{iu}'$ is the required quantity.
+\begin{align}
+1 - p_{iu}'
+=& 1 - p_{iu} - \zeta \\
+% =& \frac{1}{T} \sum_{b = \min \sched_{i} + 1}^{T_{i_j}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1) \\
+% &- (1 - p_\text{sens})\frac{1}{T} \sum_{b=\min(\sched_{i_j}) + 1}^{T_{i_j}} \left( S_{\vec{\theta}}(\tau_{\sched_{i_j}}(b) + 1) - S_{\vec{\theta}}(\tau^2_{\sched_{i_j}}(b) + 1) \right) \\
+=& \frac{1}{T} \sum_{b=\min(\sched_{i_j}) + 1}^{T_{i_j}} \left( p_\text{sens} S_{\vec{\theta}}(\tau_{\sched_{i_j}}(b) + 1) + (1 - p_\text{sens}) S_{\vec{\theta}}(\tau^2_{\sched_{i_j}}(b) + 1)\right).
+\end{align}
+
+\section{ATACCC-based prior} \label{sec:ataccc-prior}
+
+Reliable estimates of $\lambda_t$ for $t$ up to around 20 are available from a prior analysis of data from The Assessment of Transmission and Contagiousness of COVID-19 in Contacts (ATACCC) study~\citep{hakkiOnset}, which tested individuals who had been exposed to infection daily up to a maximum of 20 days.
+The infrequent testing in CIS means that there is a lack of information about short infection episodes, and hence we use these estimates as informative priors.
+
+When constructing the prior, two aspects need consideration.
+Firstly, the model structure from the ATACCC-based analysis leads to its posterior distribution having a positive correlation between $\lambda_t$ and $\lambda_{t'}$, especially for small $|t-t'|$.
+The prior used in this analysis should preserve this correlation.
+Secondly, the uncertainty in the prior estimates for $\lambda_t, t\geq20$ are underestimated because they are based on extrapolation of the ATACCC data using strong model assumptions.
+
+We first approximate the previous posterior estimate of the hazard as $\logit{\vec{h}} \dist \MNorm(\vec{\mu}_A, \matr{\Sigma}_A)$ where $\vec{h}$ is the hazard, and $\vec{\mu}_A$ and $\matr{\Sigma}_A$ are the mean and covariance matrix estimated using samples of $\logit{\vec{h}}$ from the previous study's posterior.
+Using a multivariate normal, as opposed to multiple univariate distribution for each $h_t$, preserves the correlation between the hazards.
+% The logit transformation maps from the $[0, 1]$ interval to the full real line.
+The approximation is very good (not shown).
+
+Having approximated the estimate as a multivariate normal, we add additional uncertainty using a discrete Beta process.
+The discrete Beta process prior~\citep{ibrahimBayesian,sunStatisticala} generalises the form of prior used in the weakly informative case by allowing the central estimate of the hazard to vary over time.
+It is:
+\begin{align}
+  \logit \vec{h} &\dist \MNorm(\vec{\mu}_A, \matr{\Sigma}_A) \\
+  \lambda_t &\dist \text{Beta}(\alpha_t, \beta_t) &t = 1, 2, \dots \\
+  \alpha_t &= k_t h_t + \alpha_0 \\
+  \beta_t &= k_t (1 - h_t) + \beta_0
+\end{align}
+where $k_t$, $\alpha_0$, and $\beta_0$ are hyperparameters.
+An intuition for what this distribution represents derives from a conjugate model for $\lambda_t$ with a beta prior and a binomial likelihood.
+If $\lambda_t$ is given the prior distribution $\text{Beta}(\alpha_0, \beta_0)$, and we then have $k_t$ observations with $k_t h_t$ successes, then the posterior distribution for $\lambda_t$ is $\text{Beta}(\alpha_t, \beta_t)$ (as defined above).
+
+$k_t$ reflects the subjective belief that $h_t$ is a good estimate of $\lambda_t$ for small $t$ but increasingly unreliable.
+\begin{align}
+k_t = \begin{cases}
+  \expit(-0.4 * (t - 20)) &\text{for $t \leq 39$} \\
+  0 &t > 39
+\end{cases}.
+\end{align}
+
+\section{Distribution of duration used in simulation} \label{sec:simulation-truth}
+
+The simulation requires a distribution of the duration of detectability.
+We modify the ATACCC-based duration estimate from \citet[chapter 4]{blakeThesis} with an inflated tail to be consistent with the CIS.
+The tail inflation uses a simple survival analysis and the CIS data.
+
+This analysis assumes the initiating event is known, and equal to the episode’s detection time, $j_j^{(b)}$.
+It assumes the final event is interval censored between the time of the final positive test and the subsequent negative test, or right censored if a negative test has not yet been observed.
+A flexible, spline-based form is used for the baseline survival function~\citep{roystonSTPM,roystonFlexible} with covariates introduced via proportional odds.
+By not accounting for either the undetected infections or the interval censoring of the initiating event, this analysis has competing biases which makes them hard to interpret~\citep{cisMethodsONS}.
+
+To form the duration distribution used in the simulation, we combine the two estimates.
+The pdf over the first 30 days is proportional to the ATACCC estimate, with the rest proportional to this CIS-based estimate.
+Denote by $f_A(t)$ the ATACCC-based distribution function and $f_C(t)$ that from the CIS-based estimates just derived.
+Then define:
+$$
+f_S'(t) = \begin{cases}
+	f_A(t) &t \leq 30 \\
+	f_C(t) &t > 30
+\end{cases}
+$$
+Then the distribution used in the simulation is the normalised version of this: $f_S(t) = f'_S(t)/\sum_i f_S'(i)$.
+% These curves and the combined curve are compared in \cref{perf-test:fig:duration-dist}.
+Episode $j$'s duration of detectability is then a draw from this distribution.
+
+\end{document}
