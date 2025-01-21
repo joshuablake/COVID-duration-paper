@@ -55,36 +55,31 @@ truth = readRDS(here::here("data/input_curves.rds")) |>
 
 p_constant_sensitivity = tbl_posteriors |>
     filter(sensitivity.simulation == sensitivity.model, sensitivity.simulation < 1) |>
-    base_plot(survival_prior)
+    base_plot(survival_prior) +
+    theme(legend.position = "right")
 ggsave(
     filename = here::here("figures/output/sim-constant-sensitivity.pdf"),
     plot = p_constant_sensitivity,
     width = 15,
-    height = 9,
+    height = 6,
     units = "cm",
     dpi = 300
 )
 
 p_misspecified_sensitivity = tbl_posteriors |>
     filter(sensitivity.simulation == 0.8, survival_prior == "Strong") |>
-    base_plot(sensitivity.model, colour_key = expression(p[sens]^`(i)`), facet_suffix = "^{(i)}")
-ggsave(
-    filename = here::here("figures/output/sim-misspecified-sensitivity.pdf"),
-    plot = p_misspecified_sensitivity,
-    width = 15,
-    height = 9,
-    units = "cm",
-    dpi = 300
-)
+    base_plot(sensitivity.model, colour_key = expression(p[sens]^`(i)`), facet_suffix = "^{(i)}") +
+    theme(legend.position = "none")
 
 p_variable_sensitivity = tbl_posteriors |>
     filter(is.na(sensitivity.simulation), survival_prior == "Strong") |>
     base_plot(sensitivity.model, colour_key = expression(p[sens]^`(i)`), facet_suffix = "^{(i)}")
+
 ggsave(
-    filename = here::here("figures/output/sim-variable-sensitivity.pdf"),
-    plot = p_variable_sensitivity,
+    filename = here::here("figures/output/sim-sensitivity.pdf"),
+    plot = p_misspecified_sensitivity / p_variable_sensitivity,
     width = 15,
-    height = 9,
+    height = 13,
     units = "cm",
     dpi = 300
 )

@@ -16,7 +16,7 @@ plot_testing_schedule = function(x, break_modifier = 0) {
   scale_colours = scale_colours[unique(x$type)]
   scale_shapes = c(
     test = 4,
-    positive = 4,
+    positive = 3,
     negative = 4,
     infected = 20,
     recovered = 20
@@ -31,10 +31,11 @@ plot_testing_schedule = function(x, break_modifier = 0) {
   
   p = x %>% 
     ggplot(aes(time, individual)) +
-    geom_point(aes(shape = type, colour = type), size = 2, stroke = 2) +
+    geom_point(aes(shape = type, colour = type), size = 1.5, stroke = 2) +
     geom_hline(aes(yintercept = individual), colour = "grey") +
     scale_y_discrete() +
-    scale_x_continuous(breaks = NULL, minor_breaks = x_breaks) +
+    scale_x_continuous(breaks = NULL, minor_breaks = x_breaks,
+      limits = c(-3, 84)) +
     scale_shape_manual(values = scale_shapes) +
     scale_colour_manual(values = scale_colours) +
     xlab("Time") +
@@ -48,7 +49,8 @@ plot_testing_schedule = function(x, break_modifier = 0) {
       axis.text = element_text(size = 10),
       axis.title = element_text(size = 10),
       panel.grid.major = element_line(colour = "black"),
-      legend.text = element_text(size = 10)
+      legend.text = element_text(size = 10),
+      legend.margin = margin(t = -10)
     )
   
   if (nrow(inf_boxes) > 0) {
@@ -77,11 +79,11 @@ p_censor = tibble(
   mutate(individual = 1) %>% 
   plot_testing_schedule() +
   annotate("rect", xmin = 8, xmax = 14, ymin = 0.5, ymax = 1.5, alpha = 0.3, fill = "grey") +
-  annotate("text", x = 8, y = 0.1, label = TeX("$l_j^{(b)}$")) +
-  annotate("text", x = 14, y = 0.1, label = TeX("$r_j^{(b)}$")) +
+  annotate("text", x = 8, y = -0.5, label = TeX("$l_j^{(b)}$")) +
+  annotate("text", x = 14, y = -0.5, label = TeX("$r_j^{(b)}$")) +
   annotate("rect", xmin = 28, xmax = 55, ymin = 0.5, ymax = 1.5, alpha = 0.3, fill = "grey") +
-  annotate("text", x = 28, y = 0.1, label = TeX("$l_j^{(b)}$")) +
-  annotate("text", x = 55, y = 0.1, label = TeX("$r_j^{(b)}$"))
+  annotate("text", x = 28, y = -0.5, label = TeX("$l_j^{(b)}$")) +
+  annotate("text", x = 55, y = -0.5, label = TeX("$r_j^{(b)}$"))
 
 p_truncation = expand_grid(
   time = c((0:3) * 7, (1:3) * 28),
@@ -123,14 +125,14 @@ p_missed = tibble(
 
 final_plot = p_truncation / p_missed / p_censor +
   plot_annotation(tag_levels = 'A') +
-  plot_layout(heights = c(2, 1, 1.3)) &
+  plot_layout(heights = c(1.6, 1, 1.3)) &
   theme(plot.margin = margin(0))#, plot.tag.position = c(0.01, 0.7))
 
 ggsave(
   filename = "figures/output/challenges.pdf",
   plot = final_plot,
   width = 6,
-  height = 4,
+  height = 2,
   dpi = 300,
   unit = "in"
 )

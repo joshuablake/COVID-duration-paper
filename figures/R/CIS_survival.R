@@ -116,12 +116,13 @@ p_final = final_curve |>
     labs(
         fill = "",
         colour = ""
-    )
+    ) +
+    theme(legend.position = "right")
 ggsave(
     filename = here::here("figures/output/CIS_final.pdf"),
     plot = p_final,
     width = 15,
-    height = 9,
+    height = 6,
     units = "cm",
     dpi = 300
 )

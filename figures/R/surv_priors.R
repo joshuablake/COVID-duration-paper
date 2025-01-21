@@ -127,15 +127,14 @@ prior_predictive_plot = bind_rows(
         y = "S",
         colour = "",
         fill = ""
-    ) +
-    theme(legend.position = "bottom")
+    )
 
 ggsave(
   filename = here::here("figures", "output", "prior_predictive_survival.pdf"),
   plot = prior_predictive_plot,
   device = cairo_pdf,
   width = 15,
-  height = 9,
+  height = 6,
   units = "cm",
   dpi = 300
 )

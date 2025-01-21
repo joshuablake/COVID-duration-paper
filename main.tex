@@ -41,6 +41,9 @@
 \npdecimalsign{.}
 % \usepackage{microtype}
 
+% Formatting
+\usepackage[font=small,skip=1pt]{caption} 
+
 % Generic maths commands
 \def\reals{\mathbb{R}}
 \def\nats{\mathbb{N}}
@@ -267,9 +270,9 @@ The end of the episode is similarly interval censored and hence the data is doub
   \makebox[\textwidth][c]{\includegraphics{figures/output/challenges}}
   \caption{%
     Challenges posed by the CIS design.
-    (A) An undetected episode in the bottom individual.
-    (B) An excluded episode because the individual is positive at their first test.
-    (C) Doubly interval censored episodes, shaded regions indicate the censoring bounding the start between $l_j^{(b)}$ and $r_j^{(b)}$, and the end between $l_j^{(e)}$ and $r_j^{(e)}$ (defined mathematically later).
+    (A) Undetected episodes.
+    (B) Individuals positive at their first test.
+    (C) Doubly interval censored episodes, shaded regions indicate bounding regions (notation formally defined later).
   }
   \label{fig:challenges}
 \end{figure}
@@ -755,7 +758,7 @@ This is likely caused by too large a violation of the simplifying assumptions ma
 \begin{figure}
   \includegraphics[width=\textwidth]{figures/output/sim-constant-sensitivity}
   \caption[Simulation study results with constant test sensitivity]{%
-    Posterior (median and 95\% credible interval (CrI)) of the survival time for the simulation study with a correctly specified test sensitivity.
+    Posterior (median and 95\% credible interval (CrI)) survival time for the simulation study with a correctly specified test sensitivity.
     True survival time shown in black.
   }
   \label{imperf-test:fig:constant-test-sensitivity}
@@ -763,31 +766,27 @@ This is likely caused by too large a violation of the simplifying assumptions ma
 
 Next, we considered the consequence of $\psens$ being misspecified and using the strongly informative prior, the better performing prior in the correctly specified case.
 If the test sensitivity is misspecified then the estimate of the survival distribution is biased.
-If $\psensi < \psenss$, then the posterior estimate initially follows the true value but then separates (see \cref{imperf-test:fig:misspecified-test-sensitivity}(A)).
+If $\psensi < \psenss$, then the posterior estimate initially follows the true value but then separates (see \cref{imperf-test:fig:test-sensitivity}(A)).
 The number of episodes inferred to have truly ended by the first negative is too low, and hence the survival function is overestimated.
 This effect dominates over the opposing bias of overestimating the number of undetected episodes.
-The opposite occurs if $\psensi > \psenss$, although the posterior moves away from the truth earlier (see \cref{imperf-test:fig:misspecified-test-sensitivity}(C)).
+The opposite occurs if $\psensi > \psenss$, although the posterior moves away from the truth earlier (see \cref{imperf-test:fig:test-sensitivity}(C)).
 \begin{figure}
-  \includegraphics[width=\textwidth]{figures/output/sim-misspecified-sensitivity}
-  \caption[Simulation study results with misspecified test sensitivity]{%
-    Posterior (median and 95\% CrI) of the survival time.
+  \includegraphics[width=\textwidth]{figures/output/sim-sensitivity}
+  \caption[Simulation study results with varying test sensitivity]{%
+    Posterior (median and 95\% CrI) survival time.
     The true survival time is shown in black.
-    All results use $\psenss = 0.8$, but $\psensi$ varies, as per panel labels.
+    $\psensi$ is indicated on the panel labels.
+    (A-C) $\psenss = 0.8$.
+    (D-F) $\psenss = v$.
   }
-  \label{imperf-test:fig:misspecified-test-sensitivity}
+  \label{imperf-test:fig:test-sensitivity}
 \end{figure}
 
-The results when $\psenss = v$ are similar to $\psenss = 0.8$ (see \cref{imperf-test:fig:variable-test-sensitivity}).
+The results when $\psenss = v$ are similar to $\psenss = 0.8$ (see \cref{imperf-test:fig:test-sensitivity}).
 This suggests that the simplified model, with constant test sensitivity, is sufficient for recovering the true survival time.
 % Estimating the test sensitivity is not possible without a more complex model, as discussed in \cref{imperf-test:sec:discussion}.
 Therefore, we conclude that including a varying test sensitivity is not required for adequate inference, and apply it to the real CIS data in the next section.
 \begin{figure}
-  \includegraphics[width=\textwidth]{figures/output/sim-variable-sensitivity}
-  \caption[Simulation study results with varying test sensitivity]{%
-    Posterior (median and 95\% CrI) of the survival time.
-    $\psensi$ is indicated on the panel label, $\psenss = v$.
-  }
-  \label{imperf-test:fig:variable-test-sensitivity}
 \end{figure}
 
 \section{Application to the CIS data} \label{sec:CIS}
@@ -867,11 +866,10 @@ Days from first positive & \citet{killingleySafety}  & ATACCC-based     & Ours  
 88                       & 0\% (0--19\%)     & N/A              & 1.5\% (0.97--2.1\%)
 \end{tabular}
 \caption{
-    Comparing three sources of estimates of survival time.
-    \Citet{killingleySafety} is a human challenge trial, which reports the proportion positive at days since individuals were inoculated.
-    We present days since first positive by assuming a two day time from inoculation to positive, as reported in the paper, and calculate 95\% binomial confidence intervals using the Clopper--Pearson method~\citep{clopperUse}.
-    ATACCC-based is the median and 95\%CrI based on \citet{hakkiOnset}'s data (see \cref{sec:ataccc-prior}); the analysis does not extend to 88 days.
-    Ours is our final posterior median and 95\% CrI (see \cref{sec:CIS}).
+    Comparison of survival time estimates from
+    \Citet{killingleySafety} (assuming a two day time from inoculation to positive with 95\% binomial confidence intervals using the Clopper--Pearson method~\citep{clopperUse}).
+    ATACCC-based is from \cref{sec:ataccc-prior}; the analysis does not extend to 88 days.
+    Ours is our final posterior (see \cref{sec:CIS}).
 }
 \label{tab:compare-survival}
 \end{table}
