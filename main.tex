@@ -40,6 +40,7 @@
 \npfourdigitnosep
 \npdecimalsign{.}
 % \usepackage{microtype}
+\usepackage{sidecap}
 
 % Formatting
 \usepackage[font=small,skip=1pt]{caption} 
@@ -226,15 +227,16 @@ Monitoring the incidence of new infections during a pandemic is critical for eff
 \section{Introduction} \label{sec:intro}
 
 The COVID-19 pandemic caused by the SARS-CoV-2 virus is, to the end of 2021, estimated to have killed approximately 30 million people globally~\citep{whoCOVIDExcess,economistCOVIDExcess}, stretched healthcare services to the brink of collapse~\citep{fongNHS}, and disrupted societies worldwide.
-This pandemic highlighted the critical need for an effective public health response, informed by quantifying both the current and future burden. One such key quantity is the \emph{incidence of infection}, defined as the rate at which new infections occur, which drives important health outcomes such as the number of symptomatic cases, hospital admissions and deaths. 
+This pandemic highlighted the critical need for an effective public health response, informed by key quantities such as the \emph{incidence of infection}, defined as the rate at which new infections occur, which drives important health outcomes such as the number of symptomatic cases, hospital admissions and deaths. 
 
 
-Incidence of infection can be estimated through convolution approaches {\it e.g.} ~\citep{brookmeyerBackcalculation},  which relate observations of a disease outcome with its incidence through a delay distribution.
-In the context of SARS-CoV-2, this approach allows estimation of incidence based on: a time series of the proportion of the population that have a detectable infection; and the distribution of the duration of infection episodes, \ie the length of time an infection remains detectable using a particular test.
+Incidence of infection can be estimated through convolution approaches~\citep[e.g.][]{brookmeyerBackcalculation},  which relate observations of a disease outcome with its incidence through a delay distribution.
+In the context of SARS-CoV-2, this approach requires: a time series of the proportion of the population that have a detectable infection; and the distribution of the duration of infection episodes, \ie the length of time an infection remains detectable using a particular test.
 As SARS-CoV-2 is detected by performing RT-PCR testing on an appropriate biological sample (\eg a nasal swab), this duration is the period over which an infected individual would return a positive RT-PCR result.
 In the UK, estimates of the proportion of the population that have detectable levels of the virus are available from
 large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
-Here, we estimate the distribution of the duration of infection episodes.Previous work on duration estimation~\citep[e.g.][]{cevikShedding, ealesCharacterising,hellewellPCRSensitivity} has been based on a meta analysis of studies with short follow-ups, reporting a mean duration of detectability of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}, included only hospitalised patients and/or had unclear inclusion criteria, ~\citep{ealesCharacterising,hellewellPCRSensitivity} and hence may not be representative of the general population.
+Here, we estimate the distribution of the duration of infection episodes.
+Previous work on duration estimation~\citep[e.g.][]{cevikShedding, ealesCharacterising,hellewellPCRSensitivity} has been based on a meta analysis of studies with short follow-ups, reporting a mean duration of detectability of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}, included only hospitalised patients and/or had unclear inclusion criteria, ~\citep{ealesCharacterising,hellewellPCRSensitivity} and hence may not be representative of the general population.
 % Furthermore, studies tend to have short follow-up and may not provide good estimates of the mean duration of positivity, which is a right-skewed distribution.
 % For backcalculation, the mean is the most important feature~\citep{freemanPrevalence}, but results can be sensitive to the entire distribution.
 
@@ -504,14 +506,14 @@ An episode $j$ in individual $i_j$ is detected if and only if all the following 
     \item 
     $t\in[B_j, E_j]$ for some $t \in \sched_{i_j}$;
     % $\exists t \in \sched_{i_j}$ such that $b_j \leq t \leq e_j$; 
-    this condition is equivalent to having at least one positive test for the episode.
+    \ie there is at least one positive test for the episode.
     \item $B_j > \min ( \sched_{i_j} )$.
-      For individuals enrolled during the period considered ($\min \sched_{i_j} > 0$), this ensures that the beginning of the episode is lower bounded; thereby adjusting for those who enrolled during the period being less likely to have a detected infection.
+      For individuals enrolled during the period considered ($\min \sched_{i_j} > 0$), this ensures that the beginning of the episode is lower bounded.
       For individuals enrolled prior to the period considered ($\min \sched_{i_j} \leq 0$), this means that the episode was not detected prior to time 1.
     \item $B_j \leq T_{i_j}$ where $T_{i_j} = \max \{ t \in \sched_{i_j} \ssep t \leq T \}$ is the last time that $i_j$ is tested in the period, meaning that the test is detected within the period.
     \item $\exists t \in \sched_{i_j}$ such that $t > E_j$, upper bounding the end of the episode.
       For episodes detected in the period we consider, a negligible number of episodes are excluded due to this criteria (<5\% of detected episodes, themselves likely around 15\% of all episodes).
-      It only occurs in individuals lost to follow-up; therefore, we neglect this possibility.
+      Therefore, we assume this occurs with probability 0.
       % For a new context, including recent infections, this condition could be relaxed by considering episodes that do not meet this criterion as right censored.
 \end{enumerate}
 
@@ -549,7 +551,6 @@ For computational efficiency, note that this can be rewritten as:
   1- p_u
   &\propto \sum_{t=1}^{\dmax} S_{\vec\theta}(t) m_t
   \label{eq:Sm-sum}
-\intertext{where}
   m_t &= \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i}} \indicator(\tau_{\sched_{i}}(b) + 1 = t)
 \end{align}
 where $\indicator$ is the indicator function taking the value $1$ when the statement in its argument is true and $0$ otherwise.
@@ -831,11 +832,11 @@ When increasing the prior's strength, the posterior estimate moves towards the p
 As discussed previously, the prior information is reliable for the first 2--3 weeks, notably including the median time.
 The median using $r\inform$ matched the prior's median estimate and is a principled choice because it is based directly on the previous posterior estimate~\citet{birrellRTM2}.
 Therefore, we recommend this estimate, which has a mean survival time of 21.2 days (95\% CrI: 20.5--21.9).
-\begin{figure}
+\begin{SCfigure}
   \centering \includegraphics{figures/output/CIS_ntot}
   \caption[Sensitivity of $\ntot$'s posterior to its prior.]{How the posterior estimate of $\ntot$ changes with the value of $r$ in the prior on $\ntot$.}
   \label{imperf-test:fig:ntot}
-\end{figure}
+\end{SCfigure}
 
 
 \section{Discussion} \label{sec:discussion}
@@ -844,18 +845,20 @@ This work is motivated by the challenge of exploiting data from the CIS, a uniqu
 This is a key component in the estimation of incidence of infection and has an essential role in informing pandemic mitigation strategies such as isolation.
 
 To estimate duration, we extended the survival analysis framework in \citet{heiseyModelling} to deal with the CIS design. The result is new methodology to analyse doubly censored data with imperfect test sensitivity and undetected events, when these undetected events occur with an arbitrary pattern in known individuals.
-We estimate a non-parametric discrete-time survival distribution in a fully Bayesian framework.
-These estimates incorporate data from a complementary study, ATACCC, through the use of an appropriately-discounted prior.
+We estimate a non-parametric discrete-time survival distribution in a fully Bayesian framework and incorporate data from a complementary study, ATACCC, through an appropriately-discounted prior.
 
-These CIS data are unique, and the study may serve as a template for population prevalence studies in future pandemics~\citep{Module}.
-Accordingly, our methodological framework, which is generic, could be used to analyse these studies.
+These CIS data are unique, but the study may serve as a template for studies in future pandemics~\citep{hallettModule}.
+Our methodological framework is generic; therefore, it could be used to analyse these studies.
 Furthermore, the simulation framework we developed can assist with designing more efficient studies, for example embedding an intensive, ATACCC-like study with a CIS-like study.
 
 We estimate a mean duration of 21.2 days (95\% CrI: 20.5--21.9) with 5.3\% (95\% CrI: 3.5--7.4\%) of episodes lasting 50 days or longer.
-The proportion of long episodes is higher than using data from other studies (see \cref{tab:compare-survival}), leading to a longer mean.
-However, these studies could not accurately quantify the proportion of long episodes because of a lack of long-term follow-up and/or small sample size.
+The proportion of long episodes is higher than previous estimates (see \cref{tab:compare-survival}), leading to a longer mean.
+However, previous studies did not accurately quantify the proportion of long episodes because of a lack of long-term follow-up and/or small sample size.
 Additionally, CIS has a broader population base, including older individuals and those with more co-morbidities who may have longer durations.
-Long episodes are unlikely to be infectious~\citep{killingleySafety,singanayagamDuration}, but change the interpretation of positive test results, determine how long population positivity remains high following a peak in infections and, crucially, the longer mean duration implies lower incidence when estimated from known prevalence.
+Therefore, our estimates are more robust.
+Crucially, the longer mean duration implies lower incidence when estimated from known prevalence.
+
+% Long episodes are unlikely to be infectious~\citep{killingleySafety,singanayagamDuration}, but change the interpretation of positive test results, determine how long population positivity remains high following a peak in infections and, crucially, the longer mean duration implies lower incidence when estimated from known prevalence.
 \begin{table}[]
 \centering
 \begin{tabular}{llll}
@@ -874,21 +877,20 @@ Days from first positive & \citet{killingleySafety}  & ATACCC-based     & Ours  
 \end{table}
 
 Our methodology depends on several assumptions.
-An important one is that infection episodes are independent, which is a simplification of the real-world in several ways.
-The times infection episodes begin are correlated between different individuals.
+An important one is that infection episodes are independent, a simplification because infection episodes start times are correlated between different individuals.
 During an epidemic, there are periods of time when all individuals are at higher risk of infection, due to the disease having a high prevalence in the population.
-To mitigate this issue, we chose a period of time when prevalence did not change too much.
+We mitigated this issue by choosing a period of time when prevalence was fairly constant.
 In addition, we conducted a sensitivity analysis to the simulation study allowing underlying infection rates to either grow or shrink exponentially; these did not make a substantial difference to the estimates (not shown).
 However, this non-independence is further complicated by the household structure of the CIS.
 Individuals in the same household are likely to infect each other, and hence have clustered times at which their infection episodes begin.
 Additionally, they have similar or the same testing schedules (due to the CIS study design).
-The likely affect of this is that the uncertainty in our estimates is underestimated, although it should not bias our estimates.
-Further work could consider the impact of this issue more rigorously.
+The likely affect of this is that the uncertainty in our estimates is underestimated, although it should not introduce bias.
+Further work could quantify the impact of this issue.
 
 Infection episodes within the same individual also affect each other.
 An infected individual who recovers is less likely to be infected in the future, due to having some immunity to the disease.
 Additionally, the multinomial likelihood proposed in \cref{sec:inference} allows the possibility of concurrent infections; however, these would appear in the dataset as the same infection episode.
-In contrast, the simulated data allowed each individual to experience at most one infection, a plausible assumption over the short period of time considered~\citep{milneImmunity}.
+In contrast, the simulated data allowed each individual to experience at most one infection, which is likely as we consider a short period of time~\citep{milneImmunity}.
 Despite this, in the simulation study without false negatives, the method we propose recovered the true survival function.
 Therefore, it is unlikely that assuming independence of infection episodes in the same individual matters, possibly due to the large number of individuals without detected episodes.
 Further work could explore alternative assumptions, \eg a ``full immunity'' assumption limiting each individual to one episode in the period.
