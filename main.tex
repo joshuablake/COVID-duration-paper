@@ -225,7 +225,7 @@ Monitoring the incidence of new infections during a pandemic is critical for eff
 \spacingset{1.9} % DON'T change the spacing!
 \section{Introduction} \label{sec:intro}
 
-The COVID-19 pandemic caused by the SARS-CoV-2 virus is, to the end of 2021, estimated to have killed approximately 30 million people globally~\citep{whoCOVIDExcess,economistCOVIDExcess}, stretched healthcare services to the brink of collapse~\citep{fongNHS}, and disrupted societies worldwide.
+The most acute phase of the COVID-19 pandemic (to the end of 2021) caused by the SARS-CoV-2 virus is estimated to have killed approximately 30 million people globally~\citep{whoCOVIDExcess}, stretched healthcare services to the brink of collapse~\citep{fongNHS}, and disrupted societies worldwide.
 This pandemic highlighted the critical need for an effective public health response, informed by quantifying both the current and future burden. One such key quantity is the \emph{incidence of infection}, defined as the rate at which new infections occur, which drives important health outcomes such as the number of symptomatic cases, hospital admissions and deaths. 
 
 
@@ -234,7 +234,7 @@ In the context of SARS-CoV-2, this approach allows estimation of incidence based
 As SARS-CoV-2 is detected by performing RT-PCR testing on an appropriate biological sample (\eg a nasal swab), this duration is the period over which an infected individual would return a positive RT-PCR result.
 In the UK, estimates of the proportion of the population that have detectable levels of the virus are available from
 large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
-Here, we estimate the distribution of the duration of infection episodes. Previous work on duration estimation~\citep[e.g.][]{cevikShedding, ealesCharacterising,hellewellPCRSensitivity} has been based on a meta analysis of studies with short follow-ups, reporting a mean duration of detectability of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}, included only hospitalised patients and/or had unclear inclusion criteria, ~\citep{ealesCharacterising,hellewellPCRSensitivity} and hence may not be representative of the general population.
+Here, we estimate the distribution of the duration of infection episodes. Previous work on duration estimation has been based on a meta analysis of studies with short follow-ups, reporting a mean duration of detectability of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}, included only hospitalised patients and/or had unclear inclusion criteria, ~\citep{ealesCharacterising,hellewellPCRSensitivity} and hence may not be representative of the general population.
 % Furthermore, studies tend to have short follow-up and may not provide good estimates of the mean duration of positivity, which is a right-skewed distribution.
 % For backcalculation, the mean is the most important feature~\citep{freemanPrevalence}, but results can be sensitive to the entire distribution.
 
@@ -314,11 +314,11 @@ The inclusion of false negatives into survival analysis is an area of much inter
 \citet{piresIntervalMisclassify} providing a comprehensive review of approaches. However, including false negatives with either doubly interval censored data or missed events has not been addressed. The CIS data require both.
 
 Here, we adopt a Bayesian survival analysis framework to estimate the distribution of infection episode durations from the CIS data.
-A Bayesian approach allows incorporation of prior knowledge to address the lack of information over short episodes~\citep{caoBias}; uncertainty quantification, which is otherwise challenging in this setting~\citep{sunStatistical,dengNonparametric}; and it provides the ability to include the undetected infections through data augmentation.
+A Bayesian approach can incorporate prior knowledge to provide information on short episodes~\citep{caoBias}; uncertainty quantification, which is otherwise challenging in this setting~\citep{sunStatistical,dengNonparametric}; and the ability to include the undetected infections through data augmentation.
 
 The paper is structured as follows: we start by describing the design of the CIS and the data it collects in \cref{sec:data}, then develop the survival analysis framework in \cref{sec:modelling}.
 In \cref{sec:false-negatives}, we extend the framework to incorporate false negative tests and in \cref{sec:parameters-priors} propose two possible priors for the survival time.
-We test the framework in a simulation study in \cref{sec:simulation}, apply it to the CIS data in \cref{sec:CIS}, and conclude with a discussion in \cref{sec:discussion}.
+We test the framework in a simulation study in \cref{sec:simulation}, apply it in \cref{sec:CIS}, and conclude with a discussion in \cref{sec:discussion}.
 
 
 \section{Study design and data} \label{sec:data}
@@ -671,9 +671,9 @@ We consider two priors (depicted in \cref{fig:priors}), with varying degrees of 
 \end{figure}
 
 The first prior for $S_{\vec{\theta}}$ is weakly informative, centred on prior estimates.
-Specifically, we assume an independent prior distribution for each $\lambda_t$ of Beta(0.1, 1.9), which has mean 0.05 and little information (standard deviation of 0.13).
-The central 95\% probability mass of Beta(0.1, 1.9) is 0.00--0.47.
-The central estimate, of 0.05, is in line with previous estimates that the median duration in the range 15--20 days~\citep{cevikShedding}.
+Specifically, we assume an independent prior distribution for each $\lambda_t$ of Beta(0.1, 1.9).
+This distribution has mean 0.05, little information (standard deviation of 0.13), and a central 95\% probability mass of 0.00--0.47.
+The mean is in line with previous estimates of the median duration~\citep{cevikShedding}.
 
 The second is a strongly informative prior; it incorporates prior information from reliable estimates of $\lambda_t$ for $t < 20$.
 We take a previous Bayesian analysis~\citep{blakeThesis} of data from The Assessment of Transmission and Contagiousness of COVID-19 in Contacts (ATACCC) study~\citep{hakkiOnset}, which tested individuals who had been exposed to infection daily up to a maximum of 20 days.
