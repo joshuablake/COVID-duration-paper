@@ -226,12 +226,12 @@ The COVID-19 pandemic caused by the SARS-CoV-2 virus is, to the end of 2021, est
 This pandemic highlighted the critical need for an effective public health response, informed by quantifying both the current and future burden. One such key quantity is the \emph{incidence of infection}, defined as the rate at which new infections occur, which drives important health outcomes such as the number of symptomatic cases, hospital admissions and deaths. 
 
 
-Incidence of infection can be estimated through convolution approaches {\it e.g.} ~\citep{brookmeyerBackcalculation},  which relate observations of a disease outcome with its incidence through a delay distribution.
+Incidence of infection can be estimated through convolution approaches {\it e.g.} ~\citep{brookmeyerBackcalculation},  which relate observations of disease outcomes with incidence through a delay distribution.
 In the context of SARS-CoV-2, this approach allows estimation of incidence based on: a time series of the proportion of the population that have a detectable infection; and the distribution of the duration of infection episodes, \ie the length of time an infection remains detectable using a particular test.
 As SARS-CoV-2 is detected by performing RT-PCR testing on an appropriate biological sample (\eg a nasal swab), this duration is the period over which an infected individual would return a positive RT-PCR result.
 In the UK, estimates of the proportion of the population that have detectable levels of the virus are available from
 large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
-Here, we estimate the distribution of the duration of infection episodes.Previous work on duration estimation~\citep[e.g.][]{cevikShedding, ealesCharacterising,hellewellPCRSensitivity} has been based on a meta analysis of studies with short follow-ups, reporting a mean duration of detectability of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}, included only hospitalised patients and/or had unclear inclusion criteria, ~\citep{ealesCharacterising,hellewellPCRSensitivity} and hence may not be representative of the general population.
+Here, we estimate the distribution of the duration of infection episodes. Previous work on duration estimation~\citep[e.g.][]{cevikShedding, ealesCharacterising,hellewellPCRSensitivity} has been based on a meta analysis of studies with short follow-ups, reporting a mean duration of detectability of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}, included only hospitalised patients and/or had unclear inclusion criteria, ~\citep{ealesCharacterising,hellewellPCRSensitivity} and hence may not be representative of the general population.
 % Furthermore, studies tend to have short follow-up and may not provide good estimates of the mean duration of positivity, which is a right-skewed distribution.
 % For backcalculation, the mean is the most important feature~\citep{freemanPrevalence}, but results can be sensitive to the entire distribution.
 
@@ -246,7 +246,7 @@ The CIS was a unique large-scale longitudinal study of RT-PCR positivity in the 
 % The size of the cohort varied, at the period we are concerned with is \numprint{437590}.
 %% We will consider \numprint{4800} infections.
 As the testing schedule was independent of infection status and had indefinite length, the study provides a unique opportunity to provide an estimate of the distribution of the duration of an infection episode in the general population.
-However, the CIS study design, with weekly (during an individual's first month after enrollment) and then approximately four-weekly testing intervals, and its implementation pose several challenges to the estimation.
+However, the CIS study design, with weekly (during an individual's first month after enrolment) and then approximately four-weekly testing intervals, and its implementation pose several challenges to the estimation.
 
 Firstly, infections can remain undetected.
 Four-weekly testing is longer than the duration of detectability for around two-thirds of infection episodes~\citep{killingleySafety}, and detectability could begin and end between tests \cref{fig:challenges} (A)).
