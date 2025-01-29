@@ -240,7 +240,8 @@ In the context of SARS-CoV-2, this approach requires: a time series of the propo
 As SARS-CoV-2 is detected by performing RT-PCR testing on an appropriate biological sample (\eg a nasal swab), this duration is the period over which an infected individual would return a positive RT-PCR result.
 In the UK, estimates of the proportion of the population that have detectable levels of the virus are available from large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
 Here, we estimate the distribution of the duration of infection episodes.
-Previous work on duration estimation has been based on a meta analysis of studies with short follow-ups, reporting a mean duration of detectability of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}, included only hospitalised patients and/or had unclear inclusion criteria, ~\citep{ealesCharacterising,hellewellPCRSensitivity} and hence may not be representative of the general population.
+A previous meta analysis reported a mean duration of detectability of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}, however, was based on studies with short follow-up.
+Other estimates include only hospitalised patients and/or had unclear inclusion criteria, ~\citep{ealesCharacterising,hellewellPCRSensitivity} and hence may not be representative of the general population.
 % Furthermore, studies tend to have short follow-up and may not provide good estimates of the mean duration of positivity, which is a right-skewed distribution.
 % For backcalculation, the mean is the most important feature~\citep{freemanPrevalence}, but results can be sensitive to the entire distribution.
 
@@ -251,25 +252,22 @@ Previous work on duration estimation has been based on a meta analysis of studie
 %Furthermore, they did not provide an estimate of the duration distribution.
 
 In this paper, we investigate an alternative source of data for the estimation of the duration of an infection episode, the Coronavirus Infection Survey (CIS), run by the Office for National Statistics (ONS)~\citep{CIS}.
-The CIS was a unique large-scale longitudinal study of RT-PCR positivity in the general population, performing RT-PCR testing on 3--400,000 individuals for nearly three years. (see \cref{sec:data}).
+The CIS was a unique large-scale longitudinal study of RT-PCR positivity in the general population, testing up to 400,000 individuals for nearly three years. (see \cref{sec:data}).
 % The size of the cohort varied, at the period we are concerned with is \numprint{437590}.
 %% We will consider \numprint{4800} infections.
-As the testing schedule was independent of infection status and had indefinite length, the study provides a unique opportunity to provide an estimate of the distribution of the duration of an infection episode in the general population.
-However, the CIS study design, with weekly (during an individual's first month after enrolment) and then approximately four-weekly testing intervals, and its implementation pose several challenges to the estimation.
+As the testing schedule was independent of infection status and the CIS had very long follow-up period, the study provides a unique opportunity to provide an estimate of the distribution of the duration of an infection episode in the general population.
+However, the CIS study design, with testing intervals up to four weeks, and its implementation pose several challenges to the estimation.
 
 Firstly, infections can remain undetected.
 Four-weekly testing is longer than the duration of detectability for around two-thirds of infection episodes~\citep{killingleySafety}, and detectability could begin and end between tests (see \cref{fig:challenges} (A)).
-Specifically, for individuals without a positive test, we do not know if they were infected but undetected, or if they were never infected (compare the two situations visualised in \cref{fig:challenges}(A)). Also,
-infection episodes that are detectable for longer are more likely to be detected; hence, detected infection episodes are not a representative sample of all infection episodes.
-This is different from standard left truncation~\cite[e.g.][]{sunEmpirical,bacchettiNonparametric} because here we have information on the individuals in which the short infection episodes occur (\ie their testing times), which constrains undetected infection episode lengths.
+Specifically, for individuals without a positive test, we do not know if they were infected but undetected, or if they were never infected (compare the two situations visualised in \cref{fig:challenges}(A)).
+Also, infection episodes that are detectable for longer are more likely to be detected; hence, detected infection episodes are not a representative sample of all infection episodes.
+This selection effect is different from standard left truncation~\cite[e.g.][]{sunEmpirical,bacchettiNonparametric} because here we have information on the individuals in which the short infection episodes occur (\ie their testing times), which constrains undetected infection episode lengths.
 
 % This is subtly different from the standard left truncation problem~\cite[e.g.][]{sunEmpirical,bacchettiNonparametric} where individuals that have experienced a terminating event are excluded from the study and no information is available on them. In CIS, individuals in which undetected infections occur are enrolled in the study and their testing times are known, providing bounds on how long any possible infection episodes may have lasted.
 % We refer to these events as ``undetected'', rather than truncated, to emphasise this difference.
 
-Secondly, the duration data are doubly interval censored: we observe the beginning of an episode when a previously negative individual returns a positive test, but the episode could start at any point between those two tests; and the end of the episode is similarly interval censored. 
-%\ie its duration is interval censored 
-(see \cref{fig:challenges}(B)).
-%The end of the episode is similarly interval censored and hence the data is doubly interval censored.
+Secondly, the duration data are doubly interval censored: we observe the beginning of an episode when a previously negative individual returns a positive test, but the episode could start at any point between those two tests; and the end of the episode is similarly interval censored (see \cref{fig:challenges}(B)).
 
 \begin{figure}
   \makebox[\textwidth][c]{\includegraphics{figures/output/challenges}}
