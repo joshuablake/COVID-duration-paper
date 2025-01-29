@@ -82,8 +82,8 @@ p_censor = tibble(
   annotate("text", x = 8, y = -0.5, label = TeX("$l_j^{(b)}$")) +
   annotate("text", x = 14, y = -0.5, label = TeX("$r_j^{(b)}$")) +
   annotate("rect", xmin = 28, xmax = 55, ymin = 0.5, ymax = 1.5, alpha = 0.3, fill = "grey") +
-  annotate("text", x = 28, y = -0.5, label = TeX("$l_j^{(b)}$")) +
-  annotate("text", x = 55, y = -0.5, label = TeX("$r_j^{(b)}$"))
+  annotate("text", x = 28, y = -0.5, label = TeX("$l_j^{(e)}$")) +
+  annotate("text", x = 55, y = -0.5, label = TeX("$r_j^{(e)}$"))
 
 p_truncation = expand_grid(
   time = c((0:3) * 7, (1:3) * 28),
