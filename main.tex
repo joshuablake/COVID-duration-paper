@@ -178,25 +178,16 @@
 {
   \title{\bf \fulltitle}
   \author{%
-    % Joshua Blake, Paul Birrell, A.\ Sarah Walker, Koen B. Pouwels, Thomas House,\\Brian Tom, Theodore Kypraios, Daniela De Angelis  
-    Joshua Blake\thanks{
-    The authors gratefully acknowledge/ \textit{please remember to list all relevant funding sources in the unblinded version}}\hspace{.2cm}\\
-    MRC Biostatistics Unit, University of Cambridge \\
-    Paul Birrell \\
-    UK Health Security Agency; MRC Biostatistics Unit, University of Cambridge \\
-    A.\ Sarah Walker \\
-    TBC \\
-    Koen B.\ Pouwels \\
-    TBC \\
-    Thomas House \\
-    TBC \\
-    Brian Tom \\
-    TBC \\
-    Theodore Kypraios \\
-    TBC \\
-    and \\
-    Daniela De Angelis \\
-    Department of ZZZ, University of WWW
+    Joshua Blake\thanks{MRC Biostatistics Unit, University of Cambridge. JB was supported by the Bayes4Health grant from the United Kingdom Medical Research Council (MRC). For the purpose of open access, the authors have applied a Creative Commons Attribution (CC BY) license to any Author Accepted Manuscript version arising.};
+    Paul Birrell\thanks{UK Health Security Agency; MRC Biostatistics Unit, University of Cambridge};
+    A.\ Sarah Walker\thanks{Nuffield Department of Medicine, University of Oxford; NIHR Oxford Biomedical Research Centre; NIHR Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance, University of Oxford. ASW was supported by the National Institute for Health Research (NIHR) Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance at Oxford University in partnership with the UK Health Security Agency (UKHSA) (NIHR200915) and the NIHR Biomedical Research Centre, Oxford.};
+     Koen B.\ Pouwels\thanks{Health Economics Research Centre, University of 
+Oxford}; \\
+     Thomas House\thanks{Department of Mathematics, University of 
+Manchester};
+     Brian D M Tom\thanks{MRC Biostatistics Unit, University of Cambridge. BDMT is supported through the MRC programme grant (MC\_UU\_00002/2) and theme funding (MC\_UU\_0002/20 - Precision Medicine).};
+     Theodore Kypraios\thanks{School of Mathematical Sciences, University of Nottingham};
+     and Daniela De Angelis\thanks{MRC Biostatistics Unit, University of Cambridge; UK Health Security Agency}
   }
   \maketitle
 } \fi
@@ -208,11 +199,11 @@
   \bigskip
   \begin{center}
     {\LARGE\bf \fulltitle}
-\end{center}
+  \end{center}
   \medskip
 } \fi
-
 \bigskip
+
 \begin{abstract}
 Monitoring the incidence of new infections during a pandemic is critical for effective public health response to make predictions of future burden. General population prevalence surveys for SARS-CoV-2 can provide high-quality data for estimating incidence.  However,  estimation hinges on understanding the distribution of the duration infections remain detectable. This study addresses this need using data from the Coronavirus Infection Survey (CIS), a long-term, longitudinal, general population survey conducted in the UK. Analysing these data presents unique challenges such as doubly interval censoring, undetected infections, and false negatives. We propose a Bayesian non-parametric survival analysis approach, estimating a discrete-time distribution of durations and integrating prior information derived from a complementary study. Our methodology is validated through a simulation study, including its resilience to model misspecification, and then applied to the CIS dataset. This results in the first estimate of the full duration distribution in a general population, as well as methodology that could be transferred to new contexts.
 \end{abstract}
@@ -247,9 +238,7 @@ This pandemic highlighted the critical need for an effective public health respo
 Incidence of infection can be estimated through convolution approaches~\citep[e.g.][]{brookmeyerBackcalculation},  which relate observations of disease outcomes with incidence through a delay distribution.
 In the context of SARS-CoV-2, this approach requires: a time series of the proportion of the population that have a detectable infection; and the distribution of the length of time an infection remains detectable using a particular test.
 As SARS-CoV-2 is detected by performing RT-PCR testing on an appropriate biological sample (\eg a nasal swab), this duration is the period over which an infected individual would return a positive RT-PCR result.
-In the UK, estimates of the proportion of the population that have detectable levels of the virus are available from
-large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
-large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
+In the UK, estimates of the proportion of the population that have detectable levels of the virus are available from large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
 Here, we estimate the distribution of the duration of infection episodes.
 Previous work on duration estimation has been based on a meta analysis of studies with short follow-ups, reporting a mean duration of detectability of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}, included only hospitalised patients and/or had unclear inclusion criteria, ~\citep{ealesCharacterising,hellewellPCRSensitivity} and hence may not be representative of the general population.
 % Furthermore, studies tend to have short follow-up and may not provide good estimates of the mean duration of positivity, which is a right-skewed distribution.
