@@ -254,7 +254,7 @@ As the testing schedule was independent of infection status and had indefinite l
 However, the CIS study design, with weekly (during an individual's first month after enrolment) and then approximately four-weekly testing intervals, and its implementation pose several challenges to the estimation.
 
 Firstly, infections can remain undetected.
-Four-weekly testing is longer than the duration of detectability for around two-thirds of infection episodes~\citep{killingleySafety}, and detectability could begin and end between tests \cref{fig:challenges} (A)).
+Four-weekly testing is longer than the duration of detectability for around two-thirds of infection episodes~\citep{killingleySafety}, and detectability could begin and end between tests (see \cref{fig:challenges} (A)).
 Specifically, for individuals without a positive test, we do not know if they were infected but undetected, or if they were never infected (compare the two situations visualised in \cref{fig:challenges}(A)). Also,
 infection episodes that are detectable for longer are more likely to be detected; hence, detected infection episodes are not a representative sample of all infection episodes.
 This is different from standard left truncation~\cite[e.g.][]{sunEmpirical,bacchettiNonparametric} because here we have information on the individuals in which the short infection episodes occur (\ie their testing times), which constrains undetected infection episode lengths.
@@ -264,7 +264,7 @@ This is different from standard left truncation~\cite[e.g.][]{sunEmpirical,bacch
 
 Secondly, the duration data are doubly interval censored: we observe the beginning of an episode when a previously negative individual returns a positive test, but the episode could start at any point between those two tests; and the end of the episode is similarly interval censored. 
 %\ie its duration is interval censored 
-(see \cref{fig:challenges}(C)).
+(see \cref{fig:challenges}(B)).
 %The end of the episode is similarly interval censored and hence the data is doubly interval censored.
 
 \begin{figure}
@@ -272,8 +272,7 @@ Secondly, the duration data are doubly interval censored: we observe the beginni
   \caption{%
     Challenges posed by the CIS design.
     (A) Undetected episodes.
-    (B) Individuals positive at their first test.
-    (C) Doubly interval censored episodes, shaded regions indicate bounding regions (notation formally defined later).
+    (B) Doubly interval censored episodes, shaded regions indicate bounding regions (notation formally defined later).
   }
   \label{fig:challenges}
 \end{figure}
@@ -404,7 +403,7 @@ If $\posResults(W_j) = \varnothing$, $\min \posResults(W_j) \notin [1, T]$, $\ne
 Otherwise, $O_j = [l_j^{(b)}, r_j^{(b)}, l_j^{(e)}, r_j^{(e)}, i_j]^T$, where $i_j$ is the individual in which the episode occurs; $l_j^{(b)} = \negResults^{(b)}(W_j) + 1$ and $r_j^{(b)} = \min \posResults(W_j)$ are the earliest and latest time the episode could have begun and produced the observed series of test results respectively; and $l_j^{(e)} = \max \posResults(W_j)$ and $r_j^{(e)} = \negResults^{(e)}(W_j) - 1$ are the earliest and latest time the episode could have ended respectively.
 These definitions coincide with the way the dataset is constructed (see \cref{sec:data}).
 
-Ignoring misclassified test results, the latent time $B_j$ for a detected infection episode $j$ is bounded between, $l_j^{(b)}$, the day after the last negative test; and $r_j^{(b)}$, the day of the first positive test associated with episode $j$ (see \cref{fig:challenges}(C)).
+Ignoring misclassified test results, the latent time $B_j$ for a detected infection episode $j$ is bounded between, $l_j^{(b)}$, the day after the last negative test; and $r_j^{(b)}$, the day of the first positive test associated with episode $j$ (see \cref{fig:challenges}(B)).
 Similarly, $E_j$ is bounded by $l_j^{(e)}$, the day of the last positive test; and $r_j^{(e)}$, the day before the following negative test.
 That is $B_j \in [l_j^{(b)}, r_j^{(b)}]$ and $E_j \in [l_j^{(e)}, r_j^{(e)}]$.
 Therefore, all information from the observations of a detected infection episode $j$ is fully contained in the vector $O_j$.

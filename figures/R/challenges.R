@@ -103,27 +103,27 @@ p_truncation = expand_grid(
         axis.title.x = element_blank(),
         axis.ticks.x = element_blank())
 
-p_missed = tibble(
-  time = c((0:3) * 7, (1:3) * 28),
-) %>% 
-  mutate(
-    type = if_else(time <= 7, "positive", "negative")
-  ) %>% 
-  bind_rows(tribble(
-    ~time, ~type,
-    -3, "infected",
-    8, "recovered",
-  )) %>% 
-  mutate(individual = 1) %>% 
-  plot_testing_schedule() +
-  labs(x = "") +
-  theme(legend.position = "none") +
-  # no x-axis labels
-  theme(axis.text.x = element_blank(),
-        axis.title.x = element_blank(),
-        axis.ticks.x = element_blank())
+# p_missed = tibble(
+#   time = c((0:3) * 7, (1:3) * 28),
+# ) %>% 
+#   mutate(
+#     type = if_else(time <= 7, "positive", "negative")
+#   ) %>% 
+#   bind_rows(tribble(
+#     ~time, ~type,
+#     -3, "infected",
+#     8, "recovered",
+#   )) %>% 
+#   mutate(individual = 1) %>% 
+#   plot_testing_schedule() +
+#   labs(x = "") +
+#   theme(legend.position = "none") +
+#   # no x-axis labels
+#   theme(axis.text.x = element_blank(),
+#         axis.title.x = element_blank(),
+#         axis.ticks.x = element_blank())
 
-final_plot = p_truncation / p_missed / p_censor +
+final_plot = p_truncation / p_censor +
   plot_annotation(tag_levels = 'A') +
   plot_layout(heights = c(1.6, 1, 1.3)) &
   theme(plot.margin = margin(0))#, plot.tag.position = c(0.01, 0.7))
