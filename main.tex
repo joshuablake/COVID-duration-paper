@@ -3,7 +3,7 @@
 \usepackage{graphicx}
 \usepackage{enumerate}
 \usepackage{natbib}
-\usepackage{url} % not crucial - just used below for the URL 
+\usepackage{xurl} % not crucial - just used below for the URL 
 
 %\pdfminorversion=4
 % NOTE: To produce blinded version, replace "0" with "1" below.
@@ -112,6 +112,9 @@
 %% Bibliography
 % \usepackage[authordate-trad,backend=biber]{biblatex-chicago}
 % \addbibresource{references.bib}
+\usepackage{enumitem}
+\setlist{noitemsep}
+\setlength{\bibsep}{0.1cm}
 
 % Macros for common abbreviations to get the spacing right
 % See: https://stackoverflow.com/questions/3282319/correct-way-to-define-macros-etc-ie-in-latex
@@ -175,13 +178,25 @@
 {
   \title{\bf \fulltitle}
   \author{%
-    Joshua Blake, Paul Birrell, A.\ Sarah Walker, Koen B. Pouwels, Thomas House,\\Brian Tom, Theodore Kypraios, Daniela De Angelis  
-    % Author 1\thanks{
-    % The authors gratefully acknowledge/ \textit{please remember to list all relevant funding sources in the unblinded version}}\hspace{.2cm}\\
-    % Department of YYY, University of XXX\\
-    % and \\
-    % Author 2 \\
-    % Department of ZZZ, University of WWW}
+    % Joshua Blake, Paul Birrell, A.\ Sarah Walker, Koen B. Pouwels, Thomas House,\\Brian Tom, Theodore Kypraios, Daniela De Angelis  
+    Joshua Blake\thanks{
+    The authors gratefully acknowledge/ \textit{please remember to list all relevant funding sources in the unblinded version}}\hspace{.2cm}\\
+    MRC Biostatistics Unit, University of Cambridge \\
+    Paul Birrell \\
+    UK Health Security Agency; MRC Biostatistics Unit, University of Cambridge \\
+    A.\ Sarah Walker \\
+    TBC \\
+    Koen B.\ Pouwels \\
+    TBC \\
+    Thomas House \\
+    TBC \\
+    Brian Tom \\
+    TBC \\
+    Theodore Kypraios \\
+    TBC \\
+    and \\
+    Daniela De Angelis \\
+    Department of ZZZ, University of WWW
   }
   \maketitle
 } \fi
@@ -230,7 +245,7 @@ The most acute phase of the COVID-19 pandemic (to the end of 2021) caused by the
 This pandemic highlighted the critical need for an effective public health response, informed by key quantities such as the \emph{incidence of infection}, defined as the rate at which new infections occur, which drives important health outcomes such as the number of symptomatic cases, hospital admissions and deaths. 
 
 Incidence of infection can be estimated through convolution approaches~\citep[e.g.][]{brookmeyerBackcalculation},  which relate observations of disease outcomes with incidence through a delay distribution.
-In the context of SARS-CoV-2, this approach requires: a time series of the proportion of the population that have a detectable infection; and the distribution of the duration of infection episodes, \ie the length of time an infection remains detectable using a particular test.
+In the context of SARS-CoV-2, this approach requires: a time series of the proportion of the population that have a detectable infection; and the distribution of the length of time an infection remains detectable using a particular test.
 As SARS-CoV-2 is detected by performing RT-PCR testing on an appropriate biological sample (\eg a nasal swab), this duration is the period over which an infected individual would return a positive RT-PCR result.
 In the UK, estimates of the proportion of the population that have detectable levels of the virus are available from
 large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
@@ -770,7 +785,7 @@ If $\psensi < \psenss$, then the posterior estimate initially follows the true v
 The number of episodes inferred to have truly ended by the first negative is too low, and hence the survival function is overestimated.
 This effect dominates over the opposing bias of overestimating the number of undetected episodes.
 The opposite occurs if $\psensi > \psenss$, although the posterior moves away from the truth earlier (see \cref{imperf-test:fig:test-sensitivity}(C)).
-\begin{figure}
+\begin{figure}[ht!]
   \includegraphics[width=\textwidth]{figures/output/sim-sensitivity}
   \caption[Simulation study results with varying test sensitivity]{%
     Posterior (median and 95\% CrI) survival time.
@@ -987,22 +1002,22 @@ Future pandemic plans should consider how to ensure privacy for study participan
 \bibliography{references}
 
 
-\bigskip
-\begin{center}
-{\large\bf SUPPLEMENTARY MATERIAL}
-\end{center}
+% \bigskip
+% \begin{center}
+% {\large\bf SUPPLEMENTARY MATERIAL}
+% \end{center}
 
-\begin{description}
+% \begin{description}
 
-\item[Simulation package:] R-package to implement simulation studies similar to the one in this article is at \url{https://github.com/joshuablake/cisSimulation}.
+% \item[Simulation package:] R-package to implement simulation studies similar to the one in this article is at \url{https://github.com/joshuablake/cisSimulation}.
 
-\item[Analysis package:] R-package to generate Stan code to implement the inference method proposed in this article is at \url{https://github.com/joshuablake/cisDurationModel}.
+% \item[Analysis package:] R-package to generate Stan code to implement the inference method proposed in this article is at \url{https://github.com/joshuablake/cisDurationModel}.
 
-\item[Code:] Scripts to reproduce the analyses in this article are available at \url{https://github.com/joshuablake/CIS_survival_analysis_sims}.
+% \item[Code:] Scripts to reproduce the analyses in this article are available at \url{https://github.com/joshuablake/CIS_survival_analysis_sims}.
 
-\item[Appendix:] Contains derivations and further details, as described in the main text (pdf).
+% \item[Appendix:] Contains derivations and further details, as described in the main text (pdf).
 
-\end{description}
+% \end{description}
 
 
 \end{document}
