@@ -176,16 +176,23 @@
 
 \if1\blind
 {
-  \title{\bf \fulltitle}
+  \title{\vspace{-1.5cm} \bf \fulltitle}
   \author{%
-    Joshua Blake\thanks{MRC Biostatistics Unit, University of Cambridge. JB was supported by the Bayes4Health grant from the United Kingdom Medical Research Council (MRC). For the purpose of open access, the authors have applied a Creative Commons Attribution (CC BY) license to any Author Accepted Manuscript version arising.};
+    Joshua Blake\thanks{%
+        MRC Biostatistics Unit, University of Cambridge.
+        JB was supported  by Bayes4Health (EPSRC  EP/R01856/1).
+        PB, TH, and DDA were supported by the Wellcome Trust (227438/Z/23/Z).
+        ASW was supported by the National Institute for Health Research (NIHR) Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance at Oxford University in partnership with the UK Health Security Agency (UKHSA) (NIHR200915) and the NIHR Biomedical Research Centre, Oxford.
+        KBP is supported by the National Institute for Health Research Health Protection Research Unit (NIHR HPRU) in Healthcare Associated Infections and Antimicrobial Resistance at the University of Oxford in partnership with the UK Health Security Agency (UKHSA) (NIHR200915), the Huo Family Foundation, and the Medical Research Foundation (MRF-160-0017-ELP-POUW-C0909).
+        BDMT is supported through the MRC programme grant (MC\_UU\_00002/2) and theme funding (MC\_UU\_0002/20 - Precision Medicine).
+        For the purpose of open access, the authors have applied a Creative Commons Attribution (CC BY) license to any Author Accepted Manuscript version arising.
+    };
     Paul Birrell\thanks{UK Health Security Agency; MRC Biostatistics Unit, University of Cambridge};
-    A.\ Sarah Walker\thanks{Nuffield Department of Medicine, University of Oxford; NIHR Oxford Biomedical Research Centre; NIHR Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance, University of Oxford. ASW was supported by the National Institute for Health Research (NIHR) Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance at Oxford University in partnership with the UK Health Security Agency (UKHSA) (NIHR200915) and the NIHR Biomedical Research Centre, Oxford.};
-     Koen B.\ Pouwels\thanks{Health Economics Research Centre, University of 
-Oxford}; \\
+    A.\ Sarah Walker\thanks{Nuffield Department of Medicine, University of Oxford; NIHR Oxford Biomedical Research Centre; NIHR Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance, University of Oxford.};
+     Koen B.\ Pouwels\thanks{Nuffield Department of Primary Care Health Sciences, University of Oxford; National Institute for Health Research Health Protection Research Unit (NIHR HPRU) in Healthcare Associated Infections and Antimicrobial Resistance at the University of Oxford}; \\
      Thomas House\thanks{Department of Mathematics, University of 
 Manchester};
-     Brian D M Tom\thanks{MRC Biostatistics Unit, University of Cambridge. BDMT is supported through the MRC programme grant (MC\_UU\_00002/2) and theme funding (MC\_UU\_0002/20 - Precision Medicine).};
+     Brian D M Tom\thanks{MRC Biostatistics Unit, University of Cambridge. };
      Theodore Kypraios\thanks{School of Mathematical Sciences, University of Nottingham};
      and Daniela De Angelis\thanks{MRC Biostatistics Unit, University of Cambridge; UK Health Security Agency}
   }
@@ -202,7 +209,8 @@ Manchester};
   \end{center}
   \medskip
 } \fi
-\bigskip
+% \medskip
+\vspace{-1cm}
 
 \begin{abstract}
 Monitoring the incidence of new infections during a pandemic is critical for effective public health response to make predictions of future burden. General population prevalence surveys for SARS-CoV-2 can provide high-quality data for estimating incidence.  However,  estimation hinges on understanding the distribution of the duration infections remain detectable. This study addresses this need using data from the Coronavirus Infection Survey (CIS), a long-term, longitudinal, general population survey conducted in the UK. Analysing these data presents unique challenges such as doubly interval censoring, undetected infections, and false negatives. We propose a Bayesian non-parametric survival analysis approach, estimating a discrete-time distribution of durations and integrating prior information derived from a complementary study. Our methodology is validated through a simulation study, including its resilience to model misspecification, and then applied to the CIS dataset. This results in the first estimate of the full duration distribution in a general population, as well as methodology that could be transferred to new contexts.
@@ -325,7 +333,7 @@ In \cref{sec:false-negatives}, we extend the framework to incorporate false nega
 We test the framework in a simulation study in \cref{sec:simulation}, apply it in \cref{sec:CIS}, and conclude with a discussion in \cref{sec:discussion}.
 
 
-\section{Study design and data} \label{sec:data}
+\section{Coronavirus Infection Survey} \label{sec:data}
 
 The CIS~\citep{CIS} was set up in April 2020 and was globally unique in providing a representative, longitudinal, and large-scale study across almost three years of the pandemic.
 The study had a household-based design inviting all individuals aged 2 years and over from households randomly selected from previously surveys and address lists.
@@ -336,7 +344,7 @@ A full description of the study can be found in the study protocol~\citep{cisPro
 %a subset of individuals also collected a blood sample for serological testing.
 %We consider only the result of the RT-PCR testing.
 % Initially, it was limited to England, but expanded to cover the whole of the UK in September 2020.
-Enrolment was continuously ongoing until 31st January 2022, with data collected until 13th March 2023~\citep{weiRisk}. 
+Enrolment was continuously ongoing until 31 January 2022, with data collected until 13 March 2023~\citep{weiRisk}. 
 
 We focus on the period between 10 October 2020 and 6 December 2020 inclusive over which the CIS estimated stable infection prevalence of around 1\%~\citep{onsCISdec2020}.
 Stable infection prevalence allows an assumption of constant incidence, simplifying analyses.
@@ -353,7 +361,7 @@ Therefore, we condition on them implicitly in all the calculations that follow.
 
 % Positive tests from the same individual are grouped into infection episodes.
 Positive tests with negatives in-between in the same individual may or may not be classed as the same infection episode using a pre-existing heuristic based on the time between the tests, the number of negative tests between the positives, and the variant of the infection; see \citet{weiRisk} for details.
-For the $j$th infection episode, there are up to four important times: the day after the negative test in that individual prior to the first positive test, $l_j^{(b)}$; the day of the first positive test, $r_j^{(b)}$; the day of the last positive test, $l_j^{(e)}$; and the day before the subsequent negative test, $r_j^{(e)}$.
+For the $j$th infection episode, there are up to four important times: the day after the negative test in that individual prior to the first positive test, $l_j^{(b)}$; the day of the first positive test, $r_j^{(b)}$; the day of the last positive test, $l_j^{(e)}$; and the day before the subsequent negative test, $r_j^{(e)}$ (see \cref{fig:challenges}(B)).
 % Negative tests between positives in the same episode are known as \emph{intermittent negatives}; these are false negative tests.
 % Other tests could also be misclassified, but this is not known.
 
@@ -413,7 +421,7 @@ Let $\vec{\nu}_k = [l^{(b)}_k, r^{(b)}_k, l^{(e)}_k, r^{(e)}_k, i_k]^T$ be an ar
 
 Let $n_k$ denote the number of times that $\vec{\nu}_k$ appears in the episodes dataset (\ie the observed data); $\nnodet$ denote the latent number of undetected episodes; and $\vec{n} = [n_1, \dots, n_{N_E}, \nnodet]^T$.
 Hence, $\ntot = \ndet + \nnodet = \sum_{i=1}^{N_E} n_i + \nnodet$.
-If $\vec{n}$ was known, then the problem reduces to the well-studied problem of inferring a distribution from doubly interval censored data; however, only $\na$ is observed.
+If $\vec{n}$ was known, then the problem reduces to the well-studied problem of inferring a distribution from doubly interval censored data; however, only $\na = [n_1, \dots, n_{N_E}]^T$ is observed.
 Therefore, to infer $\vec\theta$, we augment $\na$ with the latent quantity $\nnodet$.
 
 \begin{figure}
