@@ -241,16 +241,17 @@ Monitoring the incidence of new infections during a pandemic is critical for an 
 \spacingset{1.9} % DON'T change the spacing!
 \section{Introduction} \label{sec:intro}
 
-The most acute phase of the COVID-19 pandemic (to the end of 2021) caused by the SARS-CoV-2 virus is estimated to have killed approximately 30 million people globally~\citep{whoCOVIDExcess}, stretched healthcare services to the brink of collapse~\citep{fongNHS}, and disrupted societies worldwide.
-This pandemic highlighted the critical need for an effective public health response, informed by key quantities such as the \emph{incidence of infection}, defined as the rate at which new infections occur, which drives important health outcomes such as the number of symptomatic cases, hospital admissions and deaths. 
+The most acute phase of the COVID-19 pandemic caused by the SARS-CoV-2 virus (2020 and 2021) killed approximately 30 million people globally~\citep{whoCOVIDExcess}, stretched healthcare services to the brink of collapse~\citep{fongNHS}, and disrupted societies worldwide.
+This pandemic highlighted the critical need for an effective public health response, informed by key quantities such as the \emph{incidence of infection}, defined as the rate at which new infections occur, which drives important health outcomes including hospital admissions and deaths. 
 
 Incidence of infection can be estimated through convolution approaches~\citep[e.g.][]{brookmeyerBackcalculation},  which relate observations of disease outcomes with incidence through a delay distribution.
-In the context of SARS-CoV-2, this approach requires: a time series of the proportion of the population that have a detectable infection; and the distribution of the length of time an infection remains detectable using a particular test.
-As SARS-CoV-2 is detected by performing RT-PCR testing on an appropriate biological sample (\eg a nasal swab), this duration is the period over which an infected individual would return a positive RT-PCR result.
+In the context of SARS-CoV-2, this approach requires: a time series of the proportion of the population that have a detectable infection and the distribution of the length of time an infection remains detectable using a particular test.
 In the UK, estimates of the proportion of the population that have detectable levels of the virus are available from large-scale prevalence surveys~\citep{cisMethodsONS,rileyREACT}.
+
 Here, we estimate the distribution of the duration of infection episodes.
-A previous meta analysis reported a mean duration of detectability of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}, however, was based on studies with short follow-up.
-Other estimates include only hospitalized patients and/or had unclear inclusion criteria, ~\citep{ealesCharacterising,hellewellPCRSensitivity} and hence may not be representative of the general population.
+As SARS-CoV-2 is detected by performing RT-PCR testing on an appropriate biological sample (\eg a nasal swab), this duration is the period over which an infected individual would return a positive RT-PCR result.
+A previous meta analysis reported a mean duration of detectability of 14.6 days (95\% CI: 9.3--20.0 days)~\citep{cevikShedding}; however, it was based on studies with short follow-up.
+Other estimates include only hospitalized patients and/or had unclear inclusion criteria~\citep{ealesCharacterising,hellewellPCRSensitivity}; hence they may not be representative of the general population.
 % Furthermore, studies tend to have short follow-up and may not provide good estimates of the mean duration of positivity, which is a right-skewed distribution.
 % For backcalculation, the mean is the most important feature~\citep{freemanPrevalence}, but results can be sensitive to the entire distribution.
 
@@ -261,14 +262,14 @@ Other estimates include only hospitalized patients and/or had unclear inclusion 
 %Furthermore, they did not provide an estimate of the duration distribution.
 
 In this paper, we investigate an alternative source of data for the estimation of the duration of an infection episode, the Coronavirus Infection Survey (CIS), run by the Office for National Statistics (ONS)~\citep{CIS}.
-The CIS was a unique large-scale longitudinal study of RT-PCR positivity in the general population, testing up to 400,000 individuals for nearly three years. (see \cref{sec:data}).
+The CIS was a unique, large-scale, longitudinal study of RT-PCR positivity in the general population, testing up to 400,000 individuals for nearly three years (see \cref{sec:data}).
 % The size of the cohort varied, at the period we are concerned with is \numprint{437590}.
 %% We will consider \numprint{4800} infections.
 As the testing schedule was independent of infection status and the CIS had very long follow-up period, the study provides a unique opportunity to provide an estimate of the distribution of the duration of an infection episode in the general population.
-However, the CIS study design, with testing intervals up to four weeks, and its implementation pose several challenges to the estimation.
+However, the CIS study design, with testing intervals of up to four weeks, and its implementation pose several methodological challenges.
 
 Firstly, infections can remain undetected.
-Four-weekly testing is longer than the duration of detectability for around two-thirds of infection episodes~\citep{killingleySafety}, and detectability could begin and end between tests (see \cref{fig:challenges} (A)).
+Four-weekly testing is longer than the duration of detectability for around two-thirds of infection episodes~\citep{killingleySafety}, and detectability could begin and end between tests.
 Specifically, for individuals without a positive test, we do not know if they were infected but undetected, or if they were never infected (compare the two situations visualized in \cref{fig:challenges}(A)).
 Also, infection episodes that are detectable for longer are more likely to be detected; hence, detected infection episodes are not a representative sample of all infection episodes.
 This selection effect is different from standard left truncation~\cite[e.g.][]{sunEmpirical,bacchettiNonparametric} because here we have information on the individuals in which the short infection episodes occur (\ie their testing times), which constrains undetected infection episode lengths.
@@ -418,7 +419,7 @@ Therefore, all information from the observations of a detected infection episode
 \subsection{Set up} \label{sec:inference}
 
 Define an integer $N_E = |\set{E}|$ (the cardinality of $\set{E}$) and $\set{E} = \{ \vec{\nu}_1, \dots, \vec{\nu}_{N_E} \}$ as the set of all possible values $O_j$ can take, excluding $\varnothing$, conditional on the test schedules but no other data; that is, $O_j \in \set{E}$ if and only if $j$ is a detected infection.
-Let $\vec{\nu}_k = [l^{(b)}_k, r^{(b)}_k, l^{(e)}_k, r^{(e)}_k, i_k]^T$ be an arbitrary member of $\set{E}$, visualize in \cref{perf-test:fig:partitionSpace}.
+Let $\vec{\nu}_k = [l^{(b)}_k, r^{(b)}_k, l^{(e)}_k, r^{(e)}_k, i_k]^T$ be an arbitrary member of $\set{E}$, visualized in \cref{perf-test:fig:partitionSpace}.
 
 Let $n_k$ denote the number of times that $\vec{\nu}_k$ appears in the episodes dataset (\ie the observed data); $\nnodet$ denote the latent number of undetected episodes; and $\vec{n} = [n_1, \dots, n_{N_E}, \nnodet]^T$.
 Hence, $\ntot = \ndet + \nnodet = \sum_{i=1}^{N_E} n_i + \nnodet$.
@@ -477,7 +478,7 @@ In this case \cref{perf-test:eq:posterior1} simplifies to:
 p(\vec{\theta} \mid \na)
 &\propto p(\vec{\theta}) \left( \prod_{i \in \set{D}} p_k \right) (r + \mu (1- \pnodet))^{-(r+\ndet)} \label{perf-test:eq:full-posterior}.
 \end{align}
-The rest of this section derives expressions for each of $p_{k}$, $p_{u}$ and $\eta$.
+The rest of this section derives expressions for $p_{k}$ and $p_{u}$.
 
 Decompose $p_k$ as $p_k = p_{ik} \prob(i_j = i_k \mid \vec{\theta})$
 where $p_{ik} = \prob(O_j = \vec{\nu}_k \mid i_j = i_k, \vec{\theta})$.
@@ -555,7 +556,7 @@ For computational efficiency, note that this can be rewritten as:
 \begin{align}
   1- p_u
   &\propto \sum_{t=1}^{\dmax} S_{\vec\theta}(t) m_t
-  \label{eq:Sm-sum}
+  \label{eq:Sm-sum} \\
   m_t &= \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i}} \indicator(\tau_{\sched_{i}}(b) + 1 = t)
 \end{align}
 where $\indicator$ is the indicator function taking the value $1$ when the statement in its argument is true and $0$ otherwise.
@@ -579,7 +580,7 @@ For tractability, we consider only tests between the negative tests providing an
 To do so, define a random vector $O'_j$ with state space $\{\varnothing\} \cup \set{E}'$ which will replace $O_j$.
 As before, $O'_j = \varnothing$ if episode $j$ is undetected.
 Otherwise, $O'_j \in \set{E}'$ where $\set{E}' = \{ \vec{\nu}_1', \dots, \vec{\nu}_{N_E'}' \}$ augments the space $\set{E}$ with test results during the episode.
-The elements of $\set{E}'$ are all $\vec{\nu}_k' = [\vec{\nu}_k, \vec{y}_k]^T$ where $\vec{\nu}_k \in \set{E}$ and $\vec{y}_k$ is a vector of test results for the relevant testing times, $\sched'_k = \{ t \in \sched_{i_k} \ssep r_k^{(b)} \leq t \leq r_k^{(e)} + 1 \}$.
+The elements of $\set{E}'$ are all $\vec{\nu}_k' = [\vec{\nu}_k, \vec{y}_k]^T$ where $\vec{\nu}_k \in \set{E}$ and $\vec{y}_k$ is a vector of test results for the relevant testing times excluding the negative at $l^{(b)}_k$, $\sched'_k = \{ t \in \sched_{i_k} \ssep r_k^{(b)} \leq t \leq r_k^{(e)} + 1 \}$.
 To formalize the definition of $\vec{y}_k$, let $m_k$ denote the size of $\sched'_k$ and denote the elements of $\sched'_k$ by $t_{k,1} < \dots < t_{k,m_k}$.
 Then, $\vec{y}_k \in \{0, 1\}^{m_k}$ and satisfies the following two conditions.
 \begin{enumerate}
@@ -601,8 +602,8 @@ Similarly, we define $p_k'$, $p_{ik}'$, $p_u'$, and $p_{iu}'$ to replace $p_k$, 
 We will modify $p_{ik}$ to form $p_{ik}' = \prob(O'_j = \vec{\nu}'_k \mid i_j = i_k, \vec{\theta})$, taking into account false negatives.
 We consider a mixture of two scenarios, defined by whether the final test in $\sched'_{k}$ is a false negative, with the mixture probability determined by the test sensitivity.
 
-Similar likelihoods have previous appeared in the literature~\citep[e.g.][eq.\ (2)]{piresIntervalMisclassify}.
-However, this prior work was for singly interval censored data; incorporating the doubly interval censored nature of the CIS data involves summing over the possible episode start times.
+Similar likelihoods have previous appeared in the literature~\citep[e.g.][eq.\ (2)]{piresIntervalMisclassify}, but for singly interval censored data.
+Incorporating the doubly interval censored nature of the CIS data involves summing over the possible episode start times.
 
 % We proceed by assuming that we have observed an arbitrary episode:
 % \begin{align}
@@ -697,8 +698,8 @@ We use $\alpha_0 = 0.1$ and $\beta_0 = 1.9$ to match the weakly informative prio
 \begin{align}
 k_t = \begin{cases}
   \expit(-0.4 \times (t - 20)) &\text{for $t \leq 39$} \\
-  0 &t > 39
-\end{cases}.
+  0 &t > 39.
+\end{cases}
 \end{align}
 The form and choice of constants reflects the subjective belief that $h_t$ is a good estimate of $\lambda_t$ for small $t$ but increasingly unreliable; specifically, it is large at 0, when ATACCC is reliable, but becomes small for $t \geq 20$.
 
@@ -797,7 +798,7 @@ Therefore, we conclude that including a varying test sensitivity is not required
 \section{Application to the CIS data} \label{sec:CIS}
 
 In this section we apply the approach described in this chapter to the CIS infection episode dataset.
-Unlike in the simulation studies, an uninformative prior on $\ntot$ led to implausible estimates of the duration distribution (small values of the prior's over-dispersion parameter $r$ in \cref{imperf-test:fig:cis-sensitivity}(A) give estimates with a median survival time of 5 days).
+Unlike in the simulation studies, an uninformative prior on $\ntot$ led to implausible estimates of the duration distribution (small values of the prior's overdispersion parameter $r$ in \cref{imperf-test:fig:cis-sensitivity}(A) give estimates with a median survival time of 5 days).
 The uninformative prior led to high posterior estimates of $\ntot$, and hence an implausibly large number of episodes with durations of less than five days.
 Therefore, we used an informative prior for $\ntot$, $\ntot \sim \NBc(\mu\inform, r\inform)$ from pre-existing estimates of the total number of infections to give $\mu\inform$ and $r\inform$.
 \citet{birrellRTM2} estimated the total number of infections in England over the time period we consider, with posterior mean \numprint{4136368} and standard deviation \numprint{27932}.
@@ -850,7 +851,7 @@ This work is motivated by the challenge of exploiting data from the CIS, a uniqu
 This is a key component in the estimation of incidence of infection and has an essential role in informing pandemic mitigation strategies such as isolation.
 
 To estimate duration, we extended the survival analysis framework in \citet{heiseyModelling} to deal with the CIS design. The result is new methodology to analyze doubly censored data with imperfect test sensitivity and undetected events, when these undetected events occur with an arbitrary pattern in known individuals.
-We estimate a non-parametric discrete-time survival distribution in a fully Bayesian framework and incorporate data from a complementary study, ATACCC, through an appropriately-discounted prior.
+We estimate a nonparametric discrete-time survival distribution in a fully Bayesian framework and incorporate data from a complementary study, ATACCC, through an appropriately-discounted prior.
 
 These CIS data are unique, but the study may serve as a template for studies in future pandemics~\citep{hallettModule}.
 Our methodological framework is generic; therefore, it could be used to analyze these studies.
