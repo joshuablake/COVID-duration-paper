@@ -119,33 +119,29 @@
 \myexternaldocument{supplemental}
 %------------End of helper code--------------
 
-
+\title[Estimating duration]{Estimating the duration of RT-PCR positivity for SARS-CoV-2 from doubly interval censored data with undetected infections}
+\author{Joshua Blake$^{1,*}$\email{joshua.blake@mrc-bsu.cam.ac.uk},
+Paul Birrell$^{1,2}$,
+A. Sarah Walker$^{3,4,5}$,
+Koen B. Pouwels$^{6,7}$,
+Thomas House$^{8}$,
+Brian D M Tom$^{1}$,
+Theodore Kypraios$^{9}$, and
+Daniela De Angelis$^{1,2,**}$\email{daniela.deangelis@mrc-bsu.cam.ac.uk} \\
+$^{1}$MRC Biostatistics Unit, University of Cambridge, Cambridge, UK \\
+$^{2}$UK Health Security Agency, London, UK \\
+$^{3}$Nuffield Department of Medicine, University of Oxford, Oxford, UK \\
+$^{4}$NIHR Oxford Biomedical Research Centre, Oxford, UK \\
+$^{5}$NIHR Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance, University of Oxford, Oxford, UK \\
+$^{6}$Nuffield Department of Primary Care Health Sciences, University of Oxford, Oxford, UK \\
+$^{7}$National Institute for Health Research Health Protection Research Unit (NIHR HPRU) in Healthcare Associated Infections and Antimicrobial Resistance at the University of Oxford, Oxford, UK \\
+$^{8}$Department of Mathematics, University of Manchester, Manchester, UK \\
+$^{9}$School of Mathematical Sciences, University of Nottingham, Nottingham, UK}
 \begin{document}
 
-\title[Estimating duration]{Estimating the duration of RT-PCR positivity for SARS-CoV-2 from doubly interval censored data with undetected infections}
-  \author{%
-    Joshua Blake\thanks{%
-        MRC Biostatistics Unit, University of Cambridge.
-        JB was supported by Bayes4Health (EPSRC  EP/R01856/1).
-        JB, PB, and DDA were supported by the UK Medical Research Council (MRC) programme MRC\_MC\_UU\_00002/11. 
-        PB, TH, and DDA were supported by the Wellcome Trust (227438/Z/23/Z).
-        ASW and KBP were supported by the National Institute for Health Research (NIHR) Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance at Oxford University in partnership with the UK Health Security Agency (UKHSA) (NIHR200915).
-        ASW was supported by the NIHR Biomedical Research Centre, Oxford.
-        KBP is supported by the Huo Family Foundation, and the Medical Research Foundation (MRF-160-0017-ELP-POUW-C0909).
-        BDMT is supported through the MRC programme grant (MC\_UU\_00002/2) and theme funding (MC\_UU\_0002/20 - Precision Medicine).
-        For the purpose of open access, the authors have applied a Creative Commons Attribution (CC BY) license to any Author Accepted Manuscript version arising.
-    };
-    Paul Birrell\thanks{UK Health Security Agency; MRC Biostatistics Unit, University of Cambridge};
-    A.\ Sarah Walker\thanks{Nuffield Department of Medicine, University of Oxford; NIHR Oxford Biomedical Research Centre; NIHR Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance, University of Oxford.};
-     Koen B.\ Pouwels\thanks{Nuffield Department of Primary Care Health Sciences, University of Oxford; National Institute for Health Research Health Protection Research Unit (NIHR HPRU) in Healthcare Associated Infections and Antimicrobial Resistance at the University of Oxford}; \\
-     Thomas House\thanks{Department of Mathematics, University of 
-Manchester};
-     Brian D M Tom\thanks{MRC Biostatistics Unit, University of Cambridge. };
-     Theodore Kypraios\thanks{School of Mathematical Sciences, University of Nottingham};
-     and Daniela De Angelis\thanks{MRC Biostatistics Unit, University of Cambridge; UK Health Security Agency}
-  }
+\pagerange{\pageref{firstpage}--\pageref{lastpage}} 
 
-\maketitle
+\label{firstpage}
 
 \begin{abstract}
 Monitoring the incidence of new infections during a pandemic is critical for an effective public health response. General population prevalence surveys for SARS-CoV-2 can provide high-quality data to estimate incidence.  However, estimation relies on understanding the distribution of the duration that infections remain detectable. This study addresses this need using data from the Coronavirus Infection Survey (CIS), a long-term, longitudinal, general population survey conducted in the UK. Analyzing these data presents unique challenges, such as doubly interval censoring, undetected infections, and false negatives. We propose a Bayesian nonparametric survival analysis approach, estimating a discrete-time distribution of durations and integrating prior information derived from a complementary study. Our methodology is validated through a simulation study, including its resilience to model misspecification, and then applied to the CIS dataset. This results in the first estimate of the full duration distribution in a general population, as well as methodology that could be transferred to new contexts.
@@ -153,24 +149,9 @@ Monitoring the incidence of new infections during a pandemic is critical for an 
 
 \begin{keywords}  Lifetime and survival analysis, false negatives, misclassification, Bayesian methods \end{keywords}
 
-% \newpage
+\maketitle
 
 
-% The \textbf{format requirements from JASA} are at \url{https://www.tandfonline.com/journals/uasa20}.
-% \begin{itemize}
-%     \item Should be written with the following elements in the following order: title page; author footnote; abstract; keywords; article text (table(s); figures); acknowledgments; appendices; references
-%     \item Should be no more than 35 pages, including the abstract, figures, tables, and references. Appendices, proofs, and other supporting material should be placed in a separate supplement file (anonymized for review)
-%     \item Should contain an unstructured abstract of 200 words.
-%     \item Should contain between 3 and 5 keywords. Read making your article more discoverable, including information on choosing a title and search engine optimization.
-%     \item JASA requires that all papers be formatted for 8 1/2 x 11-inch paper, one side only.
-%     \item 12 point, double-spaced font (which we define as 26 lines of text per page)
-%     \item the average JASA paper is about 30 manuscript pages (with the above page format and including all appendices, references, tables, and figures), and it is very uncommon for papers much longer than about 35 pages to appear in JASA. 
-% \end{itemize}
-
-% \tableofcontents
-
-\newpage
-\spacingset{1.9} % DON'T change the spacing!
 \section{Introduction} \label{sec:intro}
 
 The most acute phase of the COVID-19 pandemic caused by the SARS-CoV-2 virus (2020 and 2021) killed approximately 30 million people globally~\citep{whoCOVIDExcess}, stretched healthcare services to the brink of collapse~\citep{fongNHS}, and disrupted societies worldwide.
@@ -918,26 +899,28 @@ Future pandemic plans should consider how to ensure privacy for study participan
 % For example, seasonal influenzas and coronaviruses.
 % These would allow analyses such as those performed in these chapters to be performed more rapidly in a future pandemic scenario.
 
-\bibliographystyle{biom}
-\bibliography{references}
+\backmatter
 
+\section*{Acknowledgements}
+JB was supported by Bayes4Health (EPSRC  EP/R01856/1).
+JB, PB, and DDA were supported by the UK Medical Research Council (MRC) programme MRC\_MC\_UU\_00002/11. 
+PB, TH, and DDA were supported by the Wellcome Trust (227438/Z/23/Z).
+ASW and KBP were supported by the National Institute for Health Research (NIHR) Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance at Oxford University in partnership with the UK Health Security Agency (UKHSA) (NIHR200915).
+ASW was supported by the NIHR Biomedical Research Centre, Oxford.
+KBP is supported by the Huo Family Foundation, and the Medical Research Foundation (MRF-160-0017-ELP-POUW-C0909).
+BDMT is supported through the MRC programme grant (MC\_UU\_00002/2) and theme funding (MC\_UU\_0002/20 - Precision Medicine).
+For the purpose of open access, the authors have applied a Creative Commons Attribution (CC BY) license to any Author Accepted Manuscript version arising.
 
-% \bigskip
-% \begin{center}
-% {\large\bf SUPPLEMENTARY MATERIAL}
-% \end{center}
+\bibliographystyle{biom} \bibliography{references}
 
-% \begin{description}
+\section*{Supporting Information}
 
-% \item[Simulation package:] R-package to implement simulation studies similar to the one in this article is at \url{https://github.com/joshuablake/cisSimulation}.
+FIX THIS TEXT
 
-% \item[Analysis package:] R-package to generate Stan code to implement the inference method proposed in this article is at \url{https://github.com/joshuablake/cisDurationModel}.
+Web Appendix 1 referenced in Section~\ref{ss:example} is available
+with this paper at the Biometrics website on Wiley Online Library.
+\vspace*{-8pt}
 
-% \item[Code:] Scripts to reproduce the analyses in this article are available at \url{https://github.com/joshuablake/CIS_survival_analysis_sims}.
-
-% \item[Appendix:] Contains derivations and further details, as described in the main text (pdf).
-
-% \end{description}
-
+\label{lastpage}
 
 \end{document}
