@@ -1,34 +1,10 @@
-\documentclass[12pt]{article}
+\documentclass[referee,useAMS,usenatbib]{biom}
+
 \usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage{enumerate}
-\usepackage{natbib}
-\usepackage{xurl} % not crucial - just used below for the URL 
-
-%\pdfminorversion=4
-% NOTE: To produce blinded version, replace "0" with "1" below.
-\newcommand{\blind}{1}
-\newcommand{\fulltitle}{Estimating the duration of RT-PCR positivity for SARS-CoV-2 from doubly interval censored data with undetected infections}
-
-% DON'T change margins - should be 1 inch all around.
-\addtolength{\oddsidemargin}{-.5in}%
-\addtolength{\evensidemargin}{-1in}%
-\addtolength{\textwidth}{1in}%
-\addtolength{\textheight}{1.7in}%
-\addtolength{\topmargin}{-1in}%
-
-%% ABOVE THIS LINE IS JASA TEMPLATE
-%% BELOW THIS LINE IS MY STUFF
-
-% add bibliography to TOC - remove for final version
-% \usepackage[nottoc,numbib]{tocbibind}
-
-\usepackage[utf8]{inputenc}
 \usepackage{amssymb}
+\usepackage{graphicx}
 \usepackage{floatpag}
 \usepackage{bm}
-% \usepackage{algorithm2e}
-\usepackage[unicode,psdextra]{hyperref}
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
 \usepackage{csquotes}
 \usepackage[T1]{fontenc}
@@ -39,11 +15,6 @@
 \usepackage{numprint}
 \npfourdigitnosep
 \npdecimalsign{.}
-% \usepackage{microtype}
-\usepackage{sidecap}
-
-% Formatting
-\usepackage[font=small,skip=1pt]{caption} 
 
 % Generic maths commands
 \def\reals{\mathbb{R}}
@@ -53,7 +24,6 @@
 \DeclareMathOperator{\E}{\mathbb{E}}
 \DeclareMathOperator{\V}{\mathbb{V}}
 \DeclareMathOperator{\I}{\mathbb{I}}
-%\DeclareMathOperator{\prob}{\mathbb{P}}
 \newcommand{\ind}{\mathrel{\perp\!\!\!\perp}}
 \DeclareMathOperator{\prob}{\mathrm{Pr}}
 \DeclareMathOperator{\p}{\pi}
@@ -69,7 +39,6 @@
 \DeclareMathOperator{\Exponential}{Exponential}
 \DeclareMathOperator{\NBr}{NegBin}
 \newcommand{\NBc}{\NBr}
-% \newcommand{\NBs}{\NBr_{s}}
 \DeclareMathOperator{\BB}{BetaBin}
 \DeclareMathOperator{\GamDist}{Gamma}
 \DeclareMathOperator{\MN}{Multinomial}
@@ -100,21 +69,12 @@
 \newcommand{\ncis}{\vec{n_\text{CIS}}}
 \newcommand{\na}{\vec{n}_\text{obs}}
 \newcommand{\pcis}{\vec{p_\text{CIS}}}
-%\newcommand{\sched}{\mathbb{T}}
-%\newcommand{\nsched}{n_{\sched}}
 \newcommand{\sched}{\mathcal{T}}
 \newcommand{\nsched}{|\sched{}|}
 \newcommand{\inform}{{_{\text{inform}}}}
 \newcommand{\posResults}{r_{+}}
 \newcommand{\negResults}{r_{-}}
 
-
-%% Bibliography
-% \usepackage[authordate-trad,backend=biber]{biblatex-chicago}
-% \addbibresource{references.bib}
-\usepackage{enumitem}
-\setlist{noitemsep}
-\setlength{\bibsep}{0.1cm}
 
 % Macros for common abbreviations to get the spacing right
 % See: https://stackoverflow.com/questions/3282319/correct-way-to-define-macros-etc-ie-in-latex
@@ -129,10 +89,6 @@
 \def\wrt{w.r.t\onedot} \def\dof{d.o.f\onedot}
 \def\etal{et al\onedot}
 \makeatother
-
-%% LINE NUMBERS
-\usepackage{lineno} % Include the package for line numbering
-\linenumbers % Activates line numbering for the document
 
 %----Helper code for dealing with external references----
 % (by cyberSingularity at http://tex.stackexchange.com/a/69832/226)
@@ -166,17 +122,7 @@
 
 \begin{document}
 
-%\bibliographystyle{natbib}
-
-\def\spacingset#1{\renewcommand{\baselinestretch}%
-{#1}\small\normalsize} \spacingset{1}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\if1\blind
-{
-  \title{\vspace{-1.7cm} \bf \fulltitle}
+\title[Estimating duration]{Estimating the duration of RT-PCR positivity for SARS-CoV-2 from doubly interval censored data with undetected infections}
   \author{%
     Joshua Blake\thanks{%
         MRC Biostatistics Unit, University of Cambridge.
@@ -198,29 +144,14 @@ Manchester};
      Theodore Kypraios\thanks{School of Mathematical Sciences, University of Nottingham};
      and Daniela De Angelis\thanks{MRC Biostatistics Unit, University of Cambridge; UK Health Security Agency}
   }
-  \maketitle
-} \fi
 
-\if0\blind
-{
-  \bigskip
-  \bigskip
-  \bigskip
-  \begin{center}
-    {\LARGE\bf \fulltitle}
-  \end{center}
-  \medskip
-} \fi
-% \medskip
-\vspace{-1cm}
+\maketitle
 
 \begin{abstract}
 Monitoring the incidence of new infections during a pandemic is critical for an effective public health response. General population prevalence surveys for SARS-CoV-2 can provide high-quality data to estimate incidence.  However, estimation relies on understanding the distribution of the duration that infections remain detectable. This study addresses this need using data from the Coronavirus Infection Survey (CIS), a long-term, longitudinal, general population survey conducted in the UK. Analyzing these data presents unique challenges, such as doubly interval censoring, undetected infections, and false negatives. We propose a Bayesian nonparametric survival analysis approach, estimating a discrete-time distribution of durations and integrating prior information derived from a complementary study. Our methodology is validated through a simulation study, including its resilience to model misspecification, and then applied to the CIS dataset. This results in the first estimate of the full duration distribution in a general population, as well as methodology that could be transferred to new contexts.
 \end{abstract}
 
-\noindent%
-{\it Keywords:}  Lifetime and survival analysis, false negatives, misclassification, Bayesian methods
-\vfill
+\begin{keywords}  Lifetime and survival analysis, false negatives, misclassification, Bayesian methods \end{keywords}
 
 % \newpage
 
@@ -429,7 +360,6 @@ Therefore, to infer $\vec\theta$, we augment $\na$ with the latent quantity $\nn
 
 \begin{figure}
     \makebox[\textwidth][c]{\includegraphics[width=0.9\paperwidth]{figures/output/regions_diag}}
-    \thisfloatpagestyle{empty}
     \caption[Episode regions]{%
       Each dot is a combination of $b_j$ and $e_j$ for an arbitrary individual $i$.
       The combinations giving rise to the same value of $\nu_k$ are in the same box, bounded by dashed lines.
@@ -818,7 +748,6 @@ The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ gi
   \label{imperf-test:fig:cis-estimates}
 \end{figure}
 \begin{figure}
-  \thisfloatpagestyle{empty}
   \makebox[\textwidth][c]{\includegraphics[width=0.9\paperwidth]{figures/output/CIS_vary}}
   \caption{%
     Assessing prior sensitivity.
@@ -839,11 +768,11 @@ When increasing the prior's strength, the posterior estimate moves towards the p
 As discussed previously, the prior information is reliable for the first 2--3 weeks, notably including the median time.
 The median using $r\inform$ matched the prior's median estimate and is a principled choice because it is based directly on the previous posterior estimate~\citet{birrellRTM2}.
 Therefore, we recommend this estimate, which has a mean survival time of 21.2 days (95\% CrI: 20.5--21.9).
-\begin{SCfigure}
+\begin{figure}
   \centering \includegraphics{figures/output/CIS_ntot}
   \caption[Sensitivity of $\ntot$'s posterior to its prior.]{How the posterior estimate of $\ntot$ changes with the value of $r$ in the prior on $\ntot$.}
   \label{imperf-test:fig:ntot}
-\end{SCfigure}
+\end{figure}
 
 
 \section{Discussion} \label{sec:discussion}
@@ -867,6 +796,12 @@ Crucially, the longer mean duration implies lower incidence when estimated from 
 
 % Long episodes are unlikely to be infectious~\citep{killingleySafety,singanayagamDuration}, but change the interpretation of positive test results, determine how long population positivity remains high following a peak in infections and, crucially, the longer mean duration implies lower incidence when estimated from known prevalence.
 \begin{table}[]
+\caption{
+    Comparison of survival time estimates from
+    \Citet{killingleySafety} (assuming a two day time from inoculation to positive with 95\% binomial confidence intervals using the Clopper--Pearson method~\citep{clopperUse}).
+    ATACCC-based is from \cref{sec:ataccc-prior}; the analysis does not extend to 88 days.
+    Ours is our final posterior (see \cref{sec:CIS}).
+}
 \centering
 \begin{tabular}{llll}
 Days from first positive & \citet{killingleySafety}  & ATACCC-based     & Ours                \\
@@ -874,12 +809,6 @@ Days from first positive & \citet{killingleySafety}  & ATACCC-based     & Ours  
 26                       & 33\% (13--60\%)   & 14\% (7.1--25\%) & 24\% (22-27\%)      \\
 88                       & 0\% (0--19\%)     & N/A              & 1.5\% (0.97--2.1\%)
 \end{tabular}
-\caption{
-    Comparison of survival time estimates from
-    \Citet{killingleySafety} (assuming a two day time from inoculation to positive with 95\% binomial confidence intervals using the Clopper--Pearson method~\citep{clopperUse}).
-    ATACCC-based is from \cref{sec:ataccc-prior}; the analysis does not extend to 88 days.
-    Ours is our final posterior (see \cref{sec:CIS}).
-}
 \label{tab:compare-survival}
 \end{table}
 
@@ -989,8 +918,7 @@ Future pandemic plans should consider how to ensure privacy for study participan
 % For example, seasonal influenzas and coronaviruses.
 % These would allow analyses such as those performed in these chapters to be performed more rapidly in a future pandemic scenario.
 
-\bibliographystyle{agsm}
-
+\bibliographystyle{biom}
 \bibliography{references}
 
 
