@@ -494,11 +494,9 @@ As before, $O'_j = \varnothing$ if episode $j$ is undetected.
 Otherwise, $O'_j \in \set{E}'$ where $\set{E}' = \{ \vec{\nu}_1', \dots, \vec{\nu}_{N_E'}' \}$ augments the space $\set{E}$ with test results during the episode.
 The elements of $\set{E}'$ are all $\vec{\nu}_k' = [\vec{\nu}_k, \vec{y}_k]^T$ where $\vec{\nu}_k \in \set{E}$ and $\vec{y}_k$ is a vector of test results for the relevant testing times excluding the negative at $l^{(b)}_k$, $\sched'_k = \{ t \in \sched_{i_k} \ssep r_k^{(b)} \leq t \leq r_k^{(e)} + 1 \}$.
 To formalize the definition of $\vec{y}_k$, let $m_k$ denote the size of $\sched'_k$ and denote the elements of $\sched'_k$ by $t_{k,1} < \dots < t_{k,m_k}$.
-Then, $\vec{y}_k \in \{0, 1\}^{m_k}$ and satisfies the following two conditions.
-\begin{enumerate}
-  \item The elements of $\vec{y}_k$ corresponding to the tests at times $r_k^{(b)}$ and $l_k^{(e)}$ are positive, \ie $y_{k,1} = y_{k,m_k-1} = 1$.
-  \item The element of $\vec{y}_k$ corresponding to the test at time $r_k^{(e)} + 1$ is negative, \ie $y_{k,m_k} = 0$.
-\end{enumerate}
+Then, $\vec{y}_k \in \{0, 1\}^{m_k}$ and satisfies two conditions.
+First, that the elements of $\vec{y}_k$ corresponding to the tests at times $r_k^{(b)}$ and $l_k^{(e)}$ are positive, \ie $y_{k,1} = y_{k,m_k-1} = 1$.
+Second, that the element of $\vec{y}_k$ corresponding to the test at time $r_k^{(e)} + 1$ is negative, \ie $y_{k,m_k} = 0$.
 These conditions are due to the construction of the intervals as positive and negative tests bounding the beginning and end times of the episode.
 
 Similarly, we define $p_k'$, $p_{ik}'$, $p_u'$, and $p_{iu}'$ to replace $p_k$, $p_{ik}$, $p_u$, and $p_{iu}$ respectively.
@@ -560,13 +558,11 @@ Denote the number of days between $b_j$ and the test following the false negativ
 The episode ends before this test if $d_j \leq \tau^2_{\sched_{i_j}}(b_j)$.
 
 Therefore, this mechanism causes episode $j$ to be undetected if all the following conditions hold.
-\begin{enumerate}
-    \item The episode would have been detected considering only the mechanisms in \cref{sec:prob-undetected}. That is $\min(\sched_{i_j}) < b_j \leq T_{i_j}$ and $e_j \geq \tau_{\sched_{i_j}}(b_j) + b_j$.
-    \item The episode ends in the interval $[\tau_{\sched_{i_j}}(b_j) + b_j, \tau^2_{\sched_{i_j}}(b_j) + b_j - 1]$.
-      Note that the lower bound here is exactly the bound on $e_j$ in the previous condition.
-      Equivalently, $\tau_{\sched_{i_j}}(b_j) + 1 \leq d_j \leq \tau^2_{\sched_{i_j}}(b_j)$.
-    \item A false negative occurs on day $\tau_{\sched_{i_j}}(b_j) + b_j$. Conditional on the previous condition, this occurs with probability $1 - \psens$.
-\end{enumerate}
+First, the episode would have been detected considering only the mechanisms in \cref{sec:prob-undetected}.
+That is $\min(\sched_{i_j}) < b_j \leq T_{i_j}$ and $e_j \geq \tau_{\sched_{i_j}}(b_j) + b_j$.
+Second, the episode ends in the interval $[\tau_{\sched_{i_j}}(b_j) + b_j, \tau^2_{\sched_{i_j}}(b_j) + b_j - 1]$; note that the lower bound here is exactly the bound on $e_j$ in the previous condition.
+Equivalently, $\tau_{\sched_{i_j}}(b_j) + 1 \leq d_j \leq \tau^2_{\sched_{i_j}}(b_j)$.
+Finally, that a false negative occurs on day $\tau_{\sched_{i_j}}(b_j) + b_j$. Conditional on the previous condition, this occurs with probability $1 - \psens$.
 
 In \cref{sec:p-iu-dash} we show that this gives:
 \begin{align}
