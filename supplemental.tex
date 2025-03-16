@@ -285,19 +285,34 @@ As previously, $1 - p_{iu}'$ is the required quantity.
 =& \frac{1}{T} \sum_{b=\min(\sched_{i_j}) + 1}^{T_{i_j}} \left( p_\text{sens} S_{\vec{\theta}}(\tau_{\sched_{i_j}}(b) + 1) + (1 - p_\text{sens}) S_{\vec{\theta}}(\tau^2_{\sched_{i_j}}(b) + 1)\right).
 \end{align}
 
-\section{ATACCC-based prior} \label{sec:ataccc-prior}
+\section{Details of survival function prior} \label{sec:details-priors}
 
-Reliable estimates of $\lambda_t$ for $t$ up to around 20 are available from a prior analysis of data from The Assessment of Transmission and Contagiousness of COVID-19 in Contacts (ATACCC) study~\citep{hakkiOnset}, which tested individuals who had been exposed to infection daily up to a maximum of 20 days.
-The infrequent testing in CIS means that there is a lack of information about short infection episodes, and hence we use these estimates as informative priors.
+The two priors we consider are depicted in \cref{fig:priors}
+They have varying degrees of informativeness regarding $S_{\vec{\theta}(t)}$.
+\begin{figure}
+  \includegraphics{figures/output/prior_predictive_survival}
+  \caption{%
+    Prior predictive values of $S_{\vec{\theta}}$ for the two priors.
+  }
+  \label{fig:priors}
+\end{figure}
 
-When constructing the prior, two aspects need consideration.
-Firstly, the model structure from the ATACCC-based analysis leads to its posterior distribution having a positive correlation between $\lambda_t$ and $\lambda_{t'}$, especially for small $|t-t'|$.
-The prior used in this analysis should preserve this correlation.
-Secondly, the uncertainty in the prior estimates for $\lambda_t, t\geq20$ are underestimated because they are based on extrapolation of the ATACCC data using strong model assumptions.
+\subsection{Weakly informative prior}
+
+The first prior for $S_{\vec{\theta}}$ is weakly informative, centered on prior estimates.
+Specifically, we assume an independent prior distribution for each $\lambda_t$ of Beta(0.1, 1.9).
+This distribution has mean 0.05, little information (standard deviation of 0.13), and a central 95\% probability mass of 0.00--0.47.
+The mean is in line with previous estimates of the median duration~\citep{cevikShedding}.
+
+\subsection{Strongly informative prior} \label{sec:ataccc-prior}
+
+The second is a strongly informative prior; it incorporates prior information from reliable estimates of $\lambda_t$ for $t < 20$.
+We take a previous Bayesian analysis~\citep{blakeThesis} of data from The Assessment of Transmission and Contagiousness of COVID-19 in Contacts (ATACCC) study~\citep{hakkiOnset}, which tested individuals who had been exposed to infection daily up to a maximum of 20 days.
+This ATACCC-based analysis produces posterior estimates of $\lambda_t$ with a posterior distribution with positive correlation between $\lambda_t$ and $\lambda_{t'}$, especially for small $|t-t'|$.
+Furthermore, the uncertainty in the prior estimates for $\lambda_t$ for $t\geq20$ are underestimated because they are based on extrapolation of the ATACCC data under strong model assumptions.
 
 We first approximate the previous posterior estimate of the hazard as $\logit{\vec{h}} \dist \MNorm(\vec{\mu}_A, \matr{\Sigma}_A)$ where $\vec{h}$ is the hazard, and $\vec{\mu}_A$ and $\matr{\Sigma}_A$ are the mean and covariance matrix estimated using samples of $\logit{\vec{h}}$ from the previous study's posterior.
 Using a multivariate normal, as opposed to multiple univariate distribution for each $h_t$, preserves the correlation between the hazards.
-% The logit transformation maps from the $[0, 1]$ interval to the full real line.
 The approximation is very good (not shown).
 
 Having approximated the estimate as a multivariate normal, we add additional uncertainty using a discrete Beta process.
@@ -312,14 +327,14 @@ It is:
 where $k_t$, $\alpha_0$, and $\beta_0$ are hyperparameters.
 An intuition for what this distribution represents derives from a conjugate model for $\lambda_t$ with a beta prior and a binomial likelihood.
 If $\lambda_t$ is given the prior distribution $\text{Beta}(\alpha_0, \beta_0)$, and we then have $k_t$ observations with $k_t h_t$ successes, then the posterior distribution for $\lambda_t$ is $\text{Beta}(\alpha_t, \beta_t)$ (as defined above).
-
-$k_t$ reflects the subjective belief that $h_t$ is a good estimate of $\lambda_t$ for small $t$ but increasingly unreliable.
+We use $\alpha_0 = 0.1$ and $\beta_0 = 1.9$ to match the weakly informative prior and the following form for $k_t$:
 \begin{align}
 k_t = \begin{cases}
-  \expit(-0.4 * (t - 20)) &\text{for $t \leq 39$} \\
-  0 &t > 39
-\end{cases}.
+  \expit(-0.4 \times (t - 20)) &\text{for $t \leq 39$} \\
+  0 &t > 39.
+\end{cases}
 \end{align}
+The form and choice of constants reflects the subjective belief that $h_t$ is a good estimate of $\lambda_t$ for small $t$ but increasingly unreliable; specifically, it is large at 0, when ATACCC is reliable, but becomes small for $t \geq 20$.
 
 \section{Additional details of simulation study}
 
