@@ -244,7 +244,7 @@ Here, we adopt a Bayesian survival analysis framework to estimate the distributi
 A Bayesian approach can incorporate prior knowledge to provide information on short episodes~\citep{caoBias}; uncertainty quantification, which is otherwise challenging in this setting~\citep{sunStatistical,dengNonparametric}; and the ability to include the undetected infections through data augmentation.
 
 The paper is structured as follows: we start by describing the design of the CIS and the data it collects in \cref{sec:data}, then develop the survival analysis framework in \cref{sec:modelling}.
-In \cref{sec:false-negatives}, we extend the framework to incorporate false negative tests and in \cref{sec:parameters-priors} propose two possible priors for the survival time.
+In \cref{sec:false-negatives}, we extend the framework to incorporate false negative tests.
 We test the framework in a simulation study in \cref{sec:simulation}, apply it in \cref{sec:CIS}, and conclude with a discussion in \cref{sec:discussion}.
 
 
@@ -289,9 +289,14 @@ In total, there were $\ndet = \numprint{4800}$ such detected episodes.
 
 The target of inference is $\vec{\theta}$, the parameters of the survival function $S_{\vec{\theta}}(t) = \prob(D_j \geq t \mid \vec\theta)$ for the random variable $D_j$, representing the number of days on which a positive result would be returned by a RT-PCR testing procedure that has 100\% specificity and sensitivity due to infection episode $j$.
 Here, 100\% an individual's true infection status refers to whether their viral load is above the test's limit of detection.
-We adopt a Bayesian framework to derive a posterior distribution for $\vec{\theta}$ given appropriate prior knowledge (\cref{sec:parameters-priors}) and partial information provided by the set of observed vectors $\{ o_j \}$ (defined later), accounting for the doubly interval censoring and undetected episodes.
-%The composition of $\vec{\theta}$ and appropriate priors for $\theta$ are discussed in \cref{sec:parameters-priors}.
+We adopt a Bayesian framework to derive a posterior distribution for $\vec{\theta}$ given appropriate prior knowledge and partial information provided by the set of observed vectors $\{ o_j \}$ (defined later), accounting for the doubly interval censoring and undetected episodes.
 In what follows, we explain the data generating process and derive a statistical model for the case where that there are no misclassified test results; in \cref{sec:false-negatives} we generalize the framework to include false negatives.
+
+We parameterize $S$ in terms of the discrete-time hazard on day $i$, $\lambda_i = \prob(B = i \mid B \geq i)$, giving $S_{\vec{\theta}}(t) = \prod_{i=1}^{t-1} (1 - \lambda_{i})$; the lack of monotonicity or sum constraint on the hazard makes it an attractive parameterization for inference~\citep{heBayesian}.
+Therefore, $\vec{\theta} = [\lambda_1, \dots, \lambda_{\dmax-1}]^{\mathsf{T}}$, where $\dmax$ is the longest possible duration assumed as the maximum possible duration of the observed episodes, \ie $\dmax = \max_{k \in \set{D}} r^{(e)}_k - l^{(b)}_k + 1$.
+We consider both a weakly and strongly informative prior for $\vec{\theta}$ (see \cref{sec:details-priors}).
+The strongly informative prior includes information from a previous study~\citep{blakeThesis} of the ATACCC data~\citep{hakkiOnset}, and hence is a form of evidence synthesis.
+
 
 An important aspect of our approach is that the dimension of the posterior distribution does not increase with either the cohort size of number of detected infections.
 Previous approaches to related problems augmented the data with a parameter per detected infection~\citep{heBayesiana,heBayesian,caoModeling}.
@@ -570,47 +575,6 @@ In \cref{sec:p-iu-dash} we show that this gives:
 =& \frac{1}{T} \sum_{b=\min(\sched_{i}) + 1}^{T_{i}} \left( p_\text{sens} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1) + (1 - p_\text{sens}) S_{\vec{\theta}}(\tau^2_{\sched_{i}}(b) + 1)\right).
 \label{imperf-test:eq:pit-prime}
 \end{align}
-
-\section{The survival function} \label{sec:parameters-priors}
-
-Next we specify the form and priors for $S_{\vec{\theta}}(t)$.
-We parameterize $S$ in terms of the discrete-time hazard on day $i$, $\lambda_i = \prob(B = i \mid B \geq i)$, giving $S_{\vec{\theta}}(t) = \prod_{i=1}^{t-1} (1 - \lambda_{i})$; the lack of monotonicity or sum constraint on the hazard makes it an attractive parameterization for inference~\citep{heBayesian}.
-Therefore, $\vec{\theta} = [\lambda_1, \dots, \lambda_{\dmax-1}]^{\mathsf{T}}$, where $\dmax$ is the longest possible duration assumed as the maximum possible duration of the observed episodes, \ie $\dmax = \max_{k \in \set{D}} r^{(e)}_k - l^{(b)}_k + 1$.
-We consider two priors (depicted in \cref{fig:priors}), with varying degrees of informativeness regarding $S_{\vec{\theta}(t)}$.
-\begin{figure}
-  \includegraphics{figures/output/prior_predictive_survival}
-  \caption{%
-    Prior predictive values of $S_{\vec{\theta}}$ for the two priors.
-  }
-  \label{fig:priors}
-\end{figure}
-
-The first prior for $S_{\vec{\theta}}$ is weakly informative, centered on prior estimates.
-Specifically, we assume an independent prior distribution for each $\lambda_t$ of Beta(0.1, 1.9).
-This distribution has mean 0.05, little information (standard deviation of 0.13), and a central 95\% probability mass of 0.00--0.47.
-The mean is in line with previous estimates of the median duration~\citep{cevikShedding}.
-
-The second is a strongly informative prior; it incorporates prior information from reliable estimates of $\lambda_t$ for $t < 20$.
-We take a previous Bayesian analysis~\citep{blakeThesis} of data from The Assessment of Transmission and Contagiousness of COVID-19 in Contacts (ATACCC) study~\citep{hakkiOnset}, which tested individuals who had been exposed to infection daily up to a maximum of 20 days.
-This ATACCC-based analysis produces posterior estimates of $\lambda_t$ with a posterior distribution with positive correlation between $\lambda_t$ and $\lambda_{t'}$, especially for small $|t-t'|$.
-Furthermore, the uncertainty in the prior estimates for $\lambda_t$ for $t\geq20$ are underestimated because they are based on extrapolation of the ATACCC data under strong model assumptions.
-The following prior, based on the discrete Beta process prior~\citep{ibrahimBayesian,sunStatisticala}, incorporates both these aspects:
-\begin{align}
-  \logit \vec{h} &\dist \MNorm(\vec{\mu}_A, \matr{\Sigma}_A) \\
-  \lambda_t &\dist \text{Beta}(\alpha_t, \beta_t) &t = 1, 2, \dots \\
-  \alpha_t &= k_t h_t + \alpha_0 \\
-  \beta_t &= k_t (1 - h_t) + \beta_0
-\end{align}
-where $k_t$, $\alpha_0$, and $\beta_0$ are hyperparameters; and $\vec{\mu}_A$ and $\matr{\Sigma}_A$ are posterior approximations of the ATACCC-based posterior (see \cref{sec:ataccc-prior} for details).
-We use $\alpha_0 = 0.1$ and $\beta_0 = 1.9$ to match the weakly informative prior and the following form for $k_t$:
-\begin{align}
-k_t = \begin{cases}
-  \expit(-0.4 \times (t - 20)) &\text{for $t \leq 39$} \\
-  0 &t > 39.
-\end{cases}
-\end{align}
-The form and choice of constants reflects the subjective belief that $h_t$ is a good estimate of $\lambda_t$ for small $t$ but increasingly unreliable; specifically, it is large at 0, when ATACCC is reliable, but becomes small for $t \geq 20$.
-
 
 \section{Simulations} \label{sec:simulation}
 
