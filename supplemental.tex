@@ -1,29 +1,10 @@
-\documentclass[12pt]{article}
+\documentclass[referee,useAMS,usenatbib]{biom}
 
 \usepackage{amsmath}
-\usepackage{graphicx}
-\usepackage{enumerate}
-\usepackage{natbib}
-
-% DON'T change margins - should be 1 inch all around.
-\addtolength{\oddsidemargin}{-.5in}%
-\addtolength{\evensidemargin}{-1in}%
-\addtolength{\textwidth}{1in}%
-\addtolength{\textheight}{1.7in}%
-\addtolength{\topmargin}{-1in}%
-
-%% ABOVE THIS LINE IS JASA TEMPLATE
-%% BELOW THIS LINE IS MY STUFF
-
-% add bibliography to TOC - remove for final version
-% \usepackage[nottoc,numbib]{tocbibind}
-
-\usepackage[utf8]{inputenc}
 \usepackage{amssymb}
+\usepackage{graphicx}
 \usepackage{floatpag}
 \usepackage{bm}
-% \usepackage{algorithm2e}
-\usepackage[unicode,psdextra]{hyperref}
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
 \usepackage{csquotes}
 \usepackage[T1]{fontenc}
@@ -34,7 +15,6 @@
 \usepackage{numprint}
 \npfourdigitnosep
 \npdecimalsign{.}
-% \usepackage{microtype}
 
 % Generic maths commands
 \def\reals{\mathbb{R}}
@@ -44,7 +24,6 @@
 \DeclareMathOperator{\E}{\mathbb{E}}
 \DeclareMathOperator{\V}{\mathbb{V}}
 \DeclareMathOperator{\I}{\mathbb{I}}
-%\DeclareMathOperator{\prob}{\mathbb{P}}
 \newcommand{\ind}{\mathrel{\perp\!\!\!\perp}}
 \DeclareMathOperator{\prob}{\mathrm{Pr}}
 \DeclareMathOperator{\p}{\pi}
@@ -60,7 +39,6 @@
 \DeclareMathOperator{\Exponential}{Exponential}
 \DeclareMathOperator{\NBr}{NegBin}
 \newcommand{\NBc}{\NBr}
-% \newcommand{\NBs}{\NBr_{s}}
 \DeclareMathOperator{\BB}{BetaBin}
 \DeclareMathOperator{\GamDist}{Gamma}
 \DeclareMathOperator{\MN}{Multinomial}
@@ -91,18 +69,12 @@
 \newcommand{\ncis}{\vec{n_\text{CIS}}}
 \newcommand{\na}{\vec{n}_\text{obs}}
 \newcommand{\pcis}{\vec{p_\text{CIS}}}
-%\newcommand{\sched}{\mathbb{T}}
-%\newcommand{\nsched}{n_{\sched}}
 \newcommand{\sched}{\mathcal{T}}
 \newcommand{\nsched}{|\sched{}|}
 \newcommand{\inform}{{_{\text{inform}}}}
 \newcommand{\posResults}{r_{+}}
 \newcommand{\negResults}{r_{-}}
 
-
-%% Bibliography
-% \usepackage[authordate-trad,backend=biber]{biblatex-chicago}
-% \addbibresource{references.bib}
 
 % Macros for common abbreviations to get the spacing right
 % See: https://stackoverflow.com/questions/3282319/correct-way-to-define-macros-etc-ie-in-latex
@@ -117,11 +89,6 @@
 \def\wrt{w.r.t\onedot} \def\dof{d.o.f\onedot}
 \def\etal{et al\onedot}
 \makeatother
-
-%% LINE NUMBERS
-\usepackage{lineno} % Include the package for line numbering
-\linenumbers % Activates line numbering for the document
-
 
 %----Helper code for dealing with external references----
 % (by cyberSingularity at http://tex.stackexchange.com/a/69832/226)
