@@ -194,7 +194,7 @@ This selection effect is different from standard left truncation~\cite[e.g.][]{s
 Secondly, the duration data are doubly interval censored: we observe the beginning of an episode when a previously negative individual returns a positive test, but the episode could start at any point between those two tests; and the end of the episode is similarly interval censored (see \cref{fig:challenges}(B)).
 
 \begin{figure}
-  \makebox[\textwidth][c]{\includegraphics{figures/output/challenges}}
+  \includegraphics{figures/output/challenges}
   \caption{%
     Challenges posed by the CIS design.
     (A) Undetected episodes.
@@ -346,7 +346,7 @@ If $\vec{n}$ was known, then the problem reduces to the well-studied problem of 
 Therefore, to infer $\vec\theta$, we augment $\na$ with the latent quantity $\nnodet$.
 
 \begin{figure}
-    \makebox[\textwidth][c]{\includegraphics[width=0.9\paperwidth]{figures/output/regions_diag}}
+    \includegraphics{figures/output/regions_diag}
     \caption[Episode regions]{%
       Each dot is a combination of $b_j$ and $e_j$ for an arbitrary individual $i$.
       The combinations giving rise to the same value of $\nu_k$ are in the same box, bounded by dashed lines.
@@ -540,43 +540,33 @@ We used a vague prior for $\ntot$, with $\mu = n_d / p$ and $r = 1$.
 
 \subsection{Results}
 
-When $\psens = 0.8$ and is correctly specified, the model recovers the true survival time well (see \cref{imperf-test:fig:constant-test-sensitivity}(B)).
+When $\psens = 0.8$ and is correctly specified, the model recovers the true survival time well (see \cref{imperf-test:fig:simulation-results}(B)).
 The strongly informative prior for $\vec\theta$, in comparison to the weakly informative prior, helps to overcome the misspecification due to the simplifying assumptions, moving the estimated survival function closer to its true survival time; in particular, the central estimate is smoother and has less uncertainty.
-However, when $\psens = 0.6$, both priors lead to underestimation (see \cref{imperf-test:fig:constant-test-sensitivity}(A)).
+However, when $\psens = 0.6$, both priors lead to underestimation (see \cref{imperf-test:fig:simulation-results}(A)).
 This is likely caused by too large a violation of the simplifying assumptions made in \cref{sec:false-negatives}.
 \begin{figure}
-  \includegraphics[width=\textwidth]{figures/output/sim-constant-sensitivity}
-  \caption[Simulation study results with constant test sensitivity]{%
-    Posterior (median and 95\% credible interval (CrI)) survival time for the simulation study with a correctly specified test sensitivity.
+  \includegraphics{figures/output/sim-results}
+  \caption[Simulation study results]{%
+    Simulation study results showing posterior (median and 95\% credible interval (CrI)) survival time for the simulation study with a correctly specified test sensitivity.
     True survival time shown in black.
+    (A-B) Correctly specified test sensitivity, $\psenss = \psensi = \psens$.
+    (C-E) $\psenss = 0.9$ and $\psensi$ as per label.
+    (F-H) $\psenss = v$ and $\psensi$ as per label.
   }
-  \label{imperf-test:fig:constant-test-sensitivity}
+  \label{imperf-test:fig:simulation-results}
 \end{figure}
 
 Next, we considered the consequence of $\psens$ being misspecified and using the strongly informative prior, the better performing prior in the correctly specified case.
 If the test sensitivity is misspecified then the estimate of the survival distribution is biased.
-If $\psensi < \psenss$, then the posterior estimate initially follows the true value but then separates (see \cref{imperf-test:fig:test-sensitivity}(A)).
+If $\psensi < \psenss$, then the posterior estimate initially follows the true value but then separates (see \cref{imperf-test:fig:simulation-results}).
 The number of episodes inferred to have truly ended by the first negative is too low, and hence the survival function is overestimated.
 This effect dominates over the opposing bias of overestimating the number of undetected episodes.
-The opposite occurs if $\psensi > \psenss$, although the posterior moves away from the truth earlier (see \cref{imperf-test:fig:test-sensitivity}(C)).
-\begin{figure}[ht!]
-  \includegraphics[width=\textwidth]{figures/output/sim-sensitivity}
-  \caption[Simulation study results with varying test sensitivity]{%
-    Posterior (median and 95\% CrI) survival time.
-    The true survival time is shown in black.
-    $\psensi$ is indicated on the panel labels.
-    (A-C) $\psenss = 0.8$.
-    (D-F) $\psenss = v$.
-  }
-  \label{imperf-test:fig:test-sensitivity}
-\end{figure}
+The opposite occurs if $\psensi > \psenss$, although the posterior moves away from the truth earlier (see \cref{imperf-test:fig:simulation-results}).
 
-The results when $\psenss = v$ are similar to $\psenss = 0.8$ (see \cref{imperf-test:fig:test-sensitivity}).
+The results when $\psenss = v$ are similar to $\psenss = 0.8$ (see \cref{imperf-test:fig:simulation-results}).
 This suggests that the simplified model, with constant test sensitivity, is sufficient for recovering the true survival time.
 % Estimating the test sensitivity is not possible without a more complex model, as discussed in \cref{imperf-test:sec:discussion}.
 Therefore, we conclude that including a varying test sensitivity is not required for adequate inference, and apply it to the real CIS data in the next section.
-\begin{figure}
-\end{figure}
 
 \section{Application to the CIS data} \label{sec:CIS}
 
@@ -595,12 +585,12 @@ The increase in long episodes (\eg longer than 50 days) is not very sensitive to
 However, the survival proportion over the first 4 weeks is sensitive to these choices.
 The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ gives a median survival time most similar to the ATACCC-based estimate.
 \begin{figure}
-  \centering \includegraphics{figures/output/CIS_final}
+  \includegraphics{figures/output/CIS_final}
   \caption{Duration estimates using CIS and ATACCC data}
   \label{imperf-test:fig:cis-estimates}
 \end{figure}
 \begin{figure}
-  \makebox[\textwidth][c]{\includegraphics[width=0.9\paperwidth]{figures/output/CIS_vary}}
+  \includegraphics{figures/output/CIS_vary}
   \caption{%
     Assessing prior sensitivity.
     (A-C) Changing $r$ when $\psens = 0.8$.
@@ -620,11 +610,6 @@ When increasing the prior's strength, the posterior estimate moves towards the p
 As discussed previously, the prior information is reliable for the first 2--3 weeks, notably including the median time.
 The median using $r\inform$ matched the prior's median estimate and is a principled choice because it is based directly on the previous posterior estimate~\citet{birrellRTM2}.
 Therefore, we recommend this estimate, which has a mean survival time of 21.2 days (95\% CrI: 20.5--21.9).
-\begin{figure}
-  \centering \includegraphics{figures/output/CIS_ntot}
-  \caption[Sensitivity of $\ntot$'s posterior to its prior.]{How the posterior estimate of $\ntot$ changes with the value of $r$ in the prior on $\ntot$.}
-  \label{imperf-test:fig:ntot}
-\end{figure}
 
 
 \section{Discussion} \label{sec:discussion}
