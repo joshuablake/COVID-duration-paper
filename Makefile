@@ -4,6 +4,8 @@ main.pdf: main.tex references.bib figures/output/regions_diag.pdf figures/output
 latex.out/supplemental.aux supplemental.pdf: supplemental.tex references.bib figures/output/prior_predictive_survival.pdf  figures/output/CIS_ntot.pdf .PHONY
 	python3 latexrun $<
 
+all: main.pdf supplemental.pdf
+
 figures/output/challenges.pdf: figures/R/challenges.R
 	Rscript $<
 
