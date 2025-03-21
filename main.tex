@@ -13,6 +13,7 @@
 \usepackage{afterpage}
 \usepackage{caption}
 \usepackage{numprint}
+\usepackage{url}
 \npfourdigitnosep
 \npdecimalsign{.}
 
@@ -361,47 +362,20 @@ Therefore, to infer $\vec\theta$, we augment $\na$ with the latent quantity $\nn
 Let $p_k = \prob(O_j = \vec{\nu}_k \mid \vec{\theta})$, the probability that $O_j$ takes the value $\vec{\nu}_k$ for $k = 1, \dots, N_E$.
 Similarly, let $p_u = \prob(O_j = \varnothing \mid \vec{\theta})$, the probability that $j$ is undetected.
 Then, the probability distribution for $O_j$ is specified by $\vec{p} = [p_1, \dots, p_{N_E}, p_u]^{\mathsf{T}}$.
-
-As we assume independence:
-\begin{align}
-  \vec{n} \mid \ntot, \vec{\theta} &\dist \MN(\ntot, \vec{p})
-\intertext{that is:}
-  p(\vec{n} \mid \ntot, \vec{\theta}) &= \frac{\ntot!}{\nnodet!\prod_{k=1}^{N_E} n_k!} p_u^{\nnodet} \prod_{k=1}^{N_E} p_k^{n_k}.
-  \label{perf-test:eq:multinomial-ll}
-\end{align}
-
 In the CIS data, each $n_k$ ($k \neq u$) is observed as either 0 or 1.
 Define $\set{D} = \{ k \ssep n_k = 1 \}$, the set of detected episodes.
-Furthermore, note that the support of the multinomial distribution requires that $\nnodet = \ntot - \ndet$.
-Then \cref{perf-test:eq:multinomial-ll} simplifies to:
-\begin{align}
-  p(\vec{n} \mid \ntot, \vec{\theta})
-  &= p(\na \mid \ntot, \vec{\theta}) \\
-  &= \frac{\ntot!}{(\ntot - \ndet)!} p_u^{\ntot-\ndet} \prod_{k \in \set{D}} p_k.
-  \label{perf-test:eq:multinomial}
-\end{align}
-
-The relevant information from the CIS data is fully contained in the vector $\na$.
-Therefore, the posterior of interest is (full derivations of this and subsequent quantities are in \cref{sec:derivations}):
-\begin{align}
-p(\vec{\theta} \mid \na)
-&\propto  p(\vec{\theta}) \left( \prod_{k \in \set{D}} p_k \right) \left( \sum_{\ntot=\ndet}^\infty p(\ntot \mid \vec{\theta}) \frac{\ntot!}{(\ntot - \ndet)!} \pnodet^{\ntot - \ndet} \right).
-\label{perf-test:eq:posterior1}
-\end{align}
-
-For mathematical convenience, we assume the prior $\ntot \dist \NBc(\mu, r)$ (where $\mu$ is the prior mean and $r$ its overdispersion), and that it is independent of $\vec{\theta}$, the parameters of the survival distribution.
-In this case \cref{perf-test:eq:posterior1} simplifies to:
+Under the mathematically convenient prior $\ntot \dist \NBc(\mu, r)$ (where $\mu$ is the prior mean and $r$ its overdispersion) the posterior distribution is:
 \begin{align}
 p(\vec{\theta} \mid \na)
 &\propto p(\vec{\theta}) \left( \prod_{i \in \set{D}} p_k \right) (r + \mu (1- \pnodet))^{-(r+\ndet)} \label{perf-test:eq:full-posterior}.
 \end{align}
+A full derivation is in \cref{sec:full-posterior-derivation}.
 The rest of this section derives expressions for $p_{k}$ and $p_{u}$.
 
 Decompose $p_k$ as $p_k = p_{ik} \prob(i_j = i_k \mid \vec{\theta})$
 where $p_{ik} = \prob(O_j = \vec{\nu}_k \mid i_j = i_k, \vec{\theta})$.
 % This is valid as $\prob(O_j = \nu_k \mid i_j \neq i_k) = 0$ due to the condition here being equivalent to equating the two vectors' final elements.
-Assuming all individuals are equally likely to be infected, $\prob(i_j = i_k \mid \vec{\theta}) = 1/\Ncis$ for all $j$ and $k$.
-
+As we assume all individuals are equally likely to be infected, $\prob(i_j = i_k \mid \vec{\theta}) = 1/\Ncis$ for all $j$ and $k$.
 Therefore, $p_{ik}$ takes the standard form of the likelihood for doubly interval censored data without truncation~\citep[e.g.][]{sunEmpirical}:
 \begin{align}
 p_{ik}
@@ -410,65 +384,13 @@ p_{ik}
 \end{align}
 
 The remaining component of \cref{perf-test:eq:full-posterior} required is $1- p_u$, one minus the probability of missing an infection, \ie the probability of detecting an infection.
-
-\subsection{Deriving $1 - p_u$} \label{sec:prob-undetected}
-
-The final component of \cref{perf-test:eq:full-posterior} required is $1 - p_u$.
-\Cref{sec:derivations} shows that
+\Cref{sec:derive-prob-undetected} shows that
 \begin{align}
   1 - p_u
-  &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \varnothing \mid i_j = i, \vec{\theta})).
-  \label{perf-test:eq:pu}
+  &\propto \frac{1}{\Ncis} \sum_{i=1}^{\Ncis}\sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1)
 \end{align}
-%% assuming $P(i_j = i \mid \vec{\theta}) = 1/\Ncis$ as before.
-Let $p_{iu} = \prob(O_j = \varnothing \mid i_j = i, \vec{\theta})$.
-%% Therefore, the crucial component is $1 - p_{iu}$.
-%% This is one minus the probability that an episode in individual $i$ was undetected, \ie the probability of the episode being detected.
-An episode $j$ in individual $i_j$ is detected if and only if all the following conditions are met.
-\begin{enumerate}
-    \item 
-    $t\in[B_j, E_j]$ for some $t \in \sched_{i_j}$;
-    % $\exists t \in \sched_{i_j}$ such that $b_j \leq t \leq e_j$; 
-    \ie there is at least one positive test for the episode.
-    \item $B_j > \min ( \sched_{i_j} )$.
-      For individuals enrolled during the period considered ($\min \sched_{i_j} > 0$), this ensures that the beginning of the episode is lower bounded.
-      For individuals enrolled prior to the period considered ($\min \sched_{i_j} \leq 0$), this means that the episode was not detected prior to time 1.
-    \item $B_j \leq T_{i_j}$ where $T_{i_j} = \max \{ t \in \sched_{i_j} \ssep t \leq T \}$ is the last time that $i_j$ is tested in the period, meaning that the test is detected within the period.
-    \item $\exists t \in \sched_{i_j}$ such that $t > E_j$, upper bounding the end of the episode.
-      For episodes detected in the period we consider, a negligible number of episodes are excluded due to this criteria (<5\% of detected episodes, themselves likely around 15\% of all episodes).
-      Therefore, we assume this occurs with probability 0.
-      % For a new context, including recent infections, this condition could be relaxed by considering episodes that do not meet this criterion as right censored.
-\end{enumerate}
+where $\tau_{\sched_i}(t)$ is the time until the next test at or after time $t$ in the schedule $\sched_i$.
 
-% An episode is undetected if and only if no tests are performed during the episode or if there was no negative test prior to the episode.
-% Equivalently, that the first test at or after $b$ is after $e$, or that there is no negative test prior to $b$.
-First define $\tau_{\sched_i}(t)$ as the time until the next test at or after time $t$ in the schedule $\sched_i$:
-\begin{align}
-\tau_{\sched_i}(t) &= \min \{ t' \in \sched_i : t' \geq t \} - t
-\label{perf-test:eq:tau-def}
-\end{align}
-% defining $\min \varnothing = \infty$; \ie $\tau_{\sched_i}(t) = \infty$ if there is no $t' \in \sched_i$ such that $t' \geq t$.
-The first condition can now be expressed as $e_j \geq b_j + \tau_{\sched_{i_j}}(b_j)$.
-Equivalently, $d_j \geq \tau_{\sched_{i_j}}(b_j) + 1$.
-% The fourth condition can be expressed as $\tau_{\sched_{i_j}}(b_j) < \infty$.
-% Then $\Omega_i$ can be written as:
-% \begin{align}
-% \Omega_i = \{ (b, e) \ssep \tau_{\sched_i}(b) + b > e \vee b \leq \min(\sched_i) \}.
-% \end{align}
-Therefore, omitting the conditioning on $\vec{\theta}$ and $i_j = i$:
-\begin{align}
-1 - p_{iu}
-% &= 1 - \prob((B_{j}, E_{j}) \in \Omega_i) \\
-&= \prob(D_j \geq \tau_{\sched_{i}}(B_j)+ 1, \min \sched_{i} < B_j \leq T_{i}) \\
-&= \sum_{b = \min \sched_{i} + 1}^{T_{i}} \prob(D_j \geq \tau_{\sched_{i}}(b) + 1 \mid B_j = b) \prob(B_j = b)\\
-&\propto \sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1).
-\label{perf-test:eq:piu}
-\end{align}
-Substituting into \cref{perf-test:eq:pu}:
-\begin{align}
-1 - p_u
-& \propto \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1).
-\end{align}
 For computational efficiency, note that this can be rewritten as:
 \begin{align}
   1- p_u
