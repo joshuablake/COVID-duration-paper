@@ -13,6 +13,7 @@
 \usepackage{afterpage}
 \usepackage{caption}
 \usepackage{numprint}
+\usepackage{url}
 \npfourdigitnosep
 \npdecimalsign{.}
 
@@ -466,6 +467,14 @@ $$
 Then the distribution used in the simulation is the normalised version of this: $f_S(t) = f'_S(t)/\sum_i f_S'(i)$.
 % These curves and the combined curve are compared in \cref{perf-test:fig:duration-dist}.
 Episode $j$'s duration of detectability is then a draw from this distribution.
+
+\section{Additional figures}
+
+\begin{figure}
+  \includegraphics{figures/output/CIS_ntot}
+  \caption[Sensitivity of $\ntot$'s posterior to its prior.]{How the posterior estimate of $\ntot$ changes with the value of $r$ in the prior on $\ntot$.}
+  \label{imperf-test:fig:ntot}
+\end{figure}
 
 \bibliographystyle{agsm}
 
