@@ -9,7 +9,6 @@
 \usepackage{csquotes}
 \usepackage[T1]{fontenc}
 \usepackage{textcomp} % provide symbols
-\usepackage{xr}
 \usepackage{afterpage}
 \usepackage{caption}
 \usepackage{numprint}
@@ -91,34 +90,6 @@
 \def\etal{et al\onedot}
 \makeatother
 
-%----Helper code for dealing with external references----
-% (by cyberSingularity at http://tex.stackexchange.com/a/69832/226)
-
-\usepackage{xr}
-\makeatletter
-
-\newcommand*{\addFileDependency}[1]{% argument=file name and extension
-\typeout{(#1)}% latexmk will find this if $recorder=0
-% however, in that case, it will ignore #1 if it is a .aux or 
-% .pdf file etc and it exists! If it doesn't exist, it will appear 
-% in the list of dependents regardless)
-%
-% Write the following if you want it to appear in \listfiles 
-% --- although not really necessary and latexmk doesn't use this
-%
-\@addtofilelist{#1}
-%
-% latexmk will find this message if #1 doesn't exist (yet)
-\IfFileExists{#1}{}{\typeout{No file #1.}}
-}\makeatother
-
-\newcommand*{\myexternaldocument}[1]{%
-\externaldocument{#1}%
-\addFileDependency{#1.aux}%
-\addFileDependency{#1.tex}%
-}
-\myexternaldocument{supplemental}
-%------------End of helper code--------------
 
 \title[Estimating duration]{Estimating the duration of RT-PCR positivity for SARS-CoV-2 from doubly interval censored data with undetected infections}
 \author{Joshua Blake$^{1,*}$\email{joshua.blake@mrc-bsu.cam.ac.uk},
@@ -607,7 +578,7 @@ The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ gi
 
 Our estimates are sensitive to the choice of $r$, the strength of the prior on $\ntot$.
 A low value for $r$, giving a very weak, almost uninformative, prior on $\ntot$ causes its posterior estimate to be much higher than the estimate from \citet{birrellRTM2}.
-When increasing the prior's strength, the posterior estimate moves towards the prior smoothly, as expected (see \cref{imperf-test:fig:ntot}).
+When increasing the prior's strength, the posterior estimate moves towards the prior smoothly, as expected (see additional figure in the Web Appendix).
 As discussed previously, the prior information is reliable for the first 2--3 weeks, notably including the median time.
 The median using $r\inform$ matched the prior's median estimate and is a principled choice because it is based directly on the previous posterior estimate~\citet{birrellRTM2}.
 Therefore, we recommend this estimate, which has a mean survival time of 21.2 days (95\% CrI: 20.5--21.9).

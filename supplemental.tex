@@ -426,7 +426,7 @@ The algorithm for generating the data is as follows.
 \begin{enumerate}
     \item Extract the test schedules for each individual who had at least one test during the period of interest.
     \item Draw an episode start time, $b_{j}$ for each individual uniformly at random between 2 July 2020 (100 days before the period where a detected episode would be included) and 6 December 2020 (the end of this period).
-    \item Draw a duration of episode for their episode, $d_j$, based on a combination of previous estimates (described in \cref{sec:simulation-truth}). Then calculate the end of their infection episode, $e_{j} = b_{j} + d_i - 1$.
+    \item Draw a duration of episode for their episode, $d_j$, based on a combination of previous estimates (described below). Then calculate the end of their infection episode, $e_{j} = b_{j} + d_i - 1$.
     \item Simulate the test results based on the test schedule, $b_{j}$, and $e_{j}$. A test on day $t$ between $b_{j}$ and $e_{j}$ (inclusive) is positive with probability $\psens$, where $\psens$ can vary with the time since infection, as defined below. All tests outside this interval are negative.
     \item Discard episodes where there are no positive tests (\ie undetected episodes) and then apply the inclusion criteria from \cref{sec:data}. Denote by $p$ the proportion of episodes that are retained.
     \item Of these remaining episodes, sample $\ndet = 4800$ to match the sample size of the true dataset. This is needed because in step 2 the entire cohort was infected, while in the real study only a (unknown) portion is infected.
