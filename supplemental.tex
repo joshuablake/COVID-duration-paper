@@ -220,7 +220,7 @@ p_{ik}
 =& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right) \prob \left(B_{j} = b \right) &\text{by def of $S_{\vec{\theta}}$} \\
 \propto& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right)
 \end{align}
-under the assumption of uniform probability of infection time.
+under the assumption of uniform prior probability of infection time.
 This is the standard form of the likelihood for doubly interval censored data without truncation~\citep[e.g.][]{sunEmpirical}.
 
 
@@ -284,13 +284,15 @@ as we assume that all episode start times are independent with a uniform prior, 
 
 Substituting into \cref{perf-test:eq:pu} gives \cref{eq:1minuspu}.
 
-\subsection{Expressions in \cref{imperf-test:sec:modifying-p_ia}} \label{sec:p-ia-dash}
+\subsection{Derivation of \cref{imperf-test:eq:pia-prime-constant}}
+
+We now derive an expression for $p_{ik}' = \prob(O'_j = \vec{\nu}'_k \mid i_j = i_k, \vec{\theta})$.
 
 We proceed by first considering whether $E_j > r_k^{(e)}$ is the case and conditioning on $B_j = b$.
 Then, we combine the cases and remove the conditioning.
 
 First, the case when $E_j \leq r_k^{(e)}$.
-In this case, the test at $r_k^{(e)}+1$ is a true negative and the end of the episode is interval censored as in the previous chapter.
+In this case, the test at $r_k^{(e)}+1$ is a true negative and the end of the episode is interval censored as in the case with no false negatives.
 % In this case, the test at $r_k^{(e)} + 1$ is a true negative, as are all other tests not in $\sched'_{k}$.
 The true negative occurs with probability 1, by the assumption of no false positives.
 \begin{align}
@@ -329,7 +331,6 @@ p_{ik}'
   & \times \prob(B_j = b \mid p_\text{sens}, \vec{\theta}).
 \label{imperf-test:eq:pia-prime}
 \end{align}
-Note that if $p_\text{sens} = 1$ then $p_{ik}' = p_{ik}$ (see \cref{perf-test:eq:pia}).
 
 We use a fixed $\psens$ (\ie a point prior) and $\prob(B_j = b \mid \psens, \vec{\theta}) \propto 1$ giving:
 \begin{align}
@@ -338,7 +339,7 @@ p_{ik}'
 \end{align}
 Estimating $\psens$ is not possible in the current framework (see \cref{sec:discussion}).
 
-\subsection{Expressions in \cref{imperf-test:sec:modifying-p_iu}} \label{sec:p-iu-dash}
+\subsection{Derivation of \cref{imperf-test:eq:pit-prime}} \label{sec:p-iu-dash}
 
 The probability of one of the conditions that cause an episode to be missed (specified in \cref{imperf-test:sec:modifying-p_iu}) occurring, conditional on $B_j = b$ where $\min(\sched_{i_j}) < b \leq T_{i_j}$ is:
 \begin{align}

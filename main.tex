@@ -376,7 +376,7 @@ Decompose $p_k$ as $p_k = p_{ik} \prob(i_j = i_k \mid \vec{\theta})$
 where $p_{ik} = \prob(O_j = \vec{\nu}_k \mid i_j = i_k, \vec{\theta})$.
 % This is valid as $\prob(O_j = \nu_k \mid i_j \neq i_k) = 0$ due to the condition here being equivalent to equating the two vectors' final elements.
 As we assume all individuals are equally likely to be infected, $\prob(i_j = i_k \mid \vec{\theta}) = 1/\Ncis$ for all $j$ and $k$.
-Therefore, $p_{ik}$ takes the standard form of the likelihood for doubly interval censored data without truncation~\citep[e.g.][]{sunEmpirical}:
+In \cref{TBC}, we show:
 \begin{align}
 p_{ik}
 \propto& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right).
@@ -387,7 +387,8 @@ The remaining component of \cref{perf-test:eq:full-posterior} required is $1- p_
 \Cref{sec:derive-prob-undetected} shows that
 \begin{align}
   1 - p_u
-  &\propto \frac{1}{\Ncis} \sum_{i=1}^{\Ncis}\sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1)
+  &\propto \sum_{i=1}^{\Ncis}\sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1)
+  \label{eq:1minuspu}
 \end{align}
 where $\tau_{\sched_i}(t)$ is the time until the next test at or after time $t$ in the schedule $\sched_i$.
 
@@ -485,7 +486,7 @@ Denote the number of days between $b_j$ and the test following the false negativ
 The episode ends before this test if $d_j \leq \tau^2_{\sched_{i_j}}(b_j)$.
 
 Therefore, this mechanism causes episode $j$ to be undetected if all the following conditions hold.
-First, the episode would have been detected considering only the mechanisms in \cref{sec:prob-undetected}.
+First, the episode would have been detected considering only the mechanisms in \cref{sec:modelling}.
 That is $\min(\sched_{i_j}) < b_j \leq T_{i_j}$ and $e_j \geq \tau_{\sched_{i_j}}(b_j) + b_j$.
 Second, the episode ends in the interval $[\tau_{\sched_{i_j}}(b_j) + b_j, \tau^2_{\sched_{i_j}}(b_j) + b_j - 1]$; note that the lower bound here is exactly the bound on $e_j$ in the previous condition.
 Equivalently, $\tau_{\sched_{i_j}}(b_j) + 1 \leq d_j \leq \tau^2_{\sched_{i_j}}(b_j)$.
