@@ -295,7 +295,7 @@ In what follows, we explain the data generating process and derive a statistical
 
 We parameterize $S$ in terms of the discrete-time hazard on day $i$, $\lambda_i = \prob(B = i \mid B \geq i)$, giving $S_{\vec{\theta}}(t) = \prod_{i=1}^{t-1} (1 - \lambda_{i})$; the lack of monotonicity or sum constraint on the hazard makes it an attractive parameterization for inference~\citep{heBayesian}.
 Therefore, $\vec{\theta} = [\lambda_1, \dots, \lambda_{\dmax-1}]^{\mathsf{T}}$, where $\dmax$ is the longest possible duration assumed as the maximum possible duration of the observed episodes, \ie $\dmax = \max_{k \in \set{D}} r^{(e)}_k - l^{(b)}_k + 1$.
-We consider both a weakly and strongly informative prior for $\vec{\theta}$ (see \cref{sec:details-priors}).
+We consider both a weakly and strongly informative prior for $\vec{\theta}$ (see the Web Appendix).
 The strongly informative prior includes information from a previous study~\citep{blakeThesis} of the ATACCC data~\citep{hakkiOnset}, and hence is a form of evidence synthesis.
 
 
@@ -369,14 +369,14 @@ Under the mathematically convenient prior $\ntot \dist \NBc(\mu, r)$ (where $\mu
 p(\vec{\theta} \mid \na)
 &\propto p(\vec{\theta}) \left( \prod_{i \in \set{D}} p_k \right) (r + \mu (1- \pnodet))^{-(r+\ndet)} \label{perf-test:eq:full-posterior}.
 \end{align}
-A full derivation is in \cref{sec:full-posterior-derivation}.
+A full derivation is in the Web Appendix.
 The rest of this section derives expressions for $p_{k}$ and $p_{u}$.
 
 Decompose $p_k$ as $p_k = p_{ik} \prob(i_j = i_k \mid \vec{\theta})$
 where $p_{ik} = \prob(O_j = \vec{\nu}_k \mid i_j = i_k, \vec{\theta})$.
 % This is valid as $\prob(O_j = \nu_k \mid i_j \neq i_k) = 0$ due to the condition here being equivalent to equating the two vectors' final elements.
 As we assume all individuals are equally likely to be infected, $\prob(i_j = i_k \mid \vec{\theta}) = 1/\Ncis$ for all $j$ and $k$.
-In \cref{TBC}, we show:
+In the Web Appendix, we show:
 \begin{align}
 p_{ik}
 \propto& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right).
@@ -384,7 +384,7 @@ p_{ik}
 \end{align}
 
 The remaining component of \cref{perf-test:eq:full-posterior} required is $1- p_u$, one minus the probability of missing an infection, \ie the probability of detecting an infection.
-\Cref{sec:derive-prob-undetected} shows that
+In the Web Appendix, we show that:
 \begin{align}
   1 - p_u
   &\propto \sum_{i=1}^{\Ncis}\sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1)
@@ -459,7 +459,7 @@ This gives $t_+ = \sum_{l=1}^{m_k-1} y_{k,l}(t)$ true positives and $f_- = \sum_
 
 Consider the negative test at $r_k^{(e)}+1$, the first negative after the start of the episode which may be either a true or false negative.
 It is a false negative if and only if the episode ends at or after the test, \ie $E_j > r_k^{(e)}$.
-By considering the case of whether this occurred or not and assuming $\psens$ is known and fixed, in \cref{sec:p-ia-dash} we show
+By considering the case of whether this occurred or not and assuming $\psens$ is known and fixed, in the Web Appendix we show
 \begin{align}
 p_{ik}'
 &\propto \sum_{b = l_k^{(b)}}^{r_k^{(b)}} S_{\vec{\theta}}(l_k^{(e)} - b + 1) - p_\text{sens} S_{\vec{\theta}}(r_k^{(e)} - b + 2).
@@ -492,7 +492,7 @@ Second, the episode ends in the interval $[\tau_{\sched_{i_j}}(b_j) + b_j, \tau^
 Equivalently, $\tau_{\sched_{i_j}}(b_j) + 1 \leq d_j \leq \tau^2_{\sched_{i_j}}(b_j)$.
 Finally, that a false negative occurs on day $\tau_{\sched_{i_j}}(b_j) + b_j$. Conditional on the previous condition, this occurs with probability $1 - \psens$.
 
-In \cref{sec:p-iu-dash} we show that this gives:
+In the Web Appendix we show this gives:
 \begin{align}
 1 - p_{iu}'
 =& \frac{1}{T} \sum_{b=\min(\sched_{i}) + 1}^{T_{i}} \left( p_\text{sens} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1) + (1 - p_\text{sens}) S_{\vec{\theta}}(\tau^2_{\sched_{i}}(b) + 1)\right).
@@ -510,7 +510,7 @@ We show that, as long as $\psens$ is not too small, inference performance remain
 
 \subsection{Setup}
 
-We simulate a dataset of detected episodes that has the same characteristics as that in the CIS (see \cref{sec:simulation-data} for details), considering four scenarios for the test sensitivity.
+We simulate a dataset of detected episodes that has the same characteristics as that in the CIS (see the Web Appendix for details), considering four scenarios for the test sensitivity.
 The first three are constant, $\psens \in \{ 0.6, 0.8, 1.0 \}$.
 The final scenario is a varying test sensitivity, which is more realistic~\citep{blakeThesis}.
 Specifically we use the following form:
@@ -580,7 +580,7 @@ Therefore, we used an informative prior for $\ntot$, $\ntot \sim \NBc(\mu\inform
 Approximating this distribution as a negative binomial and scaling the mean to the size of the CIS sample gives the prior $\mu\inform = 25132$ and $r\inform = 22047$.
 
 With this prior, the model produces plausible estimates of the duration distribution (see \cref{imperf-test:fig:cis-estimates}).
-At values above 50\%, the survival function (blue) decreases more slowly than the ATACCC-based estimate used for the prior in \cref{sec:ataccc-prior} (red), indicating a greater number of infections lasting much longer than the median.
+At values above 50\%, the survival function (blue) decreases more slowly than the ATACCC-based estimate (red), indicating a greater number of infections lasting much longer than the median.
 
 The increase in long episodes (\eg longer than 50 days) is not very sensitive to the choice of prior for $\ntot$, the assumed value for $\psens$ (see \cref{imperf-test:fig:cis-sensitivity}), and the choice of prior for the hazards, $\lambda_t$.
 However, the survival proportion over the first 4 weeks is sensitive to these choices.
@@ -637,7 +637,7 @@ Crucially, the longer mean duration implies lower incidence when estimated from 
 \caption{
     Comparison of survival time estimates from
     \Citet{killingleySafety} (assuming a two day time from inoculation to positive with 95\% binomial confidence intervals using the Clopper--Pearson method~\citep{clopperUse}).
-    ATACCC-based is from \cref{sec:ataccc-prior}; the analysis does not extend to 88 days.
+    ATACCC-based is from \citet{blakeThesis}'s analysis of \citet{hakkiOnset}'s data; the analysis does not extend to 88 days.
     Ours is our final posterior (see \cref{sec:CIS}).
 }
 \centering
@@ -772,11 +772,7 @@ For the purpose of open access, the authors have applied a Creative Commons Attr
 
 \section*{Supporting Information}
 
-FIX THIS TEXT
-
-Web Appendix 1 referenced in Section~\ref{ss:example} is available
-with this paper at the Biometrics website on Wiley Online Library.
-\vspace*{-8pt}
+The Web Appendix referenced in \cref{sec:modelling,sec:false-negatives,sec:simulation} and the additional figure referenced in \cref{sec:CIS} and  is available with this paper at the Biometrics website on Wiley Online Library.
 
 \label{lastpage}
 
