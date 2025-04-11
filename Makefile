@@ -1,7 +1,7 @@
 main.pdf: main.tex references.bib figures/output/regions_diag.pdf figures/output/challenges.pdf figures/output/sim-results.pdf figures/output/sim-sensitivity.pdf figures/output/CIS_final.pdf figures/output/CIS_vary.pdf .PHONY latex.out/supplemental.aux
 	python3 latexrun $<
 
-latex.out/supplemental.aux supplemental.pdf: supplemental.tex references.bib figures/output/prior_predictive_survival.pdf  figures/output/CIS_ntot.pdf .PHONY
+latex.out/supplemental.aux supplemental.pdf: supplemental.tex references.bib figures/output/prior_predictive_survival.pdf  figures/output/CIS_ntot.pdf figures/output/table1.tex .PHONY
 	python3 latexrun $<
 
 all: main.pdf supplemental.pdf
@@ -22,6 +22,9 @@ figures/output/CIS_ntot.pdf: figures/R/CIS_ntot.R figures/R/utils.R data/STATS18
 	Rscript $<
 
 figures/output/prior_predictive_survival.pdf: figures/R/surv_priors.R figures/R/utils.R
+	Rscript $<
+
+figures/output/table1.tex: figures/R/demographics_table.R
 	Rscript $<
 
 .PHONY: FORCE

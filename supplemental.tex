@@ -1,5 +1,6 @@
-\documentclass[referee,useAMS,usenatbib]{biom}
+\documentclass{article}
 
+\usepackage{natbib}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -462,16 +463,27 @@ Then the distribution used in the simulation is the normalised version of this: 
 % These curves and the combined curve are compared in \cref{perf-test:fig:duration-dist}.
 Episode $j$'s duration of detectability is then a draw from this distribution.
 
-\section{Additional figures}
+\bibliographystyle{agsm}
 
-\begin{figure}
+\bibliography{references}
+
+\section{Tables and figures}
+
+\begin{figure}[!h]
   \includegraphics{figures/output/CIS_ntot}
   \caption[Sensitivity of $\ntot$'s posterior to its prior.]{How the posterior estimate of $\ntot$ changes with the value of $r$ in the prior on $\ntot$.}
   \label{imperf-test:fig:ntot}
 \end{figure}
 
-\bibliographystyle{agsm}
+\begin{table}[!h]
+\thispagestyle{empty}
+\vspace{-1.5cm}
+\input{table1}
+\caption{%
+  Demographic information.
+  Population \% from 2020 mid-year population estimates~\citep{onsPopulationEstimates}, except ethnicity which uses the England \& Wales 2021 census~\citep{onsEthnicity2021}.
+}
+\end{table}
 
-\bibliography{references}
 
 \end{document}
