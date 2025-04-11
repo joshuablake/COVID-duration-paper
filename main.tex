@@ -266,7 +266,7 @@ In what follows, we explain the data generating process and derive a statistical
 
 We parameterize $S$ in terms of the discrete-time hazard on day $i$, $\lambda_i = \prob(B = i \mid B \geq i)$, giving $S_{\vec{\theta}}(t) = \prod_{i=1}^{t-1} (1 - \lambda_{i})$; the lack of monotonicity or sum constraint on the hazard makes it an attractive parameterization for inference~\citep{heBayesian}.
 Therefore, $\vec{\theta} = [\lambda_1, \dots, \lambda_{\dmax-1}]^{\mathsf{T}}$, where $\dmax$ is the longest possible duration assumed as the maximum possible duration of the observed episodes, \ie $\dmax = \max_{k \in \set{D}} r^{(e)}_k - l^{(b)}_k + 1$.
-We consider both a weakly and strongly informative prior for $\vec{\theta}$ (see the Web Appendix).
+We consider both a weakly and strongly informative prior for $\vec{\theta}$ (see Web Appendix A).
 The strongly informative prior includes information from a previous study~\citep{blakeThesis} of the ATACCC data~\citep{hakkiOnset}, and hence is a form of evidence synthesis.
 
 
@@ -340,14 +340,14 @@ Under the mathematically convenient prior $\ntot \dist \NBc(\mu, r)$ (where $\mu
 p(\vec{\theta} \mid \na)
 &\propto p(\vec{\theta}) \left( \prod_{i \in \set{D}} p_k \right) (r + \mu (1- \pnodet))^{-(r+\ndet)} \label{perf-test:eq:full-posterior}.
 \end{align}
-A full derivation is in the Web Appendix.
+A full derivation is in Web Appendix B.
 The rest of this section derives expressions for $p_{k}$ and $p_{u}$.
 
 Decompose $p_k$ as $p_k = p_{ik} \prob(i_j = i_k \mid \vec{\theta})$
 where $p_{ik} = \prob(O_j = \vec{\nu}_k \mid i_j = i_k, \vec{\theta})$.
 % This is valid as $\prob(O_j = \nu_k \mid i_j \neq i_k) = 0$ due to the condition here being equivalent to equating the two vectors' final elements.
 As we assume all individuals are equally likely to be infected, $\prob(i_j = i_k \mid \vec{\theta}) = 1/\Ncis$ for all $j$ and $k$.
-In the Web Appendix, we show:
+In Web Appendix B, we show:
 \begin{align}
 p_{ik}
 \propto& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right).
@@ -355,7 +355,7 @@ p_{ik}
 \end{align}
 
 The remaining component of \cref{perf-test:eq:full-posterior} required is $1- p_u$, one minus the probability of missing an infection, \ie the probability of detecting an infection.
-In the Web Appendix, we show that:
+In Web Appendix B, we show that:
 \begin{align}
   1 - p_u
   &\propto \sum_{i=1}^{\Ncis}\sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1)
@@ -430,7 +430,7 @@ This gives $t_+ = \sum_{l=1}^{m_k-1} y_{k,l}(t)$ true positives and $f_- = \sum_
 
 Consider the negative test at $r_k^{(e)}+1$, the first negative after the start of the episode which may be either a true or false negative.
 It is a false negative if and only if the episode ends at or after the test, \ie $E_j > r_k^{(e)}$.
-By considering the case of whether this occurred or not and assuming $\psens$ is known and fixed, in the Web Appendix we show
+By considering the case of whether this occurred or not and assuming $\psens$ is known and fixed, in Web Appendix B we show
 \begin{align}
 p_{ik}'
 &\propto \sum_{b = l_k^{(b)}}^{r_k^{(b)}} S_{\vec{\theta}}(l_k^{(e)} - b + 1) - p_\text{sens} S_{\vec{\theta}}(r_k^{(e)} - b + 2).
@@ -463,7 +463,7 @@ Second, the episode ends in the interval $[\tau_{\sched_{i_j}}(b_j) + b_j, \tau^
 Equivalently, $\tau_{\sched_{i_j}}(b_j) + 1 \leq d_j \leq \tau^2_{\sched_{i_j}}(b_j)$.
 Finally, that a false negative occurs on day $\tau_{\sched_{i_j}}(b_j) + b_j$. Conditional on the previous condition, this occurs with probability $1 - \psens$.
 
-In the Web Appendix we show this gives:
+In Web Appendix B we show this gives:
 \begin{align}
 1 - p_{iu}'
 =& \frac{1}{T} \sum_{b=\min(\sched_{i}) + 1}^{T_{i}} \left( p_\text{sens} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1) + (1 - p_\text{sens}) S_{\vec{\theta}}(\tau^2_{\sched_{i}}(b) + 1)\right).
@@ -481,7 +481,7 @@ We show that, as long as $\psens$ is not too small, inference performance remain
 
 \subsection{Setup}
 
-We simulate a dataset of detected episodes that has the same characteristics as that in the CIS (see the Web Appendix for details), considering four scenarios for the test sensitivity.
+We simulate a dataset of detected episodes that has the same characteristics as that in the CIS (see Web Appendix C for details), considering four scenarios for the test sensitivity.
 The first three are constant, $\psens \in \{ 0.6, 0.8, 1.0 \}$.
 The final scenario is a varying test sensitivity, which is more realistic~\citep{blakeThesis}.
 Specifically we use the following form:
@@ -578,7 +578,7 @@ The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ gi
 
 Our estimates are sensitive to the choice of $r$, the strength of the prior on $\ntot$.
 A low value for $r$, giving a very weak, almost uninformative, prior on $\ntot$ causes its posterior estimate to be much higher than the estimate from \citet{birrellRTM2}.
-When increasing the prior's strength, the posterior estimate moves towards the prior smoothly, as expected (see additional figure in the Web Appendix).
+When increasing the prior's strength, the posterior estimate moves towards the prior smoothly, as expected (see Web Figure 2).
 As discussed previously, the prior information is reliable for the first 2--3 weeks, notably including the median time.
 The median using $r\inform$ matched the prior's median estimate and is a principled choice because it is based directly on the previous posterior estimate~\citet{birrellRTM2}.
 Therefore, we recommend this estimate, which has a mean survival time of 21.2 days (95\% CrI: 20.5--21.9).
@@ -621,8 +621,8 @@ Days from first positive & \citet{killingleySafety}  & ATACCC-based     & Ours  
 \label{tab:compare-survival}
 \end{table}
 
-Our methodology depends on several assumptions.
-An important one is that infection episodes are independent, a simplification because infection episodes start times are correlated between different individuals.
+We conducted a sensitivity analysis to understand the impact of the prior in our study, and used a simulation study to test the impact of several types of model misspecification.
+The major modelling assumption in our work is that infection episodes are independent, a simplification because infection episodes start times are correlated between different individuals.
 During an epidemic, there are periods of time when all individuals are at higher risk of infection, due to the disease having a high prevalence in the population.
 We mitigated this issue by choosing a period of time when prevalence was fairly constant.
 In addition, we conducted a sensitivity analysis to the simulation study allowing underlying infection rates to either grow or shrink exponentially; these did not make a substantial difference to the estimates (not shown).
@@ -640,16 +640,18 @@ Despite this, in the simulation study without false negatives, the method we pro
 Therefore, it is unlikely that assuming independence of infection episodes in the same individual matters, possibly due to the large number of individuals without detected episodes.
 Further work could explore alternative assumptions, \eg a ``full immunity'' assumption limiting each individual to one episode in the period.
 
-Further assumptions were also required when extending the framework to allow false negatives.
-Most importantly, that the negative immediately before a detected episode is a true negative, and that there is a negligible probability of missing an episode due to two false negatives.
+Further work could also explore relaxing the assumptions we required when extending the framework to allow false negatives; for example, by inferring $\psens$ as a function of time since the episode began, similar to the generative model in \cref{sec:false-negatives}.
+Most importantly, the assumptions that the negative immediately before a detected episode is a true negative, and that there is a negligible probability of missing an episode due to two false negatives could be relaxed.
 Our simulation study shows that these assumptions are reasonable, and do not substantially impact performance when $\psens$, the test sensitivity, is high.
 However, when $\psens$ is low, these can lead to biased results.
-A promising direction for future work would look at the relaxation of these assumptions, for example, by inferring $\psens$ as a function of time since the episode began, similar to the generative model in \cref{sec:false-negatives}.
 
-Ideally, $\psens$ would be estimated from the data.
-However, this would require incorporating time-varying test sensitivity into the likelihood.
+This extension would also allow estimating $\psens$ from the data.
 If the current model, with a constant $\psens$, is used then the estimate of $\psens$ would be heavily informed by intermittent negatives which will generally be close to the beginning of the episode with a higher test sensitivity than average.
 Estimating the test sensitivity excluding intermittent negatives is not possible because the likelihood is monotonically decreasing in $\psens$; therefore, the likelihood always favors $\psens = 0$ (\ie no true positives).
+
+While the cohort we consider is fairly representative of the general population, we do not explicitly consider covariates.
+Future work where representativeness is a larger concern or where individual-level predictions are important may want to include covariates in the model.
+To maintain statistical power, these would likely require a parameteric model, which poses specification challenges if bias is to be minimised.
 
 An important avenue for further work is removing the need for an informative prior for $\ntot$, the total number of infections in the cohort in the period (including undetected infections).
 % The reason an informative prior is required is unclear because it was not required in the simulation study.
@@ -741,9 +743,9 @@ For the purpose of open access, the authors have applied a Creative Commons Attr
 
 \bibliographystyle{biom} \bibliography{references}
 
-\section*{Supporting Information}
+\section*{Supplementary Materials}
 
-The Web Appendix referenced in \cref{sec:modelling,sec:false-negatives,sec:simulation} and the additional figure referenced in \cref{sec:CIS} and  is available with this paper at the Biometrics website on Wiley Online Library.
+Web Appendices, Tables, and Figures referenced in \cref{sec:data,sec:modelling,sec:false-negatives,sec:simulation} are available with this paper at the Biometrics website on Oxford Academic.
 
 \label{lastpage}
 
