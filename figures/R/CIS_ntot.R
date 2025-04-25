@@ -34,24 +34,7 @@ ggsave(
     dpi = 300
 )
 
-cis_mean = posterior |>
-    filter(sensitivity == 0.8, survival_prior == "Informative", missed_model == "total", r == 22047)
-ataccc_mean = readRDS(here::here("data/ATACCC-posterior.rds")) |>
-    group_by(.draw) |>
-    summarise(mean_surv = sum(S))
-cis_mean |>
-    sample_n(nrow(ataccc_mean)) |>
-    transmute(
-        cis = mean_surv,
-        ataccc = ataccc_mean$mean_surv,
-        increase = cis / ataccc,
-    ) |>
-    mean_qi() |>
-    select(!starts_with(".")) |>
-    pivot_longer(
-        everything(),
-        names_pattern = "([a-z]+)(\\.[a-z]+)?",
-        names_to = c("model", "statistic"),
-    ) |>
-    mutate(statistic = if_else(statistic == "", "Mean", statistic)) |>
-    pivot_wider(names_from = statistic, values_from = value)
+posterior |>
+    filter(sensitivity == 0.8, survival_prior == "Informative", missed_model == "total", r == 22047) |>
+    mean_qi(mean_surv)
+

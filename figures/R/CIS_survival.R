@@ -28,10 +28,10 @@ median_survival = posterior_draws |>
         )
     )
 
-ataccc_duration = readRDS(here::here("data/ATACCC-posterior.rds")) |>
+ataccc_duration = atacccDurationEstimates::ataccc_posterior_samples() |>
     group_by(time) |>
     median_qi()
-ataccc_medians = readRDS(here::here("data/ATACCC-posterior.rds"))  |>
+ataccc_medians = atacccDurationEstimates::ataccc_posterior_samples() |>
     group_by(.draw) |>
     summarise(median = min(time[S <= 0.5]))
 
@@ -50,33 +50,33 @@ rm(check_counts)
 ### FIGURE ASSUMING NO FALSE NEGATIVES
 #############################################################################################
 
-p_perfect = posterior_draws |>
-    filter(sensitivity == 1, survival_prior == "Informative", r == 22047) |>
-    ggplot() +
-    stat_lineribbon(
-        aes(time, S, fill = "CIS-based", colour = "CIS-based"),
-        alpha = 0.5,
-        .width = 0.95
-    ) +
-    geom_lineribbon(
-        aes(time, S, ymin = S.lower, ymax = S.upper, fill = "ATACCC-based", colour = "ATACCC-based"),
-        data = ataccc_duration,
-        alpha = 0.5
-    ) +
-    theme_survival_time_series() +
-    labs(
-        fill = "",
-        colour = ""
-    ) +
-    coord_cartesian(xlim = c(0, 45))
-ggsave(
-    filename = here::here("figures/output/CIS_perfect.pdf"),
-    plot = p_perfect,
-    width = 15,
-    height = 9,
-    units = "cm",
-    dpi = 300
-)
+# p_perfect = posterior_draws |>
+#     filter(sensitivity == 1, survival_prior == "Informative", r == 22047) |>
+#     ggplot() +
+#     stat_lineribbon(
+#         aes(time, S, fill = "CIS-based", colour = "CIS-based"),
+#         alpha = 0.5,
+#         .width = 0.95
+#     ) +
+#     geom_lineribbon(
+#         aes(time, S, ymin = S.lower, ymax = S.upper, fill = "ATACCC-based", colour = "ATACCC-based"),
+#         data = ataccc_duration,
+#         alpha = 0.5
+#     ) +
+#     theme_survival_time_series() +
+#     labs(
+#         fill = "",
+#         colour = ""
+#     ) +
+#     coord_cartesian(xlim = c(0, 45))
+# ggsave(
+#     filename = here::here("figures/output/CIS_perfect.pdf"),
+#     plot = p_perfect,
+#     width = 15,
+#     height = 9,
+#     units = "cm",
+#     dpi = 300
+# )
 
 #############################################################################################
 ### FIGURE WITH FINAL RESULTS
