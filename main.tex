@@ -95,20 +95,19 @@
 \author{Joshua Blake$^{1,*}$\email{joshua.blake@mrc-bsu.cam.ac.uk},
 Paul Birrell$^{1,2}$,
 A. Sarah Walker$^{3,4,5}$,
-Koen B. Pouwels$^{6,7}$,
-Thomas House$^{8}$,
+Koen B. Pouwels$^{6,5}$,
+Thomas House$^{7}$, \\
 Brian D M Tom$^{1}$,
-Theodore Kypraios$^{9}$, and
+Theodore Kypraios$^{8}$, and
 Daniela De Angelis$^{1,2,**}$\email{daniela.deangelis@mrc-bsu.cam.ac.uk} \\
 $^{1}$MRC Biostatistics Unit, University of Cambridge, Cambridge, UK \\
 $^{2}$UK Health Security Agency, London, UK \\
 $^{3}$Nuffield Department of Medicine, University of Oxford, Oxford, UK \\
 $^{4}$NIHR Oxford Biomedical Research Centre, Oxford, UK \\
-$^{5}$NIHR Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance, University of Oxford, Oxford, UK \\
+$^{5}$NIHR Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance, \\ University of Oxford, Oxford, UK \\
 $^{6}$Nuffield Department of Primary Care Health Sciences, University of Oxford, Oxford, UK \\
-$^{7}$National Institute for Health Research Health Protection Research Unit (NIHR HPRU) in Healthcare Associated Infections and Antimicrobial Resistance at the University of Oxford, Oxford, UK \\
-$^{8}$Department of Mathematics, University of Manchester, Manchester, UK \\
-$^{9}$School of Mathematical Sciences, University of Nottingham, Nottingham, UK}
+$^{7}$Department of Mathematics, University of Manchester, Manchester, UK \\
+$^{8}$School of Mathematical Sciences, University of Nottingham, Nottingham, UK}
 \begin{document}
 
 \pagerange{\pageref{firstpage}--\pageref{lastpage}} 
@@ -590,19 +589,20 @@ Therefore, we recommend this estimate, which has a mean survival time of 21.2 da
 This work is motivated by the challenge of exploiting data from the CIS, a unique long-running general population prevalence study conducted during the COVID-19 pandemic, to estimate the duration of SARS-CoV-2 infection episodes.
 This is a key component in the estimation of incidence of infection and has an essential role in informing pandemic mitigation strategies such as isolation.
 
-To estimate duration, we extended the survival analysis framework in \citet{heiseyModelling} to deal with the CIS design. The result is new methodology to analyze doubly censored data with imperfect test sensitivity and undetected events, when these undetected events occur with an arbitrary pattern in known individuals.
+To estimate duration, we extended the survival analysis framework in \citet{heiseyModelling} to deal with the CIS design.
+The result is new methodology to analyze doubly censored data with imperfect test sensitivity and undetected events, without any restrictions on when testing occurs or the occurrence of infections.
 We estimate a nonparametric discrete-time survival distribution in a fully Bayesian framework and incorporate data from a complementary study, ATACCC, through an appropriately-discounted prior.
 
-These CIS data are unique, but the study may serve as a template for studies in future pandemics~\citep{hallettModule}.
-Our methodological framework is generic; therefore, it could be used to analyze these studies.
-Furthermore, the simulation framework we developed can assist with designing more efficient studies, for example embedding an intensive, ATACCC-like study with a CIS-like study.
+Although the CIS data are unique, this work may serve as a template for studies in future pandemics~\citep{hallettModule} as
+our methodological framework is generic.
+Furthermore, the simulation scheme we have developed can assist with  more efficient survey designs that, for example, embed an intensively sampled, ATACCC-like study within a CIS-like study.
 
 We estimate a mean duration of 21.2 days (95\% CrI: 20.5--21.9) with 5.3\% (95\% CrI: 3.5--7.4\%) of episodes lasting 50 days or longer.
-The proportion of long episodes is higher than previous estimates (see \cref{tab:compare-survival}), leading to a longer mean.
-However, previous studies did not accurately quantify the proportion of long episodes because of a lack of long-term follow-up and/or small sample size.
-Additionally, CIS has a broader population base, including older individuals and those with more co-morbidities who may have longer durations.
-Therefore, our estimates are more robust.
-Crucially, the longer mean duration implies lower incidence when estimated from known prevalence.
+The proportion of long episodes is higher than previous estimates (see \cref{tab:compare-survival}), leading to a longer mean duration.
+However, previous studies did not accurately quantify the proportion of long episodes due to a lack of long-term follow-up and/or small sample sizes.
+Additionally, CIS has a broader population base, including older individuals and those with more co-morbidities, who may have longer durations.
+Therefore, our estimates are likely to be more representative.
+Crucially, the longer mean duration leads to lower estimates of incidence from observed prevalence data.
 
 % Long episodes are unlikely to be infectious~\citep{killingleySafety,singanayagamDuration}, but change the interpretation of positive test results, determine how long population positivity remains high following a peak in infections and, crucially, the longer mean duration implies lower incidence when estimated from known prevalence.
 \begin{table}[]
@@ -622,30 +622,29 @@ Days from first positive & \citet{killingleySafety}  & ATACCC-based     & Ours  
 \label{tab:compare-survival}
 \end{table}
 
-We conducted a sensitivity analysis to understand the impact of the prior in our study, and used a simulation study to test the impact of several types of model misspecification.
-The major modelling assumption in our work is that infection episodes are independent, a simplification because infection episodes start times are correlated between different individuals.
-During an epidemic, there are periods of time when all individuals are at higher risk of infection, due to the disease having a high prevalence in the population.
+We investigated the impact of our assumptions through sensitivity analyses and a simulation study.
+The main modelling assumption is that infection episodes are independent.
+This is a simplification because infection episodes start times are correlated between different individuals; for example there are periods of time when all individuals are at higher risk of infection due to the disease having a high prevalence in the population.
 We mitigated this issue by choosing a period of time when prevalence was fairly constant.
-In addition, we conducted a sensitivity analysis to the simulation study allowing underlying infection rates to either grow or shrink exponentially; these did not make a substantial difference to the estimates (not shown).
-However, this non-independence is further complicated by the household structure of the CIS.
+% In addition, we conducted a sensitivity analysis to the simulation study allowing underlying infection rates to either grow or shrink exponentially; these did not make a substantial difference to the estimates (not shown).
+This non-independence is further complicated by the household structure of the CIS.
 Individuals in the same household are likely to infect each other, and hence have clustered times at which their infection episodes begin.
-Additionally, they have similar or the same testing schedules (due to the CIS study design).
-The likely affect of this is that the uncertainty in our estimates is underestimated, although it should not introduce bias.
-Further work could quantify the impact of this issue.
+Additionally, they may have identical or similar testing schedules (due to the CIS study design).
+The likely effect of this is that the uncertainty in our estimates is underestimated, although it should not introduce bias.
+Further work could quantify the impact of this issue, for example through additional simulations.
 
 Infection episodes within the same individual also affect each other.
-An infected individual who recovers is less likely to be infected in the future, due to having some immunity to the disease.
+An infected individual who recovers is less likely to be infected for at least the immediate future due to having some immunity to the disease.
 Additionally, the multinomial likelihood proposed in \cref{sec:inference} allows the possibility of concurrent infections; however, these would appear in the dataset as the same infection episode.
 In contrast, the simulated data allowed each individual to experience at most one infection, which is likely as we consider a short period of time~\citep{milneImmunity}.
 Despite this, in the simulation study without false negatives, the method we propose recovered the true survival function.
 Therefore, it is unlikely that assuming independence of infection episodes in the same individual matters, possibly due to the large number of individuals without detected episodes.
 Further work could explore alternative assumptions, \eg a ``full immunity'' assumption limiting each individual to one episode in the period.
 
-Further work could also explore relaxing the assumptions we required when extending the framework to allow false negatives; for example, by inferring $\psens$ as a function of time since the episode began, similar to the generative model in \cref{sec:false-negatives}.
+The framework could be extended to allow more flexibility in the model of false negatives; for example, by inferring $\psens$ as a function of time since the episode began, similar to the generative model in \cref{sec:false-negatives}.
 Most importantly, the assumptions that the negative immediately before a detected episode is a true negative, and that there is a negligible probability of missing an episode due to two false negatives could be relaxed.
-Our simulation study shows that these assumptions are reasonable, and do not substantially impact performance when $\psens$, the test sensitivity, is high.
+Our simulation study (see \cref{sec:simulation}) shows that these assumptions are reasonable, and do not substantially impact performance when $\psens$, the test sensitivity, is high.
 However, when $\psens$ is low, these can lead to biased results.
-
 This extension would also allow estimating $\psens$ from the data.
 If the current model, with a constant $\psens$, is used then the estimate of $\psens$ would be heavily informed by intermittent negatives which will generally be close to the beginning of the episode with a higher test sensitivity than average.
 Estimating the test sensitivity excluding intermittent negatives is not possible because the likelihood is monotonically decreasing in $\psens$; therefore, the likelihood always favors $\psens = 0$ (\ie no true positives).
