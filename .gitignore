@@ -297,10 +297,6 @@ TSWLatexianTemp*
 # Uncomment the next line to have this generated file ignored.
 #*Notes.bib
 
-## Data files
-*.rds
-*.csv
-
 ## Files for misc purposes
 tmp*.tex
 *.docx
