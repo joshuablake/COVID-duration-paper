@@ -24,7 +24,7 @@ figures/output/CIS_ntot.pdf: figures/R/CIS_ntot.R figures/R/utils.R data/STATS18
 figures/output/prior_predictive_survival.pdf: figures/R/surv_priors.R figures/R/utils.R
 	Rscript $<
 
-figures/output/table1.tex: figures/R/demographics_table.R
+figures/output/table1.tex: figures/R/demographics_table.R data/STATS22084/age-groups-table.csv data/STATS22084/sex-groups-table.csv data/STATS22084/eth-groups-table.csv data/STATS22084/gor_name-groups-table.csv data/STATS22084/hhsize-groups-table.csv data/pop-estimates-2020.csv data/by-ethnicity-5-groups-table.csv
 	Rscript $<
 
 .PHONY: FORCE
