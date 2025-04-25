@@ -6,8 +6,9 @@ Note that figures are included in the directory `figures/output` and will only b
 
 Three R packages, available on GitHub support the code.
 
-
+- [atacccDurationEstimates](https://github.com/joshuablake/atacccDurationEstimates) contains duration estimates based on the ATACCC data used as a prior within the paper.
 - [cisDurationModel](https://github.com/joshuablake/cisDurationModel) defines the statistical models, including Stan code, to analyses both the simulated and real data.
+- [cisSimulation](https://github.com/joshuablake/cisSimulation) contains code to simulate a CIS-like study.
 
 ## Source of underlying data
 
