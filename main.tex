@@ -232,11 +232,11 @@ A full description of the study can be found in the study protocol~\citep{cisPro
 % Initially, it was limited to England, but expanded to cover the whole of the UK in September 2020.
 Enrollment was continuously ongoing until 31 January 2022, with data collected until 13 March 2023~\citep{weiRisk}. 
 
-We focus on the period between 10 October 2020 and 6 December 2020 inclusive over which the CIS estimated stable infection prevalence of around 1\%~\citep{onsCISdec2020}.
-Stable infection prevalence allows an assumption of constant incidence, simplifying analyses.
+We focus on the period between 10 October 2020 and 6 December 2020 inclusive over which the CIS estimated stable infection prevalence of around 1\%~\citep{onsCISdec2020} and exclude void tests, assuming they are uninformative.
+Stable infection prevalence allows an assumption of constant incidence, simplifying our analysis.
 Additionally, this period is prior to both vaccination and before the alpha variant was dominant~\citep{lythgoeLineage}, which potentially impacted the duration of infection episodes~\citep{hakkiOnset,russellWithinhost}.
-Our analysis includes the cohort of $\Ncis = \numprint{437590}$ CIS participants with at least one test in this period.
-The cohort is broadly representative of the UK population, albeit with older age groups and White ethnicity slighty over-represented (see Web Table 1).
+Our analysis includes the cohort of $\Ncis = \numprint{340246}$ CIS participants with at least one non-void test in this period and whose first ever CIS test is not on the final day; the latter are excluded because they have no chance to test positive in the period considered.
+The cohort is broadly representative of the UK population, albeit slight over-representation of individuals of older age and White ethnicity (see Web Table 1).
 
 We denote by $\sched_i$ the set of times individual labeled $i \in \{ 1, \dots, \Ncis \}$ is tested.
 Time is defined such that the first day of the period considered, 10 October 2020, is day 1 and the final day of the period considered, 6 December 2020, is day $T = 58$.
