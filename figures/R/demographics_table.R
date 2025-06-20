@@ -6,7 +6,7 @@ library(here)
 
 # Function to read demographic files
 read_demo_file = function(file_name) {
-    file_path = here::here("data", "STATS22084", file_name)
+    file_path = here::here("data", "STATS22850", file_name)
     read_csv(file_path, progress = FALSE, show_col_types = FALSE)
 }
 
