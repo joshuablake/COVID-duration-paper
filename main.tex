@@ -71,7 +71,7 @@
 \newcommand{\pcis}{\vec{p_\text{CIS}}}
 \newcommand{\sched}{\mathcal{T}}
 \newcommand{\nsched}{|\sched{}|}
-\newcommand{\inform}{{_{\text{inform}}}}
+\newcommand{\inform}{_{\protect{\text{inform}}}}
 \newcommand{\posResults}{r_{+}}
 \newcommand{\negResults}{r_{-}}
 
@@ -570,8 +570,8 @@ The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ gi
     (A-C) Changing $r$ when $\psens = 0.8$.
     (D-F) Changing $\psens$ when $r = r\inform$.
     A and D: median survival time, compared to ATACCC-based estimate (shown in orange).
-    B and E: $S_\vec{\theta}(50)$.
-    C and F: $S_\vec{\theta}(t)$ for $t \in [1, 100]$.
+    B and E: $S_{\vec{\theta}}(50)$.
+    C and F: $S_{\vec{\theta}}(t)$ for $t \in [1, 100]$.
     The final estimate is shown in purple throughout, green estimates are sensitivity analyses.
   }
   \label{imperf-test:fig:cis-sensitivity}
