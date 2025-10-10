@@ -248,7 +248,7 @@ Therefore, we condition on them implicitly in all the calculations that follow.
 
 % Positive tests from the same individual are grouped into infection episodes.
 Positive tests with negatives in-between in the same individual may or may not be classed as the same infection episode using a pre-existing heuristic based on the time between the tests, the number of negative tests between the positives, and the variant of the infection; see \citet{weiRisk} for details.
-For the $j$th infection episode, there are up to four important times: the day after the negative test in that individual prior to the first positive test, $l_j^{(b)}$; the day of the first positive test, $r_j^{(b)}$; the day of the last positive test, $l_j^{(e)}$; and the day before the subsequent negative test, $r_j^{(e)}$ (see \cref{fig:challenges}(B)).
+For the $j$th infection episode ($j = 1, \dots, \ntot$, where $\ntot$ is the unobserved total number of infection episodes), if the episode is detected, there are up to four important times: the day after the negative test in that individual prior to the first positive test, $l_j^{(b)}$; the day of the first positive test, $r_j^{(b)}$; the day of the last positive test, $l_j^{(e)}$; and the day before the subsequent negative test, $r_j^{(e)}$ (see \cref{fig:challenges}(B)).
 % Negative tests between positives in the same episode are known as \emph{intermittent negatives}; these are false negative tests.
 % Other tests could also be misclassified, but this is not known.
 
@@ -260,11 +260,15 @@ In total, there were $\ndet = \numprint{4800}$ such detected episodes.
 \section{A Bayesian estimation approach} \label{sec:modelling}
 
 The target of inference is $\vec{\theta}$, the parameters of the survival function $S_{\vec{\theta}}(t) = \prob(D_j \geq t \mid \vec\theta)$ for the random variable $D_j$, representing the number of days on which a positive result would be returned by a RT-PCR testing procedure that has 100\% specificity and sensitivity due to infection episode $j$.
-Here, 100\% an individual's true infection status refers to whether their viral load is above the test's limit of detection.
+Here, an individual's true infection status refers to whether their viral load is above the test's limit of detection.
+For our purposes, the $j$th  infection episode is the triplet $W_j = (B_j, E_j, i_j)$ where $B_j$ is the beginning of the episode, the first day the individual is detectable; $E_j$ is the end of the episode, the last day the individual is detectable; and $i_j$ is the individual in which the $j$th infection occurs.
+The episode's duration is a deterministic transformation of these variables, $D_j = E_j - B_j + 1$; and we assume that $B_j$, $D_j$, and $i_j$ are independent.
+The independence of infection times is a simplifying assumption that does not hold in a household-based survey such as CIS but is required for the problem to remain analytically tractable; independence is discussed further in \cref{sec:discussion}.
+
 We adopt a Bayesian framework to derive a posterior distribution for $\vec{\theta}$ given appropriate prior knowledge and partial information provided by the set of observed vectors $\{ o_j \}$ (defined later), accounting for the doubly interval censoring and undetected episodes.
 In what follows, we explain the data generating process and derive a statistical model for the case where that there are no misclassified test results; in \cref{sec:false-negatives} we generalize the framework to include false negatives.
 
-We parameterize $S$ in terms of the discrete-time hazard on day $i$, $\lambda_i = \prob(B = i \mid B \geq i)$, giving $S_{\vec{\theta}}(t) = \prod_{i=1}^{t-1} (1 - \lambda_{i})$; the lack of monotonicity or sum constraint on the hazard makes it an attractive parameterization for inference~\citep{heBayesian}.
+We parameterize $S$ in terms of the discrete-time hazard on day $t$, $\lambda_t = \prob(B = t \mid B \geq t)$, giving $S_{\vec{\theta}}(t) = \prod_{k=1}^{t-1} (1 - \lambda_{k})$; the lack of monotonicity or sum constraint on the hazard makes it an attractive parameterization for inference~\citep{heBayesian}.
 Therefore, $\vec{\theta} = [\lambda_1, \dots, \lambda_{\dmax-1}]^{\mathsf{T}}$, where $\dmax$ is the longest possible duration assumed as the maximum possible duration of the observed episodes, \ie $\dmax = \max_{k \in \set{D}} r^{(e)}_k - l^{(b)}_k + 1$.
 We consider both a weakly and strongly informative prior for $\vec{\theta}$ (see Web Appendix A).
 The strongly informative prior includes information from a previous study~\citep{blakeThesis} of the ATACCC data~\citep{hakkiOnset}, and hence is a form of evidence synthesis.
@@ -278,9 +282,6 @@ Such an approach would be computationally prohibitive here because of the large 
 \subsection{Data generating process}
 
 % The crucial features of an infection episode are the start and end times of the infection.
-For our purposes, the $j$th ($j = 1, \dots, \ntot$, where $\ntot$ is the unobserved total number of infection episodes) infection episode is the triplet $W_j = (B_j, E_j, i_j)$ where $B_j$ is the beginning of the episode, the first day the individual is detectable; $E_j$ is the end of the episode, the last day the individual is detectable; and $i_j$ is the individual in which the $j$th infection occurs.
-The episode's duration is a deterministic transformation of these variables, $D_j = E_j - B_j + 1$; and we assume that $B_j$, $D_j$, and $i_j$ are independent.
-The independence of infection times is a simplifying assumption that does not hold in a household-based survey such as CIS but is required for the problem to remain analytically tractable; independence is discussed further in \cref{sec:discussion}.
 $D_j$'s distribution is determined by $\vec{\theta}$; both $B_j$ and $i_j$ are modelled as draws from uniform distributions over their respective discrete state spaces.
 Additionally, we assume that the $D_j$s are independent of each other and $B_j$ (\ie the length of the episode is independent of when it occurs), and identically distributed.
 
@@ -399,6 +400,7 @@ Second, that the element of $\vec{y}_k$ corresponding to the test at time $r_k^{
 These conditions are due to the construction of the intervals as positive and negative tests bounding the beginning and end times of the episode.
 
 Similarly, we define $p_k'$, $p_{ik}'$, $p_u'$, and $p_{iu}'$ to replace $p_k$, $p_{ik}$, $p_u$, and $p_{iu}$ respectively.
+These new definitions take into account the false negatives.
 \begin{align}
     p_{ik}' &= \prob(O'_j = \vec{\nu}'_k \mid i_j = i_k, \vec{\theta}) \\
     p_k' &= \frac{1}{\Ncis} p_{ik}' \\
@@ -568,8 +570,8 @@ The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ gi
     (A-C) Changing $r$ when $\psens = 0.8$.
     (D-F) Changing $\psens$ when $r = r\inform$.
     A and D: median survival time, compared to ATACCC-based estimate (shown in orange).
-    B and E: $S_\theta(50)$.
-    C and F: $S_\theta(t)$ for $t \in [1, 100]$.
+    B and E: $S_\vec{\theta}(50)$.
+    C and F: $S_\vec{\theta}(t)$ for $t \in [1, 100]$.
     The final estimate is shown in purple throughout, green estimates are sensitivity analyses.
   }
   \label{imperf-test:fig:cis-sensitivity}
