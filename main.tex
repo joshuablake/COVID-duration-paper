@@ -233,7 +233,7 @@ A full description of the study can be found in the study protocol~\citep{cisPro
 Enrollment was continuously ongoing until 31 January 2022, with data collected until 13 March 2023~\citep{weiRisk}. 
 
 We focus on the period between 16 October 2020 and 6 December 2020 inclusive over which the CIS estimated stable infection prevalence of around 1\%~\citep{onsCISdec2020} and exclude void tests, assuming they are uninformative.
-Stable infection prevalence allows an assumption of constant incidence, simplifying our analysis.
+Stable infection prevalence means that the shared population-level force of infection changes slowly, making our independence assumption (see \cref{sec:modelling}) a reasonable approximation.
 Additionally, this period is prior to both vaccination and before the alpha variant was dominant~\citep{lythgoeLineage}, which potentially impacted the duration of infection episodes~\citep{hakkiOnset,russellWithinhost}.
 Our analysis includes the cohort of $\Ncis = \numprint{340246}$ CIS participants with at least one non-void test in this period and whose first ever CIS test is not on the final day; the latter are excluded because they have no chance to test positive in the period considered.
 The cohort is broadly representative of the UK population, albeit slight over-representation of individuals of older age and White ethnicity (see Web Table 1).
@@ -624,10 +624,14 @@ Days from first positive & \citet{killingleySafety}  & ATACCC-based     & Ours  
 \label{tab:compare-survival}
 \end{table}
 
-We investigated the impact of our assumptions through sensitivity analyses and a simulation study.
-The main modelling assumption is that infection episodes are independent.
-This is a simplification because infection episodes start times are correlated between different individuals; for example there are periods of time when all individuals are at higher risk of infection due to the disease having a high prevalence in the population.
+We investigated the impact of our assumptions through sensitivity analyzes and a simulation study.
+The main modelling assumption is that infection episodes (i) have a uniform prior distribution for their start time and (ii) are independent.
+Assumption (i) (uniform prior) is reasonable in situations where there is no additional data. 
+Assumption (ii) (independence) is a simplification because infection episodes start times are correlated between different individuals due to the underlying shared force of infection throughout the population.
 We mitigated this issue by choosing a period of time when prevalence was fairly constant.
+Previous work~\citep[e.g.][]{haySerosolver} has considered relaxing this assumption by including shared force of infection parameter(s), at the cost of a more complex likelihood and a possible need for large amounts of data imputation which would be computational prohibitive.
+Exploring the implications of what is possible here would be an exciting avenue for future work.
+For example, if there are simple parametric forms for the force of infection (e.g. exponential) that plausibly reflect reality without greatly increasing computational complexity.
 % In addition, we conducted a sensitivity analysis to the simulation study allowing underlying infection rates to either grow or shrink exponentially; these did not make a substantial difference to the estimates (not shown).
 This non-independence is further complicated by the household structure of the CIS.
 Individuals in the same household are likely to infect each other, and hence have clustered times at which their infection episodes begin.
