@@ -4,6 +4,12 @@ main.pdf latex.out/main.aux: main.tex references.bib figures/output/regions_diag
 supplemental.pdf: supplemental.tex latex.out/main.aux references.bib figures/output/prior_predictive_survival.pdf  figures/output/CIS_ntot.pdf figures/output/table1.tex .PHONY
 	python3 latexrun $<
 
+main-diff.pdf: main-diff.tex
+	python3 latexrun $<
+
+main-diff.tex: main.pdf main-old.tex
+	latexdiff --append-mboxsafecmd=autocite,textcite,cref --math-markup=3 main-old.tex main.tex > $@
+
 all: main.pdf supplemental.pdf
 
 figures/output/challenges.pdf: figures/R/challenges.R
