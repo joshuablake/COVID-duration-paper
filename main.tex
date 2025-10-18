@@ -516,8 +516,9 @@ We used a vague prior for $\ntot$, with $\mu = n_d / p$ and $r = 1$.
 
 When $\psens = 0.8$ and is correctly specified, the model recovers the true survival time well (see \cref{imperf-test:fig:simulation-results}(B)).
 The strongly informative prior for $\vec\theta$, in comparison to the weakly informative prior, helps to overcome the misspecification due to the simplifying assumptions, moving the estimated survival function closer to its true survival time; in particular, the central estimate is smoother and has less uncertainty.
-However, when $\psens = 0.6$, both priors lead to underestimation (see \cref{imperf-test:fig:simulation-results}(A)).
+When $\psens = 0.6$, both priors lead to underestimation (see \cref{imperf-test:fig:simulation-results}(A)).
 This is likely caused by too large a violation of the simplifying assumptions made in \cref{sec:false-negatives}.
+The results in Figure \cref{imperf-test:fig:simulation-results}(A and B) show that even a weak prior on the survival time allows recovery of the true survival time.
 \begin{figure}
   \includegraphics{figures/output/sim-results}
   \caption[Simulation study results]{%
@@ -595,9 +596,9 @@ To estimate duration, we extended the survival analysis framework in \citet{heis
 The result is new methodology to analyze doubly censored data with imperfect test sensitivity and undetected events, without any restrictions on when testing occurs or the occurrence of infections.
 We estimate a nonparametric discrete-time survival distribution in a fully Bayesian framework and incorporate data from a complementary study, ATACCC, through an appropriately-discounted prior.
 
-Although the CIS data are unique, this work may serve as a template for studies in future pandemics~\citep{hallettModule} as
-our methodological framework is generic.
-Furthermore, the simulation scheme we have developed can assist with  more efficient survey designs that, for example, embed an intensively sampled, ATACCC-like study within a CIS-like study.
+Although the CIS data are unique, this work may serve as a template for studies in future pandemics~\citep{hallettModule} as our methodological framework is generic.
+The study design did not explicitly consider the need to estimate duration of positivity from it, which made this study challenging.
+To address this issue, we have developed a flexible simulation framework that can assist with  more efficient survey designs; for example, embedding an intensively sampled, ATACCC-like study within a CIS-like study.
 
 We estimate a mean duration of 21.2 days (95\% CrI: 20.5--21.9) with 5.3\% (95\% CrI: 3.5--7.4\%) of episodes lasting 50 days or longer.
 The proportion of long episodes is higher than previous estimates (see \cref{tab:compare-survival}), leading to a longer mean duration.
@@ -659,6 +660,8 @@ While the cohort we consider is fairly representative of the general population,
 Future work where representativeness is a larger concern or where individual-level predictions are important may want to include covariates in the model.
 To maintain statistical power, these would likely require a parameteric model, which poses specification challenges if bias is to be minimised.
 
+Our simulation study showed that, while a strongly informative prior for the survival time is helpful, it is not required and our method can successfully recover the truth using only a weakly informative prior.
+Such a prior could be available early in a pandemic based on a small, intensive study (\eg First Few X) or expert elicitation based on similar diseases.
 An important avenue for further work is removing the need for an informative prior for $\ntot$, the total number of infections in the cohort in the period (including undetected infections).
 % The reason an informative prior is required is unclear because it was not required in the simulation study.
 The first step for such work would be to identify the reason an informative prior is required, for example through simulation studies with different patterns of false negatives.
