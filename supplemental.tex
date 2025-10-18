@@ -486,5 +486,25 @@ Episode $j$'s duration of detectability is then a draw from this distribution.
 }
 \end{table}
 
+% \begin{table}[!h]
+% \thispagestyle{empty}
+% \vspace{-1.5cm}
+% \begin{tabular}{rr}
+%   Symbol & Definition \\
+%   $\Ncis$ & The number of CIS participants with at least one non-void test in the period and whose first ever CIS test is not on the final day, $\Ncis = \numprint{340246}$. \\
+%   $\sched_i$ & The set of times that individual $i$ is tested.
+%   $i$ & Indexes individuals, $i \in \{ 1, \dots, \Ncis \}$.
+%   $j$ & Indexes infection episodes, $j \in \{ 1, \dots, \ntot \}$.
+%   $T$ & The number of the final day of the period considered, 6 December 2020, $T = 58$.
+% \end{tabular}
+% \caption{%
+%   Definition of all symbols used.
+% }
+% \end{table}
+% $l_j^{(b)}$; the day of the first positive test, $r_j^{(b)}$; the day of the last positive test, $l_j^{(e)}$; and the day before the subsequent negative test, $r_j^{(e)}$
+% $\vec{\theta}$, the parameters of the survival function $S_{\vec{\theta}}(t) = \prob(D_j \geq t \mid \vec\theta)$ for the random variable $D_j$, representing the number of days on which a positive result would be returned by a RT-PCR testing procedure that has 100\% specificity and sensitivity due to infection episode $j$.
+% $W_j = (B_j, E_j, i_j)$ where $B_j$ is the beginning of the episode, the first day the individual is detectable; $E_j$ is the end of the episode, the last day the individual is detectable; and $i_j$ is the individual in which the $j$th infection occurs.
+% The episode's duration is a deterministic transformation of these variables, $D_j = E_j - B_j + 1$
+% by the set of observed vectors $\{ o_j \}$ 
 
 \end{document}
