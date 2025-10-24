@@ -534,12 +534,12 @@ The results in Figure \cref{imperf-test:fig:simulation-results}(A and B) show th
 
 Next, we considered the consequence of $\psens$ being misspecified and using the strongly informative prior, the better performing prior in the correctly specified case.
 If the test sensitivity is misspecified then the estimate of the survival distribution is biased.
-If $\psensi < \psenss$, then the posterior estimate initially follows the true value but then separates (see \cref{imperf-test:fig:simulation-results}).
+If $\psensi < \psenss$, then the posterior estimate initially follows the true value but then separates (see \cref{imperf-test:fig:simulation-results}(C)).
 The number of episodes inferred to have truly ended by the first negative is too low, and hence the survival function is overestimated.
 This effect dominates over the opposing bias of overestimating the number of undetected episodes.
-The opposite occurs if $\psensi > \psenss$, although the posterior moves away from the truth earlier (see \cref{imperf-test:fig:simulation-results}).
+The opposite occurs if $\psensi > \psenss$, although the posterior moves away from the truth earlier (see \cref{imperf-test:fig:simulation-results}(E)).
 
-The results when $\psenss = v$ are similar to $\psenss = 0.8$ (see \cref{imperf-test:fig:simulation-results}).
+The results when $\psenss = v$ are similar to $\psenss = 0.8$ (see \cref{imperf-test:fig:simulation-results}(F--H)).
 This suggests that the simplified model, with constant test sensitivity, is sufficient for recovering the true survival time.
 % Estimating the test sensitivity is not possible without a more complex model, as discussed in \cref{imperf-test:sec:discussion}.
 Therefore, we conclude that including a varying test sensitivity is not required for adequate inference, and apply it to the real CIS data in the next section.
@@ -562,7 +562,7 @@ However, the survival proportion over the first 4 weeks is sensitive to these ch
 The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ gives a median survival time most similar to the ATACCC-based estimate.
 \begin{figure}
   \includegraphics{figures/output/CIS_final}
-  \caption{Duration estimates using CIS and ATACCC data}
+  \caption{Duration estimates using CIS and ATACCC data. ATACCC-based estimates are from \citet{blakeThesis}.}
   \label{imperf-test:fig:cis-estimates}
 \end{figure}
 \begin{figure}

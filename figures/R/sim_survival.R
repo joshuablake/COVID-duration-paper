@@ -56,7 +56,7 @@ truth = readRDS(here::here("data/input_curves.rds")) |>
 p_constant_sensitivity = tbl_posteriors |>
     filter(sensitivity.simulation == sensitivity.model, sensitivity.simulation < 1) |>
     base_plot(survival_prior) +
-    theme(legend.position = "right")
+    theme(legend.position = "bottom")
 
 
 p_misspecified_sensitivity = tbl_posteriors |>
@@ -67,7 +67,7 @@ p_misspecified_sensitivity = tbl_posteriors |>
         facet_suffix = "^{(i)}",
         start_letter = 3
     ) +
-    theme(legend.position = "right")
+    theme(legend.position = "none")
 
 p_variable_sensitivity = tbl_posteriors |>
     filter(is.na(sensitivity.simulation), survival_prior == "Strong") |>
