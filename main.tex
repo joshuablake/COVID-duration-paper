@@ -272,7 +272,7 @@ In what follows, we explain the data generating process and derive a statistical
 We parameterize $S$ in terms of the discrete-time hazard on day $t$, $\lambda_t = \prob(B = t \mid B \geq t)$, giving $S_{\vec{\theta}}(t) = \prod_{k=1}^{t-1} (1 - \lambda_{k})$; the lack of monotonicity or sum constraint on the hazard makes it an attractive parameterization for inference~\citep{heBayesian}.
 Therefore, $\vec{\theta} = [\lambda_1, \dots, \lambda_{\dmax-1}]^{\mathsf{T}}$, where $\dmax$ is the longest possible duration assumed as the maximum possible duration of the observed episodes, \ie $\dmax = \max_{k \in \set{D}} r^{(e)}_k - l^{(b)}_k + 1$.
 We consider both a weakly and strongly informative prior for $\vec{\theta}$ (see Web Appendix A).
-The strongly informative prior includes information from a previous study~\citep{blakeThesis} of the ATACCC data~\citep{hakkiOnset}, and hence is a form of evidence synthesis.
+The strongly informative prior includes information from a previous study~\citep{blakeThesis} using the Assessment of Transmission and Contagiousness of COVID-19 in Contacts (ATACCC) dataset~\citep{hakkiOnset}, and hence is a form of evidence synthesis.
 
 
 An important aspect of our approach is that the dimension of the posterior distribution does not increase with either the cohort size of number of detected infections.
