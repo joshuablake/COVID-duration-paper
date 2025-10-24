@@ -555,7 +555,7 @@ Therefore, we used an informative prior for $\ntot$, $\ntot \sim \NBc(\mu\inform
 Approximating this distribution as a negative binomial and scaling the mean to the size of the CIS sample gives the prior $\mu\inform = 25132$ and $r\inform = 22047$.
 
 With this prior, the model produces plausible estimates of the duration distribution (see \cref{imperf-test:fig:cis-estimates}).
-At values above 50\%, the survival function (blue) decreases more slowly than the ATACCC-based estimate (red), indicating a greater number of infections lasting much longer than the median.
+At values above the median, the survival function (blue) decreases more slowly than the ATACCC-based estimate (red), indicating a fatter tail.
 
 The increase in long episodes (\eg longer than 50 days) is not very sensitive to the choice of prior for $\ntot$, the assumed value for $\psens$ (see \cref{imperf-test:fig:cis-sensitivity}), and the choice of prior for the hazards, $\lambda_t$.
 However, the survival proportion over the first 4 weeks is sensitive to these choices.
