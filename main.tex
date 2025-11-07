@@ -191,9 +191,9 @@ Data from the CIS dataset do not allow us to distinguish whether this infections
 % \subsection{Related work}
 
 Methods that deal with doubly interval censored data exist~\citep{sunStatistical,bogaertsSurvival}.
-However, few consider the additional challenges of undetected episodes;
-theoretical frameworks~\citep{turnbullEmpirical,dempsterMaximum} have only applied to the special case where the terminating event is either uncensored or right censored~\citep[e.g.][]{sunEmpirical,bacchettiNonparametric,shenNonparametric}; and
-inference in these studies depends on the interval lengths changing negligibly throughout, which does not apply to the CIS where the interval lengths change from one to four weeks. %(and after the period we consider, even longer).
+However, few consider the additional challenge of undetected episodes;
+theoretical frameworks~\citep{turnbullEmpirical,dempsterMaximum} have only been applied to the special case where the terminating event is either uncensored or right censored~\citep[e.g.][]{sunEmpirical,bacchettiNonparametric,shenNonparametric}; and
+assume the sampling interval changes negligibly throughout, which does not apply to the CIS where the interval lengths change from one to four weeks. %(and after the period we consider, even longer).
 % In these studies inference is based on a likelihood contribution for each detected infection episode conditional on the interval in which the episode is known to begin. For this conditional likelihood to be valid, it is assumed that this conditioning provides negligible information on the distribution of interest~\citePersonalComms{Nick Jewell}.
 % This assumption is reasonable when the length of the intervals is fairly constant.
 % In particular, when the interval lengths are near-constant, the probability of detecting an episode is independent of when it occurs.
@@ -203,9 +203,8 @@ inference in these studies depends on the interval lengths changing negligibly t
 % Infection episodes in an individual's one-week testing period are over-represented in the detected infections.
 % This is because more frequent testing will detect a higher proportion of infections.
 % Therefore, $p(\text{episode $j$ detected} \mid b_j \in [l_j^{(b)}, r_j^{(b)}]) > p(\text{episode $j$ detected})$ and conditioning on $b_j \in [l_j^{(b)}, r_j^{(b)}]$ is inappropriate.
-\citet{heiseyModelling} generalize the theoretical framework to allow arbitrary patterns of detection times and censoring.
-They categorize each combination of possible beginning and end times for an episode into whether the episode would be detected, and whether it is compatible with the pattern of interval censoring observed.
-This allows them to build a conditional likelihood, accounting for both these challenges in a context where possible detection times are common to all individuals, leading to a simplification of the likelihood and a common probability of detection across all individuals.
+\citet{heiseyModelling} generalize the theoretical framework to allow arbitrary patterns of detection and censoring, building a likelihood by considering the probabilities of different episode start and end times and whether each would be detected.
+The likelihood in their application is simplified because testing times are common to all individuals, unlike CIS.
 %Their approach was developed in the context of assessing the survival time of bird and insect nests, and has since been used widely~\citep{heiseyABCs}.
 % However, in this context, the visit times (possible detection times) are common to all the individuals, simplifying the likelihood and the structure of the missing data.
 % In particular, the probability of detection is common across all individuals.
@@ -224,7 +223,8 @@ We test the framework in a simulation study in \cref{sec:simulation}, apply it i
 
 The CIS~\citep{CIS} was set up in April 2020 and was globally unique in providing a representative, longitudinal, and large-scale study across almost three years of the pandemic.
 The study had a household-based design inviting all individuals aged 2 years and over from households randomly selected from previously surveys and address lists.
-Once invited and consented, an enrolment swab would be taken at the first visit followed by an optional 4 further weekly visits (giving a total of 5 swabs on days 0, 7, 14, 21, 28 relative to enrolment) after which visits were four-weekly. Furthermore, at each visit, a questionnaire was completed.  In reality, visits were often not on this precise schedule, and occasionally visits were missed. %%  (\eg a test would occur on days 28 and 84 but not 56).
+Once invited and consented, swabs were taken at a first visit followed by an optional 4 further weekly visits (giving a total of 5 swabs on days 0, 7, 14, 21, 28 from enrolment) after which visits were four-weekly.
+In reality, visits were often not on this precise schedule, and occasionally visits were missed. %%  (\eg a test would occur on days 28 and 84 but not 56).
 A full description of the study can be found in the study protocol~\citep{cisProtocol}.
 %Individuals were visited on a pre-determined schedule.
 %At each visit, a questionnaire was completed and a combined throat and nose swab was collected for RT-PCR testing. 
@@ -233,9 +233,9 @@ A full description of the study can be found in the study protocol~\citep{cisPro
 % Initially, it was limited to England, but expanded to cover the whole of the UK in September 2020.
 Enrollment was continuously ongoing until 31 January 2022, with data collected until 13 March 2023~\citep{weiRisk}. 
 
-We focus on the period between 16 October 2020 and 6 December 2020 inclusive over which the CIS estimated stable infection prevalence of around 1\%~\citep{onsCISdec2020} and exclude void tests, assuming they are uninformative.
-Stable infection prevalence means that the shared population-level force of infection changes slowly, making our independence assumption (see \cref{sec:modelling}) a reasonable approximation.
-Additionally, this period is prior to both vaccination and before the alpha variant was dominant~\citep{lythgoeLineage}, which potentially impacted the duration of infection episodes~\citep{hakkiOnset,russellWithinhost}.
+We focus on the period between 16 October 2020 ($t=1$) and 6 December 2020 ($t=T=58$) inclusive over which the prevalence, as estimated by CIS, was approximately stable at 1\%~\citep{onsCISdec2020}.
+We exclude void tests, assuming they are uninformative.
+This period is prior to both vaccination and before the alpha variant was dominant~\citep{lythgoeLineage}, which potentially impacted the duration of infection episodes~\citep{hakkiOnset,russellWithinhost}.
 Our analysis includes the cohort of $\Ncis = \numprint{340246}$ CIS participants with at least one non-void test in this period and whose first ever CIS test is not on the final day; the latter are excluded because they have no chance to test positive in the period considered.
 The cohort is broadly representative of the UK population, albeit slight over-representation of individuals of older age and White ethnicity (see Web Table 1).
 
@@ -400,14 +400,8 @@ First, that the elements of $\vec{y}_k$ corresponding to the tests at times $r_k
 Second, that the element of $\vec{y}_k$ corresponding to the test at time $r_k^{(e)} + 1$ is negative, \ie $y_{k,m_k} = 0$.
 These conditions are due to the construction of the intervals as positive and negative tests bounding the beginning and end times of the episode.
 
-Similarly, we define $p_k'$, $p_{ik}'$, $p_u'$, and $p_{iu}'$ to replace $p_k$, $p_{ik}$, $p_u$, and $p_{iu}$ respectively.
+Similarly, define $p_k' = \frac{1}{\Ncis} p_{ik}'$, $p_{ik}' = \prob(O'_j = \vec{\nu}'_k \mid i_j = i_k, \vec{\theta})$, $p_u' = \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} p_{iu}'$, and $p_{iu}' = \prob(O'_j = \varnothing \mid i_j = i, \vec{\theta})$ to replace $p_k$, $p_{ik}$, $p_u$, and $p_{iu}$ respectively.
 These new definitions take into account the false negatives.
-\begin{align}
-    p_{ik}' &= \prob(O'_j = \vec{\nu}'_k \mid i_j = i_k, \vec{\theta}) \\
-    p_k' &= \frac{1}{\Ncis} p_{ik}' \\
-    p_{iu}' &= \prob(O'_j = \varnothing \mid i_j = i, \vec{\theta}) \\
-    p_u' &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} p_{iu}'.
-\end{align}
 
 \subsection{Deriving $p'_{ik}$} \label{imperf-test:sec:modifying-p_ia}
 
@@ -487,15 +481,7 @@ We show that, as long as $\psens$ is not too small, inference performance remain
 We simulate a dataset of detected episodes that has the same characteristics as that in the CIS (see Web Appendix C for details), considering four scenarios for the test sensitivity.
 The first three are constant, $\psens \in \{ 0.6, 0.8, 1.0 \}$.
 The final scenario is a varying test sensitivity, which is more realistic~\citep{blakeThesis}.
-Specifically we use the following form:
-\begin{equation}
-  v(t) = \begin{cases}
-    0.9 - \frac{0.9-0.5}{50}t &t \leq 50 \\
-    0.5 &t > 50
-  \end{cases}
-  \label{imperf-test:eq:variable-test-sensitivity}
-\end{equation}
-where $t$ is the number of days since the infection occurred.
+Specifically, if $t$ is the number of days since the infection occurred, we use $v(t) = 0.9 - \frac{0.9-0.5}{50}t$ for $t \leq 50$ and $v(t) = 0.5$ for $t > 50$.
 We denote by $\psenss$ the true test sensitivity used in the simulation, with $\psenss = v$ indicating the varying test sensitivity.
 
 For each scenario, we infer the survival function using the procedure proposed in this paper, with a point prior of $\psens$ of 0.6, 0.8, or 1.0.
@@ -516,10 +502,10 @@ We used a vague prior for $\ntot$, with $\mu = n_d / p$ and $r = 1$.
 \subsection{Results}
 
 When $\psens = 0.8$ and is correctly specified, the model recovers the true survival time well (see \cref{imperf-test:fig:simulation-results}(B)).
-The strongly informative prior for $\vec\theta$, in comparison to the weakly informative prior, helps to overcome the misspecification due to the simplifying assumptions, moving the estimated survival function closer to its true survival time; in particular, the central estimate is smoother and has less uncertainty.
+The results in \cref{imperf-test:fig:simulation-results}(A and B) show that even a weak prior on the survival time allows recovery of the true survival time.
+The strongly informative prior for $\vec\theta$ moves the estimated survival function closer to its true survival time; in particular, the central estimate is smoother and has less uncertainty.
 When $\psens = 0.6$, both priors lead to underestimation (see \cref{imperf-test:fig:simulation-results}(A)).
 This is likely caused by too large a violation of the simplifying assumptions made in \cref{sec:false-negatives}.
-The results in Figure \cref{imperf-test:fig:simulation-results}(A and B) show that even a weak prior on the survival time allows recovery of the true survival time.
 \begin{figure}
   \includegraphics{figures/output/sim-results}
   \caption[Simulation study results]{%
@@ -584,22 +570,20 @@ Our estimates are sensitive to the choice of $r$, the strength of the prior on $
 A low value for $r$, giving a very weak, almost uninformative, prior on $\ntot$ causes its posterior estimate to be much higher than the estimate from \citet{birrellRTM2}.
 When increasing the prior's strength, the posterior estimate moves towards the prior smoothly, as expected (see Web Figure 2).
 As discussed previously, the prior information is reliable for the first 2--3 weeks, notably including the median time.
-The median using $r\inform$ matched the prior's median estimate and is a principled choice because it is based directly on the previous posterior estimate~\citet{birrellRTM2}.
+The median using $r\inform$ is the most principled choice, being based on data, and gives a median survival time matching the prior.
 Therefore, we recommend this estimate, which has a mean survival time of 21.2 days (95\% CrI: 20.5--21.9).
 
 
 \section{Discussion} \label{sec:discussion}
 
-This work is motivated by the challenge of exploiting data from the CIS, a unique long-running general population prevalence study conducted during the COVID-19 pandemic, to estimate the duration of SARS-CoV-2 infection episodes.
-This is a key component in the estimation of incidence of infection and has an essential role in informing pandemic mitigation strategies such as isolation.
-
-To estimate duration, we extended the survival analysis framework in \citet{heiseyModelling} to deal with the CIS design.
-The result is new methodology to analyze doubly censored data with imperfect test sensitivity and undetected events, without any restrictions on when testing occurs or the occurrence of infections.
+This work is motivated by the challenge of estimate the duration of SARS-CoV-2 infection episodes from CIS data, a unique and long-running general population prevalence study.
+This duration is a key component to estimate incidence of infection and inform mitigation strategies such as isolation.
 We estimate a nonparametric discrete-time survival distribution in a fully Bayesian framework and incorporate data from a complementary study, ATACCC, through an appropriately-discounted prior.
 
-Although the CIS data are unique, this work may serve as a template for studies in future pandemics~\citep{hallettModule} as our methodological framework is generic.
-The study design did not explicitly consider the need to estimate duration of positivity from it, which made this study challenging.
-To address this issue, we have developed a flexible simulation framework that can assist with  more efficient survey designs; for example, embedding an intensively sampled, ATACCC-like study within a CIS-like study.
+To address the challenges posed by the CIS design, we extended the survival analysis framework in \citet{heiseyModelling} resulting in new methodology to analyze doubly censored data with imperfect test sensitivity and undetected events, without any restrictions on when testing occurs or the occurrence of infections.
+These challenges arose because study design did not explicitly consider the need to estimate duration of positivity.
+To aid in future design, we have developed a flexible simulation framework that can assist with  more efficient survey designs; for example, embedding an intensively sampled, ATACCC-like study within a CIS-like study.
+Although CIS was unique, it may serve as a template for studies in future pandemics~\citep{hallettModule} and our methodological framework is generic.
 
 We estimate a mean duration of 21.2 days (95\% CrI: 20.5--21.9) with 5.3\% (95\% CrI: 3.5--7.4\%) of episodes lasting 50 days or longer.
 The proportion of long episodes is higher than previous estimates (see \cref{tab:compare-survival}), leading to a longer mean duration.
@@ -630,8 +614,8 @@ We investigated the impact of our assumptions through sensitivity analyzes and a
 The main modelling assumption is that infection episodes (i) have a uniform prior distribution for their start time and (ii) are independent.
 Assumption (i) (uniform prior) is reasonable in situations where there is no additional data. 
 Assumption (ii) (independence) is a simplification because infection episodes start times are correlated between different individuals due to the underlying shared force of infection throughout the population.
-We mitigated this issue by choosing a period of time when prevalence was fairly constant.
-Previous work~\citep[e.g.][]{haySerosolver} has considered relaxing this assumption by including shared force of infection parameter(s), at the cost of a more complex likelihood and a possible need for large amounts of data imputation which would be computational prohibitive.
+We mitigated this issue by choosing a period of time when prevalence was approximately stable.
+Previous work~\citep[e.g.][]{haySerosolver} relaxed this assumption by including shared force of infection parameter(s), at the cost of a more complex likelihood and a possible need for large amounts of data imputation which would be computational prohibitive.
 Exploring the implications of what is possible here would be an exciting avenue for future work.
 For example, if there are simple parametric forms for the force of infection (e.g. exponential) that plausibly reflect reality without greatly increasing computational complexity.
 % In addition, we conducted a sensitivity analysis to the simulation study allowing underlying infection rates to either grow or shrink exponentially; these did not make a substantial difference to the estimates (not shown).
@@ -661,16 +645,16 @@ While the cohort we consider is fairly representative of the general population,
 Future work where representativeness is a larger concern or where individual-level predictions are important may want to include covariates in the model.
 To maintain statistical power, these would likely require a parameteric model, which poses specification challenges if bias is to be minimised.
 
-Our simulation study showed that, while a strongly informative prior for the survival time is helpful, it is not required and our method can successfully recover the truth using only a weakly informative prior.
-Such a prior could be available early in a pandemic based on a small, intensive study (\eg First Few X) or expert elicitation based on similar diseases.
+Our simulation study showed that, while a strongly informative prior for the survival time is helpful, a weakly informative prior is sufficient.
+A weakly informative prior could be available early in a pandemic based on a small, intensive study (\eg First Few X) or expert elicitation.
 An important avenue for further work is removing the need for an informative prior for $\ntot$, the total number of infections in the cohort in the period (including undetected infections).
 % The reason an informative prior is required is unclear because it was not required in the simulation study.
-The first step for such work would be to identify the reason an informative prior is required, for example through simulation studies with different patterns of false negatives.
+The first step is to identify the reason an informative prior is required, for example through simulation studies with different patterns of false negatives.
 %, may uncover why this prior is needed and hence suggest extensions or alternative study designs to solve this issue.
 We provide an R package implementing a flexible simulation framework for enabling this work.
 
-A final challenge this study faced is the use of the SRS, which had limited computational power as well as lengthy approval processes for software or data to be moved in or out of the environment.
-To enable inference in this low-resource environment, our method avoids increasing the dimensionality of the problem as far as possible.
+A final challenge is the use of the SRS, which has limited computational power and a lengthy approval processes for software or data to be moved in or out of the environment.
+To enable inference in this low-resource environment, our method avoids increasing the problem's dimensionality whenever possible.
 %As well as providing limited computational power, the SRS has practical limitations.
 %Internet access is unavailable when operating inside the SRS, and a lengthy approval process is required for software or data to be moved in or out of the environment.
 %Workflows and software amenable to operating in such an environment would speed future work similar to this study.
@@ -761,7 +745,7 @@ This work contains statistical data from ONS which is Crown Copyright. The use o
 Web Appendices, Tables, and Figures referenced in \cref{sec:data,sec:modelling,sec:false-negatives,sec:simulation} are available with this paper at the Biometrics website on Oxford Academic.
 
 Code to reproduce all figures and the simulation study in this paper are available at \url{https://github.com/joshuablake/COVID-duration-paper}.
-The raw data from the CIS is stored on the ONS SRS and can only be accessed within the SRS, due to regulatory requirements.
+The raw data from the CIS is stored on the ONS SRS due to regulatory requirements.
 The SRS can be accessed by application to the ONS by bona fide researchers.
 
 \label{lastpage}
