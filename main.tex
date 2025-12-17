@@ -118,7 +118,7 @@ $^{8}$School of Mathematical Sciences, University of Nottingham, Nottingham, UK}
 Monitoring the incidence of new infections during a pandemic is critical for an effective public health response. General population prevalence surveys for SARS-CoV-2 can provide high-quality data to estimate incidence.  However, estimation relies on understanding the distribution of the duration that infections remain detectable. This study addresses this need using data from the Coronavirus Infection Survey (CIS), a long-term, longitudinal, general population survey conducted in the UK. Analyzing these data presents unique challenges, such as double interval censoring, undetected infections, and false negatives. We propose a Bayesian nonparametric survival analysis approach, estimating a discrete-time distribution of durations and integrating prior information derived from a complementary study. Our methodology is validated through a simulation study, including its resilience to model misspecification, and then applied to the CIS dataset. This results in the first estimate of the full duration distribution in a general population, as well as methodology that could be transferred to new contexts.
 \end{abstract}
 
-\begin{keywords}  Lifetime and survival analysis; False negatives; Misclassification; Bayesian methods. \end{keywords}
+\begin{keywords}  Bayesian methods; False negatives; Lifetime and survival analysis; Misclassification. \end{keywords}
 
 \maketitle
 
@@ -240,8 +240,7 @@ Our analysis includes the cohort of $\Ncis = \numprint{340246}$ CIS participants
 The cohort is broadly representative of the UK population, albeit slight over-representation of individuals of older age and White ethnicity (see Web Table 1).
 
 We denote by $\sched_i$ the set of times individual labeled $i \in \{ 1, \dots, \Ncis \}$ is tested.
-Time is defined such that the first day of the period considered, 16 October 2020, is day 1 and the final day of the period considered, 6 December 2020, is day $T = 58$.
-The smallest element of $\sched_i$ is individual $i$'s last test prior to time 1, if it exists, or their first test following enrollment in the study otherwise, and including all subsequent tests even those that occur after day $T$.
+The smallest element of $\sched_i$ is individual $i$'s last test prior to $t=1$, if it exists, or their first test following enrollment in the study otherwise. All subsequent tests, even those that occur after day $T$, are included in $\sched_i$.
 Each individual has exactly one test schedule, but it is possible that $\sched_i = \sched_{i'}$ for $i \neq i'$; this occurs commonly for individuals in the same household.
 We assume that the test schedules are uninformative on all quantities of interest, in particular the presence or absence of infection, because their timings were prespecified in the study design.
 Therefore, we condition on them implicitly in all the calculations that follow.
@@ -579,6 +578,7 @@ Therefore, we recommend this estimate, which has a mean survival time of 21.2 da
 This work is motivated by the challenge of estimate the duration of SARS-CoV-2 infection episodes from CIS data, a unique and long-running general population prevalence study.
 This duration is a key component to estimate incidence of infection and inform mitigation strategies such as isolation.
 We estimate a nonparametric discrete-time survival distribution in a fully Bayesian framework and incorporate data from a complementary study, ATACCC, through an appropriately-discounted prior.
+A nonparametric distribution allows the data to inform the tail shape, clarifying and quantifying the uncertainty around long-duration infections.
 
 To address the challenges posed by the CIS design, we extended the survival analysis framework in \citet{heiseyModelling} resulting in new methodology to analyze doubly censored data with imperfect test sensitivity and undetected events, without any restrictions on when testing occurs or the occurrence of infections.
 These challenges arose because study design did not explicitly consider the need to estimate duration of positivity.
@@ -726,11 +726,11 @@ Future pandemic plans should consider how to ensure privacy for study participan
 \backmatter
 
 \section*{Acknowledgements}
-JB was supported by Bayes4Health (EPSRC  EP/R01856/1).
+JB was supported by Bayes4Health (EPSRC EP/R01856/1).
 JB, PB, and DDA were supported by the UK Medical Research Council (MRC) programme MRC\_MC\_UU\_00002/11. 
 PB, TH, and DDA were supported by the Wellcome Trust (227438/Z/23/Z).
 ASW and KBP were supported by the National Institute for Health Research (NIHR) Health Protection Research Unit in Healthcare Associated Infections and Antimicrobial Resistance at Oxford University in partnership with the UK Health Security Agency (UKHSA) (NIHR200915).
-ASW was supported by the NIHR Biomedical Research Centre, Oxford.
+ASW was supported by the NIHR Biomedical Research Centre, Oxford and is an NIHR Senior Investigator.
 KBP is supported by the Huo Family Foundation, and the Medical Research Foundation (MRF-160-0017-ELP-POUW-C0909).
 BDMT is supported through the MRC programme grant (MC\_UU\_00002/2) and theme funding (MC\_UU\_0002/20 - Precision Medicine).
 
@@ -738,15 +738,18 @@ For the purpose of open access, the authors have applied a Creative Commons Attr
 
 This work contains statistical data from ONS which is Crown Copyright. The use of the ONS statistical data in this work does not imply the endorsement of the ONS in relation to the interpretation or analysis of the statistical data. This work uses research datasets which may not exactly reproduce National Statistics aggregates.
 
-\bibliographystyle{biom} \bibliography{references}
-
 \section*{Supplementary Materials}
 
 Web Appendices, Tables, and Figures referenced in \cref{sec:data,sec:modelling,sec:false-negatives,sec:simulation} are available with this paper at the Biometrics website on Oxford Academic.
 
+\section*{Data Availability}
+
 Code to reproduce all figures and the simulation study in this paper are available at \url{https://github.com/joshuablake/COVID-duration-paper}.
 The raw data from the CIS is stored on the ONS SRS due to regulatory requirements.
 The SRS can be accessed by application to the ONS by bona fide researchers.
+
+
+\bibliographystyle{biom} \bibliography{references}
 
 \label{lastpage}
 
