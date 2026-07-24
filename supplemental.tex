@@ -179,13 +179,13 @@ Using a multivariate normal, as opposed to multiple univariate distribution for 
 The approximation is very good (not shown).
 
 Having approximated the estimate as a multivariate normal, we add additional uncertainty using a discrete Beta process.
-The discrete Beta process prior~\citep{ibrahimBayesian,sunStatisticala} generalises the form of prior used in the weakly informative case by allowing the central estimate of the hazard to vary over time.
+The discrete Beta process prior~\citep{ibrahimBayesian,sunStatisticala} generalizes the form of prior used in the weakly informative case by allowing the central estimate of the hazard to vary over time.
 It is:
 \begin{align}
   \logit \vec{h} &\dist \MNorm(\vec{\mu}_A, \matr{\Sigma}_A) \\
   \lambda_t &\dist \text{Beta}(\alpha_t, \beta_t) &t = 1, 2, \dots \\
   \alpha_t &= k_t h_t + \alpha_0 \\
-  \beta_t &= k_t (1 - h_t) + \beta_0
+  \beta_t &= k_t (1 - h_t) + \beta_0,
 \end{align}
 where $k_t$, $\alpha_0$, and $\beta_0$ are hyperparameters.
 An intuition for what this distribution represents derives from a conjugate model for $\lambda_t$ with a beta prior and a binomial likelihood.
@@ -245,7 +245,7 @@ This assumption makes $\eta$ analytically tractable, allowing computationally fe
 Putting a negative binomial prior on $\ntot$ is equivalent to the following gamma-Poisson composite; its use simplifies the derivation.
 \begin{align}
 \ntot \mid \lambda &\dist \Poi(\lambda) \\
-\lambda &\dist \GamDist(a, b)
+\lambda &\dist \GamDist(a, b),
 \end{align}
 where $b = r / \mu$ and $a = r$.
 Hence:
@@ -261,7 +261,7 @@ Hence:
 &= \frac{b^a}{\Gamma(a)} \frac{\Gamma(a+\ndet)}{(b+1-\pnodet)^{a+\ndet}} &\text{Gamma pdf}\\
 &\propto (b+1-\pnodet)^{-(a+\ndet)} &\text{only $p_u$ depends on $\vec{\theta}$}\\
 &= (r/\mu + 1 - \pnodet)^{-(r+\ndet)} &\text{sub in $\mu$ and $r$}\\
-&\propto(r + \mu (1- \pnodet))^{-(r+\ndet)}.
+&\propto\{r + \mu (1- \pnodet)\}^{-(r+\ndet)}.
 \end{align}
 
 Substituting into \cref{eq:posterior1} gives \cref{perf-test:eq:full-posterior}.
@@ -284,7 +284,7 @@ p_{ik}
 =& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \prob \left( l_k^{(e)} \leq E_{j} \leq r_k^{(e)} \mid B_{j} = b \right) \prob \left(B_{j} = b \right) \\
 =& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \prob \left( l_k^{(e)} - b + 1 \leq D_{j} \leq r_k^{(e)} - b + 1 \right) \prob \left(B_{j} = b \right) &\text{by def of $D_{j}$} \\
 =& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right) \prob \left(B_{j} = b \right) &\text{by def of $S_{\vec{\theta}}$} \\
-\propto& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right)
+\propto& \sum_{b = l_k^{(b)}}^{r_k^{(b)}} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right),
 \end{align}
 under the assumption of uniform prior probability of infection time.
 This is the standard form of the likelihood for doubly interval censored data without truncation~\citep[e.g.][]{sunEmpirical}.
@@ -299,7 +299,7 @@ Therefore:
   &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \varnothing, i_j = i \mid \vec{\theta}) \\
   &= 1 - \sum_{i=1}^{\Ncis} \prob(O_j = \varnothing \mid i_j = i, \vec{\theta}) P(i_j = i \mid \vec{\theta}) \\
   &= 1 - \frac{1}{\Ncis}\sum_{i=1}^{\Ncis} \prob(O_j = \varnothing \mid i_j = i, \vec{\theta}) \\
-  &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \varnothing \mid i_j = i, \vec{\theta})). \label{perf-test:eq:pu}
+  &= \frac{1}{\Ncis} \sum_{i=1}^{\Ncis} (1 - \prob(O_j = \varnothing \mid i_j = i, \vec{\theta})), \label{perf-test:eq:pu}
 \end{align}
 as we assume $P(i_j = i \mid \vec{\theta}) = 1/\Ncis$, that is all individuals are equally likely to be infected.
 
@@ -326,7 +326,7 @@ An episode $j$ in individual $i_j$ is detected if and only if all the following 
 % Equivalently, that the first test at or after $b$ is after $e$, or that there is no negative test prior to $b$.
 First define $\tau_{\sched_i}(t)$ as the time until the next test at or after time $t$ in the schedule $\sched_i$:
 \begin{align}
-\tau_{\sched_i}(t) &= \min \{ t' \in \sched_i : t' \geq t \} - t
+\tau_{\sched_i}(t) &= \min \{ t' \in \sched_i : t' \geq t \} - t.
 \label{perf-test:eq:tau-def}
 \end{align}
 % defining $\min \varnothing = \infty$; \ie $\tau_{\sched_i}(t) = \infty$ if there is no $t' \in \sched_i$ such that $t' \geq t$.
@@ -343,7 +343,7 @@ Therefore, omitting the conditioning on $\vec{\theta}$ and $i_j = i$:
 % &= 1 - \prob((B_{j}, E_{j}) \in \Omega_i) \\
 &= \prob(D_j \geq \tau_{\sched_{i}}(B_j)+ 1, \min \sched_{i} < B_j \leq T_{i}) \\
 &= \sum_{b = \min \sched_{i} + 1}^{T_{i}} \prob(D_j \geq \tau_{\sched_{i}}(b) + 1 \mid B_j = b) \prob(B_j = b)\\
-&\propto \sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1)
+&\propto \sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1),
 \label{perf-test:eq:piu}
 \end{align}
 as we assume that all episode start times are independent with a uniform prior, meaning $\prob(B_j = b)$ is a constant.
@@ -366,7 +366,7 @@ The true negative occurs with probability 1, by the assumption of no false posit
 &= \prob(O'_j = \vec{\nu}_k', l_k^{(e)} \leq E_j \leq r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) &\text{the test at $l_k^{(e)}$ is positive} \\
 &= \prob(O'_j = \vec{\nu}_k' \mid l_k^{(e)} \leq E_j \leq r_k^{(e)}, B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
 &\ \ \  \times \prob(l_k^{(e)} \leq E_j \leq r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
-&= p_\text{sens}^{t_+} (1 - p_\text{sens})^{f_-} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right)
+&= p_\text{sens}^{t_+} (1 - p_\text{sens})^{f_-} \left( S_{\vec{\theta}}(l_k^{(e)} - b + 1) - S_{\vec{\theta}}(r_k^{(e)} - b + 2) \right).
 \label{imperf-test:eq:ll-ei-lt-ri}
 \end{align}
 
@@ -378,7 +378,7 @@ Taking the same approach as before:
 &\prob(O'_j = \vec{\nu}_k', E_j > r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
 &= \prob(O'_j = \vec{\nu}_k' \mid E_j > r_k^{(e)}, B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
   &\ \ \  \times \prob(E_j > r_k^{(e)} \mid B_j = b, i_j = i_k, \psens, \vec{\theta}) \\
-&= p_\text{sens}^{t_+} (1 - p_\text{sens})^{f_-} (1 - p_\text{sens}) S_{\vec{\theta}}(r_k^{(e)} - b + 2)
+&= p_\text{sens}^{t_+} (1 - p_\text{sens})^{f_-} (1 - p_\text{sens}) S_{\vec{\theta}}(r_k^{(e)} - b + 2).
 \label{imperf-test:eq:ll-ei-gt-ri}
 \end{align}
 
@@ -463,14 +463,8 @@ By not accounting for either the undetected infections or the interval censoring
 To form the duration distribution used in the simulation, we combine the two estimates.
 The pdf over the first 30 days is proportional to the ATACCC estimate, with the rest proportional to this CIS-based estimate.
 Denote by $f_A(t)$ the ATACCC-based distribution function and $f_C(t)$ that from the CIS-based estimates just derived.
-Then define:
-$$
-f_S'(t) = \begin{cases}
-	f_A(t) &t \leq 30 \\
-	f_C(t) &t > 30
-\end{cases}
-$$
-Then the distribution used in the simulation is the normalised version of this: $f_S(t) = f'_S(t)/\sum_i f_S'(i)$.
+Then define $f_S'(t) = f_A(t)$ for $t \leq 30$ and $f_S'(t) = f_C(t)$ for $t > 30$.
+Then the distribution used in the simulation is the normalized version of this: $f_S(t) = f'_S(t)/\sum_i f_S'(i)$.
 % These curves and the combined curve are compared in \cref{perf-test:fig:duration-dist}.
 Episode $j$'s duration of detectability is then a draw from this distribution.
 

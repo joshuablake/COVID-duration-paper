@@ -279,7 +279,7 @@ Such an approach would be computationally prohibitive here because of the large 
 \subsection{Data generating process}
 
 % The crucial features of an infection episode are the start and end times of the infection.
-The distribution of $D_j$ is determined by $\vec{\theta}$; both $B_j$ and $i_j$ are modelled as draws from uniform distributions over their respective discrete state spaces.
+The distribution of $D_j$ is determined by $\vec{\theta}$; both $B_j$ and $i_j$ are modeled as draws from uniform distributions over their respective discrete state spaces.
 Additionally, we assume that the $D_j$s are independent of each other and $B_j$ (\ie the length of the episode is independent of when it occurs), and identically distributed.
 
 % Infection episode $j$ is \emph{detected} if there is at least one positive test for $i_j$ in the interval $[B_j, E_j]$ and $j$ satisfies the inclusion criteria in \cref{sec:data}.
@@ -337,10 +337,10 @@ Define $\set{D} = \{ k \ssep n_k = 1 \}$, the set of detected episodes.
 Under the mathematically convenient prior $\ntot \dist \NBc(\mu, r)$ (where $\mu$ is the prior mean and $r$ its overdispersion) the posterior distribution of $\vec{\theta}$ is:
 \begin{align}
 p(\vec{\theta} \mid \na)
-&\propto p(\vec{\theta}) \left( \prod_{i \in \set{D}} p_k \right) (r + \mu (1- \pnodet))^{-(r+\ndet)} \label{perf-test:eq:full-posterior}.
+&\propto p(\vec{\theta}) \left( \prod_{i \in \set{D}} p_k \right) \{r + \mu (1- \pnodet)\}^{-(r+\ndet)} \label{perf-test:eq:full-posterior}.
 \end{align}
 A full derivation is in Web Appendix B.
-The rest of this section derives expressions for $p_{k}$ and $p_{u}$.
+The rest of this Section derives expressions for $p_{k}$ and $p_{u}$.
 
 Decompose $p_k$ as $p_k = p_{ik} \prob(i_j = i_k \mid \vec{\theta})$
 where $p_{ik} = \prob(O_j = \vec{\nu}_k \mid i_j = i_k, \vec{\theta})$.
@@ -357,7 +357,7 @@ The remaining component of \cref{perf-test:eq:full-posterior} required is $1- p_
 In Web Appendix B, we show that:
 \begin{align}
   1 - p_u
-  &\propto \sum_{i=1}^{\Ncis}\sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1)
+  &\propto \sum_{i=1}^{\Ncis}\sum_{b = \min \sched_{i} + 1}^{T_{i}} S_{\vec{\theta}}(\tau_{\sched_{i}}(b) + 1),
   \label{eq:1minuspu}
 \end{align}
 where $\tau_{\sched_i}(t)$ is the time until the next test at or after time $t$ in the schedule $\sched_i$.
@@ -365,9 +365,9 @@ where $\tau_{\sched_i}(t)$ is the time until the next test at or after time $t$ 
 For computational efficiency, note that \cref{eq:1minuspu} can be rewritten as:
 \begin{align}
   1- p_u
-  &\propto \sum_{t=1}^{\dmax} S_{\vec\theta}(t) m_t
+  &\propto \sum_{t=1}^{\dmax} S_{\vec\theta}(t) m_t,
   \label{eq:Sm-sum} \\
-  m_t &= \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i}} \indicator(\tau_{\sched_{i}}(b) + 1 = t)
+  m_t &= \sum_{i=1}^{\Ncis} \sum_{b = \min \sched_{i} + 1}^{T_{i}} \indicator(\tau_{\sched_{i}}(b) + 1 = t),
 \end{align}
 where $\indicator$ is the indicator function taking the value $1$ when the statement in its argument is true and $0$ otherwise.
 The $m_t$s rely only on the test schedules, which are fixed, and can be computed once and stored.
@@ -493,7 +493,7 @@ The amount that the simplifying assumptions are violated increases as $\psens$ d
 
 Simulation was performed in R~4.2.0~\citep{R-4-2-0} using tidyverse~2.0.0~\citep{tidyverse}.
 Inference was implemented in Stan via RStan~2.21.8~\citep{rstan2-21-8} using default settings.
-Convergence was assessed using Rhat and ESS~\cite{vehtariRhat}, and all runs checked for divergent transitions.
+Convergence was assessed using Rhat and ESS~\citep{vehtariRhat}, and all runs checked for divergent transitions.
 
 We used a vague prior for $\ntot$, with $\mu = n_d / p$ and $r = 1$.
 
@@ -526,11 +526,11 @@ The opposite occurs if $\psensi > \psenss$, although the posterior moves away fr
 The results when $\psenss = v$ are similar to $\psenss = 0.8$ (see \cref{imperf-test:fig:simulation-results}(F--H)).
 This suggests that the simplified model, with constant test sensitivity, is sufficient for recovering the true survival time.
 % Estimating the test sensitivity is not possible without a more complex model, as discussed in \cref{imperf-test:sec:discussion}.
-Therefore, we conclude that including a varying test sensitivity is not required for adequate inference, and apply it to the real CIS data in the next section.
+Therefore, we conclude that including a varying test sensitivity is not required for adequate inference, and apply it to the real CIS data in the next Section.
 
 \section{Application to the CIS data} \label{sec:CIS}
 
-In this section we apply our method to the CIS infection episode dataset.
+In this Section we apply our method to the CIS infection episode dataset.
 Unlike in the simulation studies, an uninformative prior on $\ntot$ led to implausible estimates of the duration distribution (small values of the prior's overdispersion parameter $r$ in \cref{imperf-test:fig:cis-sensitivity}(A) give estimates with a median survival time of 5 days).
 The uninformative prior led to high posterior estimates of $\ntot$, and hence an implausibly large number of episodes with durations of less than five days.
 Therefore, we used an informative prior for $\ntot$, $\ntot \sim \NBc(\mu\inform, r\inform)$ from pre-existing estimates of the total number of infections to give $\mu\inform$ and $r\inform$.
@@ -595,7 +595,7 @@ Crucially, the longer mean duration leads to lower estimates of incidence from o
 \begin{table}[]
 \caption{
     Comparison of survival time estimates from
-    \Citet{killingleySafety} (assuming a two day time from inoculation to positive with 95\% binomial confidence intervals using the Clopper--Pearson method~\citep{clopperUse}).
+    \citet{killingleySafety} (assuming a two day time from inoculation to positive with 95\% binomial confidence intervals using the Clopper--Pearson method~\citep{clopperUse}).
     ATACCC-based is from \citet{blakeThesis}'s analysis of \citet{hakkiOnset}'s data; the analysis does not extend to 88 days.
     Ours is our final posterior (see \cref{sec:CIS}).
 }
@@ -642,7 +642,7 @@ Estimating the test sensitivity excluding intermittent negatives is not possible
 
 While the cohort we consider is fairly representative of the general population, we do not explicitly consider covariates.
 Future work where representativeness is a larger concern or where individual-level predictions are important may want to include covariates in the model.
-To maintain statistical power, these would likely require a parameteric model, which poses specification challenges if bias is to be minimised.
+To maintain statistical power, these would likely require a parametric model, which poses specification challenges if bias is to be minimized.
 
 Our simulation study showed that, while a strongly informative prior for the survival time is helpful, a weakly informative prior is sufficient.
 A weakly informative prior could be available early in a pandemic based on a small, intensive study (\eg First Few X) or expert elicitation.
