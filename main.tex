@@ -479,7 +479,8 @@ We show that, as long as $\psens$ is not too small, inference performance remain
 We simulate a dataset of detected episodes that has the same characteristics as that in the CIS (see Web Appendix C for details), considering four scenarios for the test sensitivity.
 In the first three $\psens$ are constant, such that $\psens \in \{ 0.6, 0.8, 1.0 \}$.
 The final scenario is a varying test sensitivity, which is more realistic~\citep{blakeThesis}.
-Specifically, if $t$ is the number of days since the infection occurred, we use $v(t) = 0.9 - \frac{0.9-0.5}{50}t$ for $t \leq 50$ and $v(t) = 0.5$ for $t > 50$.
+We denote this varying test sensitivity function by $v(t)$, where $t$ is the number of days since the infection occurred.
+Specifically, $v(t) = 0.9 - \frac{0.9-0.5}{50}t$ for $t \leq 50$ and $v(t) = 0.5$ for $t > 50$.
 We denote by $\psenss$ the true test sensitivity used in the simulation, with $\psenss = v$ indicating the varying test sensitivity.
 
 For each scenario, we infer the survival function using the procedure proposed in this paper, with a point prior of $\psens$ of 0.6, 0.8, or 1.0.
@@ -491,11 +492,11 @@ Note that if $\psenss = v$, then $\psens$ is always misspecified.
 Even in the correctly specified case, there is still some misspecification of the model to false negatives owing to the simplifying assumptions made.
 The amount that the simplifying assumptions are violated increases as $\psens$ decreases.
 
+We used a vague prior for $\ntot$, with $\mu = n_d / p$ and $r = 1$.
+
 Simulation was performed in R~4.2.0~\citep{R-4-2-0} using tidyverse~2.0.0~\citep{tidyverse}.
 Inference was implemented in Stan via RStan~2.21.8~\citep{rstan2-21-8} using default settings.
 Convergence was assessed using Rhat and ESS~\citep{vehtariRhat}, and all runs checked for divergent transitions.
-
-We used a vague prior for $\ntot$, with $\mu = n_d / p$ and $r = 1$.
 
 \subsection{Results}
 
