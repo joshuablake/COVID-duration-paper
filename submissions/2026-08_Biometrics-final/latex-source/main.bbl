@@ -1,0 +1,326 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Bacchetti and Jewell}{Bacchetti and
+  Jewell}{1991}]{bacchettiNonparametric}
+Bacchetti, P. and Jewell, N.~P. (1991).
+\newblock Nonparametric estimation of the incubation period of {{AIDS}} based
+  on a prevalent cohort with unknown infection times.
+\newblock {\em Biometrics} {\bf 47,} 947--960.
+
+\bibitem[\protect\citeauthoryear{Birrell, Blake, Kandiah, Alexopoulos, {van
+  Leeuwen}, Pouwels, Ghosh, Starr, Walker, House, Gay, Finnie, Gent, Charlett,
+  and De~Angelis}{Birrell et~al.}{2025}]{birrellRTM2}
+Birrell, P.~J., Blake, J., Kandiah, J., Alexopoulos, A., {van Leeuwen}, E., and
+  Pouwels, K. et~al. (2025).
+\newblock Real-time modelling of the {{SARS-CoV-2}} pandemic in {{England}}
+  2020-2023: A challenging data integration.
+\newblock {\em Journal of the Royal Statistical Society Series A: Statistics in
+  Society} page qnaf030.
+\newblock Previously published as arXiv:2408.04178.
+
+\bibitem[\protect\citeauthoryear{Blake}{Blake}{2024}]{blakeThesis}
+Blake, J. (2024).
+\newblock {\em Estimating {{SARS-CoV-2}} Transmission in {{England}} from
+  Randomly Sampled Prevalence Surveys}.
+\newblock PhD thesis, University of Cambridge, Cambridge, UK.
+
+\bibitem[\protect\citeauthoryear{Bogaerts, Kom{\'a}rek, and Lesaffre}{Bogaerts
+  et~al.}{2017}]{bogaertsSurvival}
+Bogaerts, K., Kom{\'a}rek, A., and Lesaffre, E. (2017).
+\newblock {\em Survival Analysis with Interval-Censored Data: A Practical
+  Approach with Examples in {{R}}, {{SAS}}, and {{BUGS}}}.
+\newblock {Chapman and Hall/CRC}, New York.
+
+\bibitem[\protect\citeauthoryear{Brookmeyer and Gail}{Brookmeyer and
+  Gail}{1994}]{brookmeyerBackcalculation}
+Brookmeyer, R. and Gail, M.~H. (1994).
+\newblock Back-calculation.
+\newblock In {\em {{AIDS}} Epidemiology: A Quantitative Approach}. Oxford
+  University Press, Incorporated, Cary, USA.
+
+\bibitem[\protect\citeauthoryear{Cao and He}{Cao and He}{2005}]{caoBias}
+Cao, J. and He, C.~Z. (2005).
+\newblock Bias adjustment in {{Bayesian}} estimation of bird nest age-specific
+  survival rates.
+\newblock {\em Biometrics} {\bf 61,} 877--878.
+
+\bibitem[\protect\citeauthoryear{Cao, He, Suedkamp~Wells, Millspaugh, and
+  Ryan}{Cao et~al.}{2009}]{caoModeling}
+Cao, J., He, C.~Z., Suedkamp~Wells, K.~M., Millspaugh, J.~J., and Ryan, M.~R.
+  (2009).
+\newblock Modeling age and nest-specific survival using a hierarchical
+  {{Bayesian}} approach.
+\newblock {\em Biometrics} {\bf 65,} 1052--1062.
+
+\bibitem[\protect\citeauthoryear{Cevik, Tate, Lloyd, Maraolo, Schafers, and
+  Ho}{Cevik et~al.}{2020}]{cevikShedding}
+Cevik, M., Tate, M., Lloyd, O., Maraolo, A.~E., Schafers, J., and Ho, A. et~al.
+  (2020).
+\newblock {{SARS-CoV-2}}, {{SARS-CoV}}, and {{MERS-CoV}} viral load dynamics,
+  duration of viral shedding, and infectiousness: A systematic review and
+  meta-analysis.
+\newblock {\em The Lancet Microbe} {\bf 2,} e13--e22.
+
+\bibitem[\protect\citeauthoryear{Clopper and Pearson}{Clopper and
+  Pearson}{1934}]{clopperUse}
+Clopper, C.~J. and Pearson, E.~S. (1934).
+\newblock The use of confidence or fiducial limits illustrated in the case of
+  the binomial.
+\newblock {\em Biometrika} {\bf 26,} 404--413.
+
+\bibitem[\protect\citeauthoryear{Dempster, Laird, and Rubin}{Dempster
+  et~al.}{1977}]{dempsterMaximum}
+Dempster, A.~P., Laird, N.~M., and Rubin, D.~B. (1977).
+\newblock Maximum likelihood from incomplete data via the {{{\emph{EM}}}}
+  algorithm.
+\newblock {\em Journal of the Royal Statistical Society: Series B
+  (Methodological)} {\bf 39,} 1--22.
+
+\bibitem[\protect\citeauthoryear{Deng, Fang, and Sun}{Deng
+  et~al.}{2009}]{dengNonparametric}
+Deng, D., Fang, H.-B., and Sun, J. (2009).
+\newblock Nonparametric estimation for doubly censored failure time data.
+\newblock {\em Journal of Nonparametric Statistics} {\bf 21,} 801--814.
+
+\bibitem[\protect\citeauthoryear{Eales, Walters, Wang, Haw, Ainslie, Atchison,
+  Page, Prosolek, Trotter, Le~Viet, Alikhan, Jackson, Ludden, {COVID-19
+  Genomics UK Consortium}, Ashby, Donnelly, Cooke, Barclay, Ward, Darzi,
+  Elliott, and Riley}{Eales et~al.}{2022}]{ealesCharacterising}
+Eales, O., Walters, C.~E., Wang, H., Haw, D., Ainslie, K. E.~C., and Atchison,
+  C.~J. et~al. (2022).
+\newblock Characterising the persistence of {{RT-PCR}} positivity and incidence
+  in a community survey of {{SARS-CoV-2}}.
+\newblock {\em Wellcome Open Research} {\bf 7,} 102.
+
+\bibitem[\protect\citeauthoryear{Fong, Summers, and Cook}{Fong
+  et~al.}{2024}]{fongNHS}
+Fong, K.~J., Summers, C., and Cook, T.~M. (2024).
+\newblock {{NHS}} hospital capacity during covid-19: Overstretched staff,
+  space, systems, and stuff.
+\newblock {\em BMJ} {\bf 385,} e075613.
+
+\bibitem[\protect\citeauthoryear{Freeman and Hutchinson}{Freeman and
+  Hutchinson}{1980}]{freemanPrevalence}
+Freeman, J. and Hutchinson, G.~B. (1980).
+\newblock Prevalence, incidence and duration.
+\newblock {\em American Journal of Epidemiology} {\bf 112,} 707--723.
+
+\bibitem[\protect\citeauthoryear{Hakki, Zhou, Jonnerby, Singanayagam, Barnett,
+  Madon, Koycheva, Kelly, Houston, Nevin, Fenn, Kundu, Crone, Ahmad,
+  {Derqui-Fernandez}, Conibear, Freemont, Taylor, Ferguson, Zambon, Barclay,
+  Dunning, Lalvani, Badhan, Varro, Luca, Quinn, Cutajar, Nichols, Russell,
+  Grey, Ketkar, Miserocchi, Tejpal, Catchpole, Nixon, Di~Biase, Hopewell,
+  Narean, Samuel, Timcang, McDermott, Bremang, Hammett, Evetts, and
+  Kondratiuk}{Hakki et~al.}{2022}]{hakkiOnset}
+Hakki, S., Zhou, J., Jonnerby, J., Singanayagam, A., Barnett, J.~L., and Madon,
+  K.~J. et~al. (2022).
+\newblock Onset and window of {{SARS-CoV-2}} infectiousness and temporal
+  correlation with symptom onset: A prospective, longitudinal, community cohort
+  study.
+\newblock {\em The Lancet Respiratory Medicine} .
+
+\bibitem[\protect\citeauthoryear{Hallett}{Hallett}{2024}]{hallettModule}
+Hallett, H.~C. (2024).
+\newblock Module 1: The resilience and preparedness of the {{United Kingdom}}.
+\newblock Technical Report~1, UK Covid-19 Inquiry.
+
+\bibitem[\protect\citeauthoryear{Hay, Minter, Ainslie, Lessler, Yang, Cummings,
+  Kucharski, and Riley}{Hay et~al.}{2020}]{haySerosolver}
+Hay, J.~A., Minter, A., Ainslie, K. E.~C., Lessler, J., Yang, B., and Cummings,
+  D. A.~T. et~al. (2020).
+\newblock An open source tool to infer epidemiological and immunological
+  dynamics from serological data: Serosolver.
+\newblock {\em PLOS Computational Biology} {\bf 16,} e1007840.
+
+\bibitem[\protect\citeauthoryear{He}{He}{2003}]{heBayesian}
+He, C.~Z. (2003).
+\newblock Bayesian modeling of age-specific survival in bird nesting studies
+  under irregular visits.
+\newblock {\em Biometrics} {\bf 59,} 962--973.
+
+\bibitem[\protect\citeauthoryear{He and Sun}{He and Sun}{2005}]{heBayesiana}
+He, C.~Z. and Sun, D. (2005).
+\newblock Bayesian survival analysis for discrete data with left-truncation and
+  interval censoring.
+\newblock In Dey, D.~K. and Rao, C.~R., editors, {\em Handbook of
+  {{Statistics}}}, volume~25 of {\em Bayesian {{Thinking}}}, pages 907--928.
+  Elsevier.
+
+\bibitem[\protect\citeauthoryear{Heisey and Nordheim}{Heisey and
+  Nordheim}{1995}]{heiseyModelling}
+Heisey, D.~M. and Nordheim, E.~V. (1995).
+\newblock Modelling age-specific survival in nesting studies, using a general
+  approach for doubly-censored and truncated data.
+\newblock {\em Biometrics} {\bf 51,} 51--60.
+
+\bibitem[\protect\citeauthoryear{Hellewell, Russell, {The SAFER Investigators
+  and Field Study Team}, {The Crick COVID-19 Consortium}, {CMMID COVID-19
+  working group}, Beale, Kelly, Houlihan, Nastouli, and Kucharski}{Hellewell
+  et~al.}{2021}]{hellewellPCRSensitivity}
+Hellewell, J., Russell, T.~W., {The SAFER Investigators and Field Study Team},
+  {The Crick COVID-19 Consortium}, {CMMID COVID-19 working group}, and Beale,
+  R. et~al. (2021).
+\newblock Estimating the effectiveness of routine asymptomatic {{PCR}} testing
+  at different frequencies for the detection of {{SARS-CoV-2}} infections.
+\newblock {\em BMC Medicine} {\bf 19,} 106.
+
+\bibitem[\protect\citeauthoryear{Killingley, Mann, Kalinova, Boyers,
+  Goonawardane, Zhou, Lindsell, Hare, Brown, Frise, Smith, Hopkins, Noulin,
+  L{\"o}ndt, Wilkinson, Harden, McShane, Baillet, Gilbert, Jacobs, Charman,
+  Mande, {Nguyen-Van-Tam}, Semple, Read, Ferguson, Openshaw, Rapeport, Barclay,
+  Catchpole, and Chiu}{Killingley et~al.}{2022}]{killingleySafety}
+Killingley, B., Mann, A.~J., Kalinova, M., Boyers, A., Goonawardane, N., and
+  Zhou, J. et~al. (2022).
+\newblock Safety, tolerability and viral kinetics during {{SARS-CoV-2}} human
+  challenge in young adults.
+\newblock {\em Nature Medicine} {\bf 28,} 1031--1041.
+
+\bibitem[\protect\citeauthoryear{Lythgoe, Golubchik, Hall, House, Cahuantzi,
+  {MacIntyre-Cockett}, Fryer, Thomson, Nurtay, Ghafani, Buck, Green, Trebes,
+  Piazza, Lonie, Studley, Rourke, Smith, Bashton, Nelson, Crown, McCann, Young,
+  {Andre Nunes dos Santos}, Richards, Tariq, {null}, {null}, Fraser, Diamond,
+  Barrett, Walker, and Bonsall}{Lythgoe et~al.}{2023}]{lythgoeLineage}
+Lythgoe, K.~A., Golubchik, T., Hall, M., House, T., Cahuantzi, R., and
+  {MacIntyre-Cockett}, G. et~al. (2023).
+\newblock Lineage replacement and evolution captured by 3 years of the {{United
+  Kingdom Coronavirus}} ({{COVID-19}}) {{Infection Survey}}.
+\newblock {\em Proceedings of the Royal Society B: Biological Sciences} {\bf
+  290,} 20231284.
+
+\bibitem[\protect\citeauthoryear{Milne, Hames, Scotton, Gent, Johnsen,
+  Anderson, and Ward}{Milne et~al.}{2021}]{milneImmunity}
+Milne, G., Hames, T., Scotton, C., Gent, N., Johnsen, A., and Anderson, R.~M.
+  et~al. (2021).
+\newblock Does infection with or vaccination against {{SARS-CoV-2}} lead to
+  lasting immunity?
+\newblock {\em The Lancet Respiratory Medicine} {\bf 9,} 1450--1466.
+
+\bibitem[\protect\citeauthoryear{Msemburi, Karlinsky, Knutson,
+  {Aleshin-Guendel}, Chatterji, and Wakefield}{Msemburi
+  et~al.}{2023}]{whoCOVIDExcess}
+Msemburi, W., Karlinsky, A., Knutson, V., {Aleshin-Guendel}, S., Chatterji, S.,
+  and Wakefield, J. et~al. (2023).
+\newblock The {{WHO}} estimates of excess mortality associated with the
+  {{COVID-19}} pandemic.
+\newblock {\em Nature} {\bf 613,} 130--137.
+
+\bibitem[\protect\citeauthoryear{{Nuffield Department of Medicine}}{{Nuffield
+  Department of Medicine}}{2023}]{cisProtocol}
+{Nuffield Department of Medicine} (2023).
+\newblock Protocol and information sheets.
+\newblock
+  \url{https://www.ndm.ox.ac.uk/covid-19/covid-19-infection-survey/protocol-and-information-sheets}.
+
+\bibitem[\protect\citeauthoryear{{Office for National Statistics}}{{Office for
+  National Statistics}}{2020}]{onsCISdec2020}
+{Office for National Statistics} (2020).
+\newblock Coronavirus ({{COVID-19}}) {{Infection Survey}}, {{UK}}: 18
+  {{December}} 2020.
+
+\bibitem[\protect\citeauthoryear{{Office for National Statistics}}{{Office for
+  National Statistics}}{2023}]{cisMethodsONS}
+{Office for National Statistics} (2023).
+\newblock Coronavirus ({{COVID-19}}) {{Infection Survey}}: Methods and further
+  information.
+
+\bibitem[\protect\citeauthoryear{{Office for National Statistics} and
+  {University of Oxford}}{{Office for National Statistics} and {University of
+  Oxford}}{2023}]{CIS}
+{Office for National Statistics} and {University of Oxford} (2023).
+\newblock {{COVID-19 Infection Survey}}.
+
+\bibitem[\protect\citeauthoryear{Pires, Colosimo, Veloso, and Ferreira}{Pires
+  et~al.}{2021}]{piresIntervalMisclassify}
+Pires, M.~C., Colosimo, E.~A., Veloso, G.~A., and Ferreira, R. d. S.~B. (2021).
+\newblock Interval-censored data with misclassification: A {{Bayesian}}
+  approach.
+\newblock {\em Journal of Applied Statistics} {\bf 48,} 907--923.
+
+\bibitem[\protect\citeauthoryear{Puhach, Meyer, and Eckerle}{Puhach
+  et~al.}{2023}]{puhachSARSCoV2}
+Puhach, O., Meyer, B., and Eckerle, I. (2023).
+\newblock {{SARS-CoV-2}} viral load and shedding kinetics.
+\newblock {\em Nature Reviews Microbiology} {\bf 21,} 147--161.
+
+\bibitem[\protect\citeauthoryear{{R Core Team}}{{R Core Team}}{2022}]{R-4-2-0}
+{R Core Team} (2022).
+\newblock R: {{A}} language and environment for statistical computing.
+\newblock R Foundation for Statistical Computing.
+
+\bibitem[\protect\citeauthoryear{Riley, Atchison, Ashby, Donnelly, Barclay,
+  Cooke, Ward, Darzi, Elliott, and {REACT study group}}{Riley
+  et~al.}{2021}]{rileyREACT}
+Riley, S., Atchison, C., Ashby, D., Donnelly, C.~A., Barclay, W., and Cooke,
+  G.~S. et~al. (2021).
+\newblock {{REal-time Assessment}} of {{Community Transmission}} ({{REACT}}) of
+  {{SARS-CoV-2}} virus: Study protocol.
+\newblock {\em Wellcome Open Research} {\bf 5,} 200.
+
+\bibitem[\protect\citeauthoryear{Russell, Townsley, Abbott, Hellewell, Carr,
+  Chapman, Pung, Quilty, Hodgson, Fowler, Adams, Bailey, Mears, Harvey,
+  Clayton, O'Reilly, Ngai, Nicod, Gamblin, Williams, Gandhi, Swanton, Beale,
+  Bauer, Wall, and Kucharski}{Russell et~al.}{2024}]{russellWithinhost}
+Russell, T.~W., Townsley, H., Abbott, S., Hellewell, J., Carr, E.~J., and
+  Chapman, L. A.~C. et~al. (2024).
+\newblock Combined analyses of within-host {{SARS-CoV-2}} viral kinetics and
+  information on past exposures to the virus in a human cohort identifies
+  intrinsic differences of {{Omicron}} and {{Delta}} variants.
+\newblock {\em PLOS Biology} {\bf 22,} e3002463.
+
+\bibitem[\protect\citeauthoryear{Shen}{Shen}{2011}]{shenNonparametric}
+Shen, P.-S. (2011).
+\newblock Nonparametric estimation with doubly censored and truncated data.
+\newblock {\em Computational Statistics} {\bf 26,} 145--157.
+
+\bibitem[\protect\citeauthoryear{{Stan Development Team}}{{Stan Development
+  Team}}{2023}]{rstan2-21-8}
+{Stan Development Team} (2023).
+\newblock {{RStan}}: The {{R}} interface to {{Stan}}.
+
+\bibitem[\protect\citeauthoryear{Sun}{Sun}{1995}]{sunEmpirical}
+Sun, J. (1995).
+\newblock Empirical estimation of a distribution function with truncated and
+  doubly interval-censored data and its application to {{AIDS}} studies.
+\newblock {\em Biometrics} {\bf 51,} 1096.
+
+\bibitem[\protect\citeauthoryear{Sun}{Sun}{2003}]{sunStatistical}
+Sun, J. (2003).
+\newblock Statistical analysis of doubly interval-censored failure time data.
+\newblock In {\em Handbook of {{Statistics}}}, volume~23 of {\em Advances in
+  {{Survival Analysis}}}, pages 105--122. Elsevier.
+
+\bibitem[\protect\citeauthoryear{Turnbull}{Turnbull}{1976}]{turnbullEmpirical}
+Turnbull, B.~W. (1976).
+\newblock The empirical distribution function with arbitrarily grouped,
+  censored and truncated data.
+\newblock {\em Journal of the Royal Statistical Society. Series B
+  (Methodological)} {\bf 38,} 290--295.
+
+\bibitem[\protect\citeauthoryear{Vehtari, Gelman, Simpson, Carpenter, and
+  B{\"u}rkner}{Vehtari et~al.}{2021}]{vehtariRhat}
+Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., and B{\"u}rkner, P.-C.
+  (2021).
+\newblock Rank-normalization, folding, and localization: An improved {{R}} for
+  assessing convergence of {{MCMC}}.
+\newblock {\em Bayesian Analysis} {\bf 16,} 667--718.
+
+\bibitem[\protect\citeauthoryear{Wei, Stoesser, Matthews, Khera, Gethings,
+  Diamond, Studley, Taylor, Peto, Walker, Pouwels, Eyre, and Team}{Wei
+  et~al.}{2024}]{weiRisk}
+Wei, J., Stoesser, N., Matthews, P.~C., Khera, T., Gethings, O., and Diamond,
+  I. et~al. (2024).
+\newblock Risk of {{SARS-CoV-2}} reinfection during multiple {{Omicron}}
+  variant waves in the {{UK}} general population.
+\newblock {\em Nature Communications} {\bf 15,} 1008.
+\newblock Previously published as medRxiv:2023.06.29.23292043.
+
+\bibitem[\protect\citeauthoryear{Wickham, Averick, Bryan, Chang, McGowan,
+  Fran{\c c}ois, Grolemund, Hayes, Henry, Hester, Kuhn, Pedersen, Miller,
+  Bache, M{\"u}ller, Ooms, Robinson, Seidel, Spinu, Takahashi, Vaughan, Wilke,
+  Woo, and Yutani}{Wickham et~al.}{2019}]{tidyverse}
+Wickham, H., Averick, M., Bryan, J., Chang, W., McGowan, L.~D., and Fran{\c
+  c}ois, R. et~al. (2019).
+\newblock Welcome to the tidyverse.
+\newblock {\em Journal of Open Source Software} {\bf 4,} 1686.
+
+\end{thebibliography}

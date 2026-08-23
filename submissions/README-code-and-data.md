@@ -37,7 +37,9 @@ data/         the data those scripts read
 ## Running the scripts
 
 The scripts expect to be run from the root of this archive, and write into
-`figures/output/`:
+`figures/output/`. Every figure is written as SVG, which is the only vector
+format that can carry the semi-transparency these plots use without flattening
+part of the page to a bitmap:
 
 ```sh
 mkdir -p figures/output

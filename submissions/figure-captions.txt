@@ -1,0 +1,14 @@
+Figure 1
+Challenges posed by the CIS design. (A) Undetected episodes. (B) Doubly interval censored episodes, shaded regions indicate bounding regions (notation formally defined later).
+
+Figure 2
+Each dot is a combination of bⱼ and eⱼ for an arbitrary individual i. The combinations giving rise to the same value of νₖ are in the same box, bounded by dashed lines. i had negative tests at times 0, 7, 14, 56, and 84 (not shown) and positive tests at times 21 and 28. The purple region corresponds to a doubly interval censored episode observed in this individual. That is, n₈ = 1 and nₖ = 0 for k = 1, …, 7, 9, …, 15. The red region corresponds to combinations giving Oⱼ = ∅. The grey impossible region violates bⱼ ≤ eⱼ.
+
+Figure 3
+Simulation study results showing posterior (median and 95% credible interval (CrI)) survival time for the simulation study with a correctly specified test sensitivity. True survival time shown in black. (A-B) Correctly specified test sensitivity, pₛₑₙₛ⁽ˢ⁾ = pₛₑₙₛ⁽ⁱ⁾ = pₛₑₙₛ. (C-E) pₛₑₙₛ⁽ˢ⁾ = 0.9 and pₛₑₙₛ⁽ⁱ⁾ as per label. (F-H) pₛₑₙₛ⁽ˢ⁾ = v and pₛₑₙₛ⁽ⁱ⁾ as per label.
+
+Figure 4
+Duration estimates using CIS and ATACCC data. ATACCC-based estimates are from Blake (2024).
+
+Figure 5
+Assessing prior sensitivity. (A-C) Changing r when pₛₑₙₛ = 0.8. (D-F) Changing pₛₑₙₛ when r = r_inform. A and D: median survival time, compared to ATACCC-based estimate (shown in orange). B and E: S_θ(50). C and F: S_θ(t) for t ∈ [1, 100]. The final estimate is shown in purple throughout, green estimates are sensitivity analyses.
