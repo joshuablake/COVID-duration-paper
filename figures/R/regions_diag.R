@@ -158,6 +158,19 @@ plot = ggplot() +
         xmax = 21.5,
         ymin = 27.5,
         ymax = 55.5,
+        alpha = shade_alpha,
+        key_glyph = "blank"
+    ) +
+    # Every shading layer above sets key_glyph = "blank" so that a level shaded
+    # by several layers does not get several glyphs stacked in its key. That
+    # leaves nothing to draw the keys, so this zero-area layer carries all four
+    # fill levels and supplies them. Do not drop it: ggplot2 >= 3.5 draws a key
+    # only for the levels a layer actually contains, so without it three of the
+    # four keys come out empty and the shading becomes unreadable.
+    geom_rect(
+        data = tibble::tibble(region = c("Admissible", "Inadmissible", "Impossible", "Undetected")),
+        aes(fill = region),
+        xmin = 0, xmax = 0, ymin = 0, ymax = 0,
         alpha = shade_alpha
     ) +
     coord_fixed() +
