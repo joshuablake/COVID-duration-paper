@@ -54,7 +54,11 @@ base_plot = function(df, colour_curves_by, colour_key = NULL, facet_suffix = "",
         ) +
         facet_wrap(~facet_label, labeller = label_parsed) +
         geom_line(aes(time, S), data = truth, alpha = 0.5) +
-        theme_survival_time_series()
+        theme_survival_time_series() +
+        # Left align the strip so each panel's letter sits in its upper-left
+        # corner, as the Biometrics figure guidelines ask. The letter cannot go
+        # inside the panel because every curve starts at S = 1 in that corner.
+        theme(strip.text = element_text(hjust = 0))
 
     if (!is.null(colour_key)) {
         p = p +
