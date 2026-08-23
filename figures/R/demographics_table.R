@@ -1,3 +1,30 @@
+# =============================================================================
+# demographics_table.R
+#
+# Paper: Blake et al. "Estimating the duration of RT-PCR positivity for
+#        SARS-CoV-2 from doubly interval censored data with undetected
+#        infections". Biometrics.
+#
+# Produces: Web Table 1 of the Supplementary Materials -- the demographic
+#           composition of the CIS analysis cohort (age, sex, ethnicity,
+#           household size, region and country) next to the corresponding UK
+#           population percentages, supporting the statement in Section 2 that
+#           the cohort is broadly representative. The script writes a LaTeX
+#           tabular that supplemental.tex \input's.
+#
+# Inputs:
+#   data/STATS22850/*-groups-table.csv   Aggregate cohort counts released from
+#                                        the ONS Secure Research Service.
+#   data/pop-estimates-2020.csv          ONS 2020 mid-year population estimates.
+#   data/by-ethnicity-5-groups-table.csv 2021 England & Wales census ethnicity.
+#   (Both ONS sources are Open Government Licence v3.0; see README.md.)
+#
+# Output:   figures/output/table1.tex
+#
+# Run from the repository root with:
+#   Rscript figures/R/demographics_table.R
+# =============================================================================
+
 library(readr)
 library(dplyr)
 library(stringr)

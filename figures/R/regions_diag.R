@@ -1,3 +1,26 @@
+# =============================================================================
+# regions_diag.R
+#
+# Paper: Blake et al. "Estimating the duration of RT-PCR positivity for
+#        SARS-CoV-2 from doubly interval censored data with undetected
+#        infections". Biometrics.
+#
+# Produces: Figure 2 of the main manuscript -- a diagram of the partition of
+#           the (episode start, episode end) plane into the regions used in the
+#           likelihood (Section 3). For one illustrative testing schedule it
+#           shows which (b_j, e_j) combinations are impossible, which would have
+#           gone undetected, and which are compatible with the observed test
+#           results. The nu_k labels index the regions referred to in the text.
+#
+# Inputs:   none. The illustrative testing schedule is hard-coded
+#           (negative tests on days 0, 7, 14, 56; positive tests on days 21
+#           and 28), so the figure needs no study data.
+# Output:   figures/output/regions_diag.pdf
+#
+# Run from the repository root with:
+#   Rscript figures/R/regions_diag.R
+# =============================================================================
+
 library(dplyr)
 library(ggplot2)
 library(latex2exp)

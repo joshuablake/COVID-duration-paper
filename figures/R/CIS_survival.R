@@ -1,3 +1,38 @@
+# =============================================================================
+# CIS_survival.R
+#
+# Paper: Blake et al. "Estimating the duration of RT-PCR positivity for
+#        SARS-CoV-2 from doubly interval censored data with undetected
+#        infections". Biometrics.
+#
+# Produces: Figures 4 and 5 of the main manuscript, and prints the posterior
+#           summaries quoted in Section 6:
+#           * Figure 4 (figures/output/CIS_final.pdf) -- the headline duration
+#             estimate: the posterior survival curve from the CIS analysis
+#             (sensitivity p_sens = 0.8, informative hazard prior, r = 22047)
+#             alongside the ATACCC-based estimate used as the prior.
+#           * Figure 5 (figures/output/CIS_vary.pdf) -- the sensitivity
+#             analyses, showing how the median survival time, the day-50
+#             survival probability, and the whole survival curve respond to
+#             varying the overdispersion r of the prior on n_tot (panels A-C)
+#             and the assumed test sensitivity p_sens (panels D-F). The
+#             analysis reported in the paper is highlighted in purple.
+#
+# Inputs:
+#   data/STATS18744/draws.rds  Posterior draws of the survival curve, released
+#   data/STATS17701/draws.rds  from the ONS Secure Research Service (SRS). The
+#                              underlying CIS records cannot leave the SRS, so
+#                              these released posteriors are the reproducible
+#                              starting point; see README.md.
+#   atacccDurationEstimates    R package supplying the ATACCC-based posterior
+#                              (https://github.com/joshuablake/atacccDurationEstimates).
+#
+# Outputs:  figures/output/CIS_final.pdf, figures/output/CIS_vary.pdf
+#
+# Run from the repository root with:
+#   Rscript figures/R/CIS_survival.R
+# =============================================================================
+
 suppressMessages(library(dplyr))
 library(ggplot2)
 library(patchwork)

@@ -1,3 +1,26 @@
+# =============================================================================
+# challenges.R
+#
+# Paper: Blake et al. "Estimating the duration of RT-PCR positivity for
+#        SARS-CoV-2 from doubly interval censored data with undetected
+#        infections". Biometrics.
+#
+# Produces: Figure 1 of the main manuscript -- a schematic illustrating the two
+#           challenges posed by the Coronavirus Infection Survey (CIS) design:
+#           (A) truncation, where an infection episode in one individual is
+#               never detected because it falls between visits; and
+#           (B) double interval censoring, where the episode start and end are
+#               each only known to lie within an interval bounded by the
+#               surrounding tests.
+#
+# Inputs:   none. The figure is a schematic built from hard-coded testing
+#           schedules, so it needs no study data.
+# Output:   figures/output/challenges.pdf
+#
+# Run from the repository root with:
+#   Rscript figures/R/challenges.R
+# =============================================================================
+
 library(dplyr)
 library(ggplot2)
 library(latex2exp)

@@ -1,3 +1,25 @@
+# =============================================================================
+# demographics.R
+#
+# Paper: Blake et al. "Estimating the duration of RT-PCR positivity for
+#        SARS-CoV-2 from doubly interval censored data with undetected
+#        infections". Biometrics.
+#
+# Exploratory check behind Web Table 1: compares the demographic composition of
+# the CIS analysis cohort with ONS population estimates and prints the
+# resulting comparison to the console. The formatted table that actually
+# appears in the Supplementary Materials is written by
+# figures/R/demographics_table.R; this script is kept because it shows the
+# mapping between the SRS group codes and the ONS categories in a readable
+# form.
+#
+# Inputs:   data/STATS22850/*-groups-table.csv, data/pop-estimates-2020.csv
+# Output:   printed to the console only; writes no files.
+#
+# Run from the repository root with:
+#   Rscript data/demographics.R
+# =============================================================================
+
 library(readr)      # For reading CSV files
 library(dplyr)      # For data manipulation
 library(tidyr)      # For reshaping data

@@ -1,3 +1,28 @@
+# =============================================================================
+# surv_priors.R
+#
+# Paper: Blake et al. "Estimating the duration of RT-PCR positivity for
+#        SARS-CoV-2 from doubly interval censored data with undetected
+#        infections". Biometrics.
+#
+# Produces: Web Figure 1 of the Supplementary Materials -- the prior predictive
+#           distribution of the survival function S(t) under each of the two
+#           priors compared in Web Appendix A: the weakly informative
+#           Beta(0.1, 1.9) prior on each discrete hazard, and the strongly
+#           informative ATACCC-based prior (a discrete beta process centred on
+#           the ATACCC posterior hazards).
+#
+# Inputs:
+#   atacccDurationEstimates  R package supplying the ATACCC-based hazard
+#                            posterior that the informative prior is built from
+#                            (https://github.com/joshuablake/atacccDurationEstimates).
+#
+# Output:   figures/output/prior_predictive_survival.pdf
+#
+# Run from the repository root with:
+#   Rscript figures/R/surv_priors.R
+# =============================================================================
+
 library(atacccDurationEstimates)
 library(dplyr)
 library(ggplot2)

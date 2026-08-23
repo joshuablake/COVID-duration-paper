@@ -1,3 +1,33 @@
+# =============================================================================
+# sim_survival.R
+#
+# Paper: Blake et al. "Estimating the duration of RT-PCR positivity for
+#        SARS-CoV-2 from doubly interval censored data with undetected
+#        infections". Biometrics.
+#
+# Produces: Figure 3 of the main manuscript -- the results of the simulation
+#           study (Section 5). Each panel plots the posterior survival curve
+#           (median and 95% credible band) recovered by the model against the
+#           ground-truth curve used to simulate the data, for a different
+#           combination of assumed test sensitivity and hazard prior. Panels
+#           (A)-(B) vary the hazard prior under constant sensitivity; panels
+#           (C)-(E) and (F)-(H) show the misspecified and time-varying
+#           sensitivity scenarios respectively.
+#
+# Inputs:
+#   data/all_posteriors.rds  Posterior draws from fitting the model to each
+#                            simulated dataset. Produced by the simulation
+#                            repository, see README.md; the model itself is
+#                            defined in the cisDurationModel R package.
+#   data/input_curves.rds    The duration distributions used as ground truth in
+#                            the simulation (and as the informative prior).
+#
+# Output:   figures/output/sim-results.pdf
+#
+# Run from the repository root with:
+#   Rscript figures/R/sim_survival.R
+# =============================================================================
+
 suppressMessages(library(dplyr))
 library(ggplot2)
 library(patchwork)
