@@ -126,6 +126,9 @@ if [[ "$WITH_DRAWS" -eq 0 ]]; then
   rm -f "$PKG/data/STATS17701/draws.rds" "$PKG/data/STATS18744/draws.rds"
 fi
 cp submissions/README-code-and-data.md "$PKG/README.md"
+# The lockfile pins every package version, including the GitHub ones, so a
+# reader can rebuild the exact environment with renv::restore().
+cp renv.lock "$PKG/renv.lock"
 (cd "$WORK" && zip -qr "$ROOT/$OUT/code-and-data.zip" code-and-data)
 
 # The figure captions, as UTF-8, for pasting into ScholarOne's caption boxes.

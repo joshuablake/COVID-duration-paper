@@ -52,11 +52,18 @@ Rscript figures/R/CIS_ntot.R
 Rscript figures/R/demographics_table.R
 ```
 
-They need R (4.2 or later) and these CRAN packages: `dplyr`, `ggplot2`,
-`ggdist`, `tidybayes`, `tidyr`, `tibble`, `purrr`, `readr`, `stringr`,
-`patchwork`, `latex2exp`, `glue`, `scales`, `rlang`, `here`, `mvtnorm`.
+`renv.lock` in this archive pins every package version used, including the
+three from GitHub. The least error-prone way to get the environment is:
 
-Three further packages, written for this work, are on GitHub:
+```r
+install.packages("renv")
+renv::restore()          # reads renv.lock, installs exactly those versions
+```
+
+Failing that, install by hand. The CRAN packages are `dplyr`, `ggplot2`,
+`ggdist`, `tidybayes`, `tidyr`, `tibble`, `purrr`, `readr`, `stringr`,
+`patchwork`, `latex2exp`, `glue`, `scales`, `rlang`, `here` and `mvtnorm`, and
+three further packages written for this work are on GitHub:
 
 ```r
 remotes::install_github("joshuablake/atacccDurationEstimates")

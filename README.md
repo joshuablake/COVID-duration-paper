@@ -1,7 +1,8 @@
 #  Estimating the duration of RT-PCR positivity for SARS-CoV-2 from doubly interval censored data with undetected infections
 
 This repository contains the code to reproduce the manuscript ``Estimating the duration of RT-PCR positivity for SARS-CoV-2 from doubly interval censored data with undetected infections".
-Once in the directory, `make all` should simply work, producing all figures and the pdf.
+The R environment is pinned with renv. After cloning, run `Rscript -e 'renv::restore()'` once to install the recorded package versions.
+Then `make all` should simply work, producing all figures and the pdf.
 
 Every figure is written as SVG by `figures/R/utils.R`'s `save_figure()`, and SVG is the only format they are written in.
 That matters because these plots use semi-transparency, which SVG can express and PostScript cannot: an EPS of the same figure has part of the page flattened to a bitmap, and going via PDF flattens all of it.
