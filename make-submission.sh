@@ -119,9 +119,14 @@ echo "    compiles cleanly: $built pages"
 
 echo "==> code and data archive"
 PKG="$WORK/code-and-data"
-mkdir -p "$PKG/figures/R" "$PKG/data"
-cp figures/R/*.R "$PKG/figures/R/"
-cp -r data/. "$PKG/data/"
+mkdir -p "$PKG"
+# Copy only what git tracks. A plain `cp -r data/.` also picks up whatever else
+# happens to be sitting in the working tree, ignored or not -- which is how an
+# ONS output request form ended up inside an archive meant for publication.
+while IFS= read -r -d '' f; do
+  mkdir -p "$PKG/$(dirname "$f")"
+  cp "$f" "$PKG/$f"
+done < <(git ls-files -z figures/R data)
 if [[ "$WITH_DRAWS" -eq 0 ]]; then
   rm -f "$PKG/data/STATS17701/draws.rds" "$PKG/data/STATS18744/draws.rds"
 fi
@@ -129,6 +134,12 @@ cp submissions/README-code-and-data.md "$PKG/README.md"
 # The lockfile pins every package version, including the GitHub ones, so a
 # reader can rebuild the exact environment with renv::restore().
 cp renv.lock "$PKG/renv.lock"
+# Belt and braces: nothing under figures/ or data/ may be an untracked file.
+while IFS= read -r -d '' f; do
+  rel="${f#"$PKG/"}"
+  git ls-files --error-unmatch "$rel" >/dev/null 2>&1 || {
+    echo "$rel is not tracked by git but reached the archive" >&2; exit 1; }
+done < <(find "$PKG/figures" "$PKG/data" -type f -print0)
 (cd "$WORK" && zip -qr "$ROOT/$OUT/code-and-data.zip" code-and-data)
 
 # The figure captions, as UTF-8, for pasting into ScholarOne's caption boxes.
