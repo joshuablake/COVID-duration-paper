@@ -5,6 +5,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+% Includes the SVG figures directly. The package shells out to Inkscape during
+% the build to convert each one, so pdflatex needs -shell-escape.
+\usepackage{svg}
 \usepackage{floatpag}
 \usepackage{bm}
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
@@ -153,7 +156,7 @@ Joshua Blake, Paul Birrell, A. Sarah Walker, Koen B. Pouwels, Thomas House, Bria
 The two priors we consider are depicted in \cref{fig:priors}
 They have varying degrees of informativeness regarding $S_{\vec{\theta}(t)}$.
 \begin{figure}
-  \includegraphics{figures/output/prior_predictive_survival}
+  \includesvg{figures/output/prior_predictive_survival}
   \caption{%
     Prior predictive values of $S_{\vec{\theta}}$ for the two priors.
   }
@@ -475,7 +478,7 @@ Episode $j$'s duration of detectability is then a draw from this distribution.
 \section{Tables and figures}
 
 \begin{figure}[!h]
-  \includegraphics{figures/output/CIS_ntot}
+  \includesvg{figures/output/CIS_ntot}
   \caption[Sensitivity of $\ntot$'s posterior to its prior.]{How the posterior estimate of $\ntot$ changes with the value of $r$ in the prior on $\ntot$.}
   \label{imperf-test:fig:ntot}
 \end{figure}

@@ -48,14 +48,7 @@ fig = posterior |>
     standard_plot_theming() +
     scale_x_log10() +
     labs(y = expression(n[tot]))
-ggsave(
-    filename = here::here("figures/output/CIS_ntot.pdf"),
-    plot = fig,
-    width = 11,
-    height = 7,
-    units = "cm",
-    dpi = 300
-)
+save_figure("CIS_ntot", fig, width = 11, height = 7)
 
 posterior |>
     filter(sensitivity == 0.8, survival_prior == "Informative", missed_model == "total", r == 22047) |>

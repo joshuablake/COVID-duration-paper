@@ -13,6 +13,30 @@
 # Not run directly; sourced via source(here::here("figures/R/utils.R")).
 # =============================================================================
 
+# Figures are written as SVG and nothing else. SVG is the only vector format
+# that can express the semi-transparency these plots rely on, so the whole
+# figure stays vector: no ribbon, curve or dot grid is ever flattened to a
+# bitmap, which is what both EPS and the classic postscript() device force.
+# Cairo converts the text to glyph outlines on the way out, so the files carry
+# no font dependency at all.
+#
+# pdflatex cannot read SVG, so the manuscript build converts these into
+# throwaway PDFs under figures/build (see the Makefile). Those are scratch
+# files: they are gitignored and never shipped.
+FIGURE_FONT = "Nimbus Sans"       # metric-compatible with Helvetica
+
+save_figure = function(name, plot, width, height, units = "cm") {
+    ggsave(
+        filename = here::here("figures/output", paste0(name, ".svg")),
+        plot = plot,
+        width = width,
+        height = height,
+        units = units,
+        device = svg,
+        family = FIGURE_FONT
+    )
+}
+
 standard_plot_theming = function() {
     rlang::list2(
         theme_minimal(),

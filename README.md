@@ -2,7 +2,12 @@
 
 This repository contains the code to reproduce the manuscript ``Estimating the duration of RT-PCR positivity for SARS-CoV-2 from doubly interval censored data with undetected infections".
 Once in the directory, `make all` should simply work, producing all figures and the pdf.
-Note that figures are included in the directory `figures/output` and will only be reproduced if deleted first.
+
+Every figure is written as SVG by `figures/R/utils.R`'s `save_figure()`, and SVG is the only format they are written in.
+That matters because these plots use semi-transparency, which SVG can express and PostScript cannot: an EPS of the same figure has part of the page flattened to a bitmap, and going via PDF flattens all of it.
+`main.tex` includes the SVGs through the `svg` package, which shells out to Inkscape during the build, so **`pdflatex` must be run with `-shell-escape` and Inkscape must be on the path**; the Makefile passes the flag for you.
+
+`make submission` additionally assembles the files for the accepted version into `submissions/2026-08_Biometrics-final`: the SVG figures, the manuscript and supplementary PDFs with all fonts embedded, a self-contained LaTeX source bundle, and the code-and-data archive.
 
 Three R packages, available on GitHub support the code.
 

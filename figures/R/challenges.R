@@ -27,6 +27,7 @@ library(latex2exp)
 library(patchwork)
 library(tibble)
 library(tidyr)
+source(here::here("figures/R/utils.R"))
 
 plot_testing_schedule = function(x, break_modifier = 0) {
   scale_colours = c(
@@ -151,11 +152,4 @@ final_plot = p_truncation / p_censor +
   plot_layout(heights = c(1.6, 1, 1.3)) &
   theme(plot.margin = margin(0))#, plot.tag.position = c(0.01, 0.7))
 
-ggsave(
-  filename = "figures/output/challenges.pdf",
-  plot = final_plot,
-  width = 6,
-  height = 2,
-  dpi = 300,
-  unit = "in"
-)
+save_figure("challenges", final_plot, width = 6, height = 2, units = "in")

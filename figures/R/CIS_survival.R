@@ -153,14 +153,7 @@ p_final = final_curve |>
         colour = ""
     ) +
     theme(legend.position = "right")
-ggsave(
-    filename = here::here("figures/output/CIS_final.pdf"),
-    plot = p_final,
-    width = 15,
-    height = 6,
-    units = "cm",
-    dpi = 300
-)
+save_figure("CIS_final", p_final, width = 15, height = 6)
 
 #############################################################################################
 ### SENSITIVITY ANALYSIS FIGURE
@@ -255,18 +248,16 @@ sens_curves = sens_draws |>
     labs(colour = expression(p[sens]), fill = expression(p[sens])) +
     scale_fill_one_level(posterior_draws$sensitivity, "0.8", "purple") +
     scale_colour_one_level(posterior_draws$sensitivity, "0.8", "purple")
-ggsave(
-    filename = here::here("figures/output/CIS_vary.pdf"),
-    plot = (r_medians + r_day_50 + r_curves) / (sens_medians + sens_day_50 + sens_curves) +
+save_figure(
+    "CIS_vary",
+    (r_medians + r_day_50 + r_curves) / (sens_medians + sens_day_50 + sens_curves) +
         plot_annotation(tag_levels = "A") &
         theme(
             text = element_text(size = 8),
             legend.key.size = unit(0.3, "cm")
         ),
     width = 18,
-    height = 20,
-    units = "cm",
-    dpi = 300
+    height = 20
 )
 
 posterior_draws |>

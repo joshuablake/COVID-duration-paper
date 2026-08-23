@@ -301,3 +301,5 @@ TSWLatexianTemp*
 tmp*.tex
 *.docx
 main-diff.tex
+# Cache of PDF renditions the svg package makes during the LaTeX run
+svg-inkscape/

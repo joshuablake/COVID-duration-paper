@@ -24,6 +24,7 @@
 library(dplyr)
 library(ggplot2)
 library(latex2exp)
+source(here::here("figures/R/utils.R"))
 
 neg_test_dates = c(0, 7, 14, 56)
 pos_test_dates = c(28, 21)
@@ -187,4 +188,4 @@ plot = ggplot() +
         legend.position = "bottom",
         legend.box = "vertical"
     )
-ggsave("figures/output/regions_diag.pdf", width = 19, height = 16, device = cairo_pdf, units = "cm")
+save_figure("regions_diag", plot, width = 19, height = 16)

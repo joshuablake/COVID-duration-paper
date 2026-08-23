@@ -113,11 +113,9 @@ p_variable_sensitivity = tbl_posteriors |>
     ) +
     theme(legend.position = "none")
 
-ggsave(
-    filename = here::here("figures/output/sim-results.pdf"),
-    plot = p_constant_sensitivity / p_misspecified_sensitivity / p_variable_sensitivity,
+save_figure(
+    "sim-results",
+    p_constant_sensitivity / p_misspecified_sensitivity / p_variable_sensitivity,
     width = 15,
-    height = 20,
-    units = "cm",
-    dpi = 300
+    height = 20
 )

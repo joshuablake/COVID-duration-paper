@@ -3,6 +3,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+% Includes the SVG figures directly. The package shells out to Inkscape during
+% the build to convert each one, so pdflatex needs -shell-escape.
+\usepackage{svg}
 \usepackage{floatpag}
 \usepackage{bm}
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
@@ -164,7 +167,7 @@ Also, infection episodes that are detectable for longer are more likely to be de
 Secondly, the duration data are doubly interval censored: we observe the beginning of an episode when a previously negative individual returns a positive test, but the episode could start at any point between those two tests; and the end of the episode is similarly interval censored (see \cref{fig:challenges}(B)).
 
 \begin{figure}
-  \includegraphics{figures/output/challenges}
+  \includesvg{figures/output/challenges}
   \caption{%
     Challenges posed by the CIS design.
     (A) Undetected episodes.
@@ -316,7 +319,7 @@ If $\vec{n}$ was known, then the problem reduces to the well-studied problem of 
 Therefore, to infer $\vec\theta$, we augment $\na$ with the latent quantity $\nnodet$.
 
 \begin{figure}
-    \includegraphics{figures/output/regions_diag}
+    \includesvg{figures/output/regions_diag}
     \caption[Episode regions]{%
       Each dot is a combination of $b_j$ and $e_j$ for an arbitrary individual $i$.
       The combinations giving rise to the same value of $\nu_k$ are in the same box, bounded by dashed lines.
@@ -506,7 +509,7 @@ The strongly informative prior for $\vec\theta$ moves the estimated survival fun
 When $\psens = 0.6$, both priors lead to underestimation (see \cref{imperf-test:fig:simulation-results}(A)).
 This is likely caused by too large a violation of the simplifying assumptions made in \cref{sec:false-negatives}.
 \begin{figure}
-  \includegraphics{figures/output/sim-results}
+  \includesvg{figures/output/sim-results}
   \caption[Simulation study results]{%
     Simulation study results showing posterior (median and 95\% credible interval (CrI)) survival time for the simulation study with a correctly specified test sensitivity.
     True survival time shown in black.
@@ -546,12 +549,12 @@ The increase in long episodes (\eg longer than 50 days) is not very sensitive to
 However, the survival proportion over the first 4 weeks is sensitive to these choices.
 The estimate using a test sensitivity of 0.8 and $\NBc(\mu\inform, r\inform)$ gives a median survival time most similar to the ATACCC-based estimate.
 \begin{figure}
-  \includegraphics{figures/output/CIS_final}
+  \includesvg{figures/output/CIS_final}
   \caption{Duration estimates using CIS and ATACCC data. ATACCC-based estimates are from \citet{blakeThesis}.}
   \label{imperf-test:fig:cis-estimates}
 \end{figure}
 \begin{figure}
-  \includegraphics{figures/output/CIS_vary}
+  \includesvg{figures/output/CIS_vary}
   \caption{%
     Assessing prior sensitivity.
     (A-C) Changing $r$ when $\psens = 0.8$.
