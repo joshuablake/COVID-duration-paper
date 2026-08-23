@@ -32,6 +32,10 @@ library(tidybayes)
 library(tidyr)
 source(here::here("figures/R/utils.R"))
 
+# The prior predictive bands are drawn by sampling, so fix the seed: without it
+# this figure differs on every run and cannot be reproduced from the archive.
+set.seed(10)
+
 dist_levels = c(
   "Beta(0.1, 1.9)",
   "ATACCC"
