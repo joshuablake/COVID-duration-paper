@@ -23,7 +23,7 @@
 # pdflatex cannot read SVG, so the manuscript build converts these into
 # throwaway PDFs under figures/build (see the Makefile). Those are scratch
 # files: they are gitignored and never shipped.
-FIGURE_FONT = "Nimbus Sans"       # metric-compatible with Helvetica
+FIGURE_FONT = "DejaVu Sans"
 
 save_figure = function(name, plot, width, height, units = "cm") {
     ggsave(
